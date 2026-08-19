@@ -32,11 +32,14 @@ Prim  (category / product identity)
 ├── OMF          Meeting occurrences (invite / record / outcome)
 │                 https://github.com/eidos-agi/omf
 │
-└── OCSF         Corporate structure, ownership, capital, governance
-                  https://github.com/eidos-agi/ocsf
+├── OCSF         Corporate structure, ownership, capital, governance
+│                 https://github.com/eidos-agi/ocsf
+│
+└── OBIF         Brand identity (logo, color, type, voice, assets, governance)
+                  https://github.com/eidos-agi/obif
 ```
 
-Future profiles (e.g. brand/identity, legal agreements, etc.) will appear as additional rows in this map without breaking existing Prims.
+Future profiles will appear as additional rows in this map without breaking existing Prims.
 
 ---
 
@@ -47,7 +50,7 @@ Future profiles (e.g. brand/identity, legal agreements, etc.) will appear as add
 | **Prim** | Category name, positioning, shared properties, language |
 | **OKF** | Base document model, provenance, trust tiers, pack face conventions |
 | **Profiles** | Domain kinds, edges, validation gates, pack layouts |
-| **Renderers** (okflify, future Prim viewers) | Generate views on demand; never become the source of truth |
+| **Renderers** (okflify, future Prim viewers, brand-standards views) | Generate views on demand; never become the source of truth |
 | **Validators** | Enforce profile rules; fail-closed where specified |
 
 ---
@@ -55,9 +58,9 @@ Future profiles (e.g. brand/identity, legal agreements, etc.) will appear as add
 ## Composition rules
 
 1. **Every Prim is OKF-compatible.** A renderer that understands only OKF can still display the pack (and ignore profile-specific keys).
-2. **Profiles are additive.** Declaring `profile: ocsf` (or orf, opf, …) adds domain structure; it does not remove OKF properties.
-3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF. Research stays in ORF. Product surfaces stay in OPF. Cross-references are preferred over forced unification.
-4. **Evidence and trust follow OKF.** Profiles may tighten requirements (e.g. mandatory hashes for material ownership claims) but do not invent a parallel trust model.
+2. **Profiles are additive.** Declaring `profile: ocsf` (or orf, opf, obif, …) adds domain structure; it does not remove OKF properties.
+3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF. Research stays in ORF. Product surfaces stay in OPF. Brand identity stays in OBIF. Cross-references are preferred over forced unification.
+4. **Evidence and trust follow OKF.** Profiles may tighten requirements (e.g. mandatory hashes for material ownership or locked logo claims) but do not invent a parallel trust model.
 5. **Human intent stays in EMF** where that distinction matters. Profiles that need intent link to or compose with EMF rather than redefining it.
 
 ---
@@ -67,8 +70,8 @@ Future profiles (e.g. brand/identity, legal agreements, etc.) will appear as add
 | Context | Preferred language |
 |---------|-------------------|
 | Everyday / human | “the prim”, “send me the prim”, “latest prim” |
-| Technical / agent | “OCSF pack”, “ORF prim”, “OKF profile: ocsf” |
-| Mixed | “the corporate prim (OCSF)” or “the research prim” |
+| Technical / agent | “OCSF pack”, “OBIF prim”, “OKF profile: obif” |
+| Mixed | “the corporate prim (OCSF)”, “the brand prim (OBIF)”, “the research prim” |
 
 The goal is that “prim” becomes the default noun, with the profile name available when precision is needed.
 
