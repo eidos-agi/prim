@@ -2,7 +2,7 @@
 
 Category-level Prim SDK. Node stdlib + `zip` / `unzip` / `tar`. No npm runtime deps.
 
-This is the Prim kernel. Profiles register a validator and a view on top. They do not re-parse archives or faces.
+This is the Prim kernel for **OKF-shaped** packs. Profiles register a validator and a view on top. They do not re-parse archives or faces. A Prim does not have to be OKF; this SDK implements the pack grammar that many current profiles use.
 
 ## Use
 

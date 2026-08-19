@@ -8,15 +8,15 @@ The category has two nouns: **Prims** and **Prim Tools**.
 
 ## 1. What a Prim is
 
-A **Prim** is the primitive unit of knowledge and memory for AI. A **Prim Tool** operates on one. That is the whole split.
+A **Prim** is the file that stores the information. A **Prim Tool** is how you interact with it. That is the whole split.
 
-It is a self-contained, structured, evidence-backed pack of knowledge that:
+- Agents and humans use the **same store** — no scraping a sheet or a deck to recover meaning
+- The file **outlives a session**
+- Traditional files (Excel, Word, PDFs, decks) are optional **views**, not the store
+- Interfaces are generated or operated on demand (`ui` opens; a tool cites)
+- It stays human-inspectable
 
-- Agents can read, validate, reason over, and act on **without translation layers**
-- Serves as **durable memory** that persists across sessions, agents, and time
-- Treats traditional files (Excel, Word, PDFs, decks, Notion pages) as optional **views**, not the source of truth
-- Generates interfaces on demand rather than shipping a fixed UX
-- Remains human-inspectable
+It does not have to be an OKF pack. OKF is one grammar. Prim can evolve without it.
 
 **One-line definition**
 
@@ -24,7 +24,7 @@ It is a self-contained, structured, evidence-backed pack of knowledge that:
 
 **Everyday definition**
 
-> Structured knowledge that both humans and agents can trust. You don’t send the spreadsheet or the deck — you send the prim.
+> The file you store the information in, and the tool you use on it. You don’t send the spreadsheet — you send the prim.
 
 Pronunciation: /prɪm/ (same as the English adjective “prim”).
 
@@ -43,10 +43,10 @@ None of these were designed for agents. Agents are forced to reverse-engineer me
 
 **Prims invert the relationship.**
 
-1. Knowledge is stored in structured, validated, evidence-backed form.
-2. Both agents and humans treat the Prim as the source of truth.
-3. Interfaces, documents, and visualizations are generated on demand from the Prim.
-4. Pure data formats (images, Parquet, audio, etc.) stay specialized. Everything else can become a projection.
+1. The structured store *is* the file.
+2. Both agents and humans treat that file as the source of truth.
+3. Interfaces are generated or operated on demand from it.
+4. OKF is optional. Pure data formats stay specialized. Everything else can become a view.
 
 Once this is understood, the sentence becomes obvious:
 
@@ -58,12 +58,13 @@ Once this is understood, the sentence becomes obvious:
 
 | Property | Meaning |
 |----------|---------|
-| **AI-native** | Agents can open, validate, query, and reason over it using declared rules — no brittle scraping of presentation formats. |
-| **Evidence-first** | Material claims carry provenance, trust tiers (`human:` > `job:` > `agent:`), and content hashes where required. Validation is fail-closed. |
-| **Durable memory** | Designed to outlive any single session or agent run. Supports versioning, supersession, and temporal reconstruction. |
-| **No fixed UX** | There is no canonical interface. Views are generated on the fly (tables, graphs, brand boards, capitalization waterfalls, narratives, etc.). |
-| **Human-readable** | Still openable and understandable by people. Markdown + structured data (YAML/JSON) is preferred. Opacity is not a goal. |
-| **Additive & profile-based** | New domains arrive as additive profiles rather than monolithic version bumps. Existing Prims continue to work. |
+| **Store + interact** | The file stores. A surface or connector cites it and does work. |
+| **AI-native** | Agents open the store using the profile — no scraping a presentation format. |
+| **Durable** | Outlives a session. |
+| **No fixed UX** | `ui` opens; a Prim Tool operates. Neither is the file. |
+| **Human-inspectable** | Opacity is not a goal. |
+| **Additive profiles** | New domains are `prim.<name>`. They do not have to be OKF. |
+| **Evidence / fail-closed** | Profile rules when the domain is claims. Not the membership test. |
 
 ---
 
@@ -71,12 +72,13 @@ Once this is understood, the sentence becomes obvious:
 
 **Prim** is the product identity and category name.
 
-**OKF** (Open Knowledge Format) and its additive profiles are the underlying grammar.
+**OKF** (Open Knowledge Format) is one pack grammar some profiles use. It is not Prim.
 
 | Layer | Role |
 |-------|------|
-| **Prim** | What people call it. The category. The brand. |
-| **OKF + profiles** | The format rules, validation model, pack layout, and domain schemas. |
+| **Prim** | The category. File + tools. |
+| **Profile** | Domain store (`prim.orf`, `prim.docket`, …). |
+| **OKF** | Optional grammar (face, evidence, trust). |
 
 ### Repository naming
 
@@ -97,6 +99,7 @@ Current profiles (non-exhaustive):
 - **prim.ocsf** — corporate structure, ownership, capital, governance
 - **prim.obif** — brand & identity
 - **prim.osf** — open session format (movable session packs)
+- **prim.docket** — execution queue (`.docket/` store; not OKF)
 
 A Prim can be a single-profile pack (e.g., “the corporate prim” / `prim.ocsf`) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
 
@@ -189,7 +192,7 @@ If the explanation requires a long technical preamble, it has not yet landed.
 
 **Technical one-liner**
 
-“Prim is the category name for OKF-profile packs that are AI-native, evidence-first, durable memory, and deliberately free of fixed UX. Profile repos are named `prim.<name>`.”
+“Prim is the category: a file that stores information, and a tool that cites it. OKF is one grammar. Profile repos are named `prim.<name>`.”
 
 ---
 
@@ -221,7 +224,7 @@ When that happens, the category has landed.
 - **Prim** = category and product identity
 - **Eidos AGI** = the organization developing the open OKF-family formats and tools that make Prims reliable
 - Repo convention: `prim` + `prim.<profile>` + `prim-web`
-- Current status: early (v0.3.0-draft category specification)
+- Current status: early (v0.4.0-draft — Prim is not OKF)
 - Home: https://github.com/eidos-agi/prim
 
 Domain profiles remain in their own `prim.*` repositories. Prim is the name of the category they all belong to.

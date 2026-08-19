@@ -1,12 +1,14 @@
 # Prim
 
-**The primitive unit of knowledge and memory for AI.**
+**A file that stores information, and tools that interact with it.**
 
 There are Prims and Prim Tools.
 
-**Prims** are AI-native files: structured, evidence-backed, versionable packs of knowledge that both agents and humans can trust. Traditional documents (Excel, Word, PDFs, decks) become projections — views generated on demand from the Prim.
+**Prims** are the store: files both agents and humans can use without scraping a sheet or a deck. Traditional documents (Excel, Word, PDFs, decks) become projections.
 
 **Prim Tools** operate on a Prim. Two kinds: surface (human counterpart) and connector (system counterpart). A tool cites the file. It is not a Prim.
+
+OKF is one grammar some prims use. Prim can evolve without being OKF.
 
 > “Send me the prim.”
 
@@ -27,15 +29,16 @@ None of these were designed for agents. They require constant translation, re-in
 
 **Prims invert this.**
 
-The structured, validated, evidence-backed knowledge *is* the file. Interfaces are generated on the fly. Pure data formats (images, Parquet, etc.) remain specialized. Everything else can become a view of a Prim.
+The store *is* the file. Interfaces are generated or operated on the fly. OKF is optional. Pure data formats (images, Parquet, etc.) remain specialized. Everything else can become a view of a Prim.
 
 ## Core properties
 
-- **AI-native** — agents can read, validate, reason over, and act on them without translation layers
-- **Memory** — durable, versioned, supersedable knowledge that persists across sessions and agents
-- **Evidence-first** — claims carry provenance, trust tiers, and hashes
-- **Human-readable** — still openable and understandable by people
-- **Generative interfaces** — no fixed UX; views are rendered on demand (json-render style)
+- **Store + interact** — the file stores; a surface or connector cites it
+- **AI-native** — agents open the store without scraping a presentation format
+- **Durable** — outlives a session
+- **Human-inspectable** — still openable by people
+- **No fixed UX** — `ui` opens; a Prim Tool operates
+- **OKF optional** — evidence, trust, fail-closed are profile rules when the domain is claims
 
 ## Packaging
 
@@ -75,6 +78,7 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | [prim.ocsf](https://github.com/eidos-agi/prim.ocsf) | Corporate structure & capital |
 | [prim.obif](https://github.com/eidos-agi/prim.obif) | Brand & identity |
 | [prim.osf](https://github.com/eidos-agi/prim.osf) | Open Session Format |
+| [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution queue (not OKF) |
 
 OKF provides the grammar ([okflify](https://github.com/eidos-agi/okflify)).  
 **Prim** is what people call the thing.

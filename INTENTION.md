@@ -2,16 +2,16 @@
 
 ## North Star
 
-There are Prims and Prim Tools. Prims are the primitive units of knowledge and durable memory in an agent-native world. Prim Tools operate on them.
+There are Prims and Prim Tools. A Prim is the file that stores the information. A Prim Tool is how you interact with it.
 
 Traditional application files (documents, spreadsheets, presentations, notes) were designed for human tools first. Agents are forced to reverse-engineer meaning from them.
 
 Prims reverse the relationship:
 
-1. Knowledge is stored in structured, validated, evidence-backed form.
-2. Agents and humans both treat the Prim as the source of truth.
-3. Interfaces, documents, and visualizations are generated on demand from the Prim.
-4. Pure data formats remain specialized. Everything else can become a projection.
+1. The structured store *is* the file.
+2. Agents and humans both treat that file as the source of truth.
+3. Interfaces and exports are generated or operated on demand (ui opens; a tool cites).
+4. OKF is one grammar some prims use. Prim is allowed to evolve without being OKF.
 
 ## Design commitments
 
@@ -21,8 +21,8 @@ A Prim is a fundamental building block, not a feature of any single application.
 ### 2. AI-native by default
 Agents must be able to open, validate, query, reason over, and update a Prim without custom parsers or brittle scraping.
 
-### 3. Evidence and trust are first-class
-Claims carry provenance, trust tiers (human > job > agent), timestamps, and hashes. Validation is fail-closed where required.
+### 3. Evidence and trust are profile rules
+When the domain is claims, the profile may require provenance, trust tiers (human > job > agent), timestamps, hashes, and fail-closed gates. That is not the membership test for a Prim.
 
 ### 4. Memory that outlives sessions
 A Prim is durable memory. It can be versioned, superseded, forked, and shared across agents and time.
@@ -33,8 +33,8 @@ There is no canonical interface. `ui` is how anything opens a Prim. A Prim Tool 
 ### 6. Human-readable remains a feature
 Prims must still be inspectable and understandable by people. Opacity is not a goal.
 
-### 7. Additive and profile-based
-The underlying format family (OKF) is designed to grow through additive profiles rather than monolithic versions. New domains (corporate structure, brand, research, etc.) become new profiles without breaking existing Prims.
+### 7. Additive profiles, not one format
+New domains become `prim.<name>`. Some of those profiles will be OKF packs. Some will not (a docket is a Prim). Prim does not freeze itself to OKF.
 
 ## What success looks like
 
@@ -52,4 +52,4 @@ Agents stop re-deriving the same facts from unstructured sources because the Pri
 
 Prim is the category and product identity.
 
-Eidos develops the underlying open format family (OKF profiles) and tools that make Prims real, reliable, and interoperable.
+Eidos develops Prim profiles and tools. OKF is one lineage of those profiles, not the category.

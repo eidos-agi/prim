@@ -26,7 +26,7 @@ Pronunciation: /prɪm/ (same as the English adjective).
 
 ## One-line positioning
 
-> The primitive unit of knowledge and memory for AI.
+> A file that stores information, and tools that interact with it.
 
 The category has two nouns: **Prims** and **Prim Tools**.
 
@@ -45,9 +45,10 @@ Traditional application files were built for human tools first. Agents reverse-e
 
 Prims reverse the relationship:
 
-1. Knowledge is stored structured, validated, and evidence-backed.
-2. Agents and humans both treat the Prim as the source of truth.
-3. Interfaces and traditional documents are generated on demand.
+1. The store *is* the file.
+2. Agents and humans both treat that file as the source of truth.
+3. Interfaces and traditional documents are generated or operated on demand.
+4. OKF is one grammar. Prim is not OKF.
 
 Once this is understood, the line becomes obvious:
 

@@ -1,6 +1,6 @@
 # Prim Family Map
 
-Prim is the category. Additive OKF profiles are the domain grammars that make Prims real.
+Prim is the category: a file that stores information, and tools that interact with it. Some profiles use OKF as their grammar. They do not have to. Prim can evolve without being OKF.
 
 **Repository naming convention**
 
@@ -23,7 +23,7 @@ prim              Category / product identity
 prim-web          Public surface (views on demand)
                   https://github.com/eidos-agi/prim-web
 
-Profiles (additive OKF)
+Profiles (OKF-shaped unless noted)
 │
 ├── prim.emf      Human intent + durable memory
 ├── prim.orf      Research / investigation packs
@@ -34,7 +34,8 @@ Profiles (additive OKF)
 ├── prim.ocsf     Corporate structure, ownership, capital, governance
 ├── prim.obif     Brand identity (logo, color, type, voice, assets)
 ├── prim.osf      Open Session Format (movable session packs)
-└── prim.obf      (private / emerging)
+├── prim.obf      (private / emerging)
+└── prim.docket   Execution queue (not OKF — `.docket/` is the store)
 
 Base grammar + render
 │
@@ -52,8 +53,8 @@ Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 | Layer | Responsibility |
 |-------|----------------|
 | **prim** | Category name, positioning, shared properties, language, packaging |
-| **OKF** (via okflify and profile bases) | Document model, provenance, trust tiers, pack face conventions |
-| **prim.\*** profiles | Domain kinds, edges, validation gates, pack layouts |
+| **OKF** (via okflify and profile bases) | One pack grammar: face, provenance, trust. Optional. |
+| **prim.\*** profiles | Domain store and rules. May be OKF-shaped or not. |
 | **prim-web** / renderers | Generate views on demand; never become the source of truth |
 | **Validators** | Enforce profile rules; fail-closed where specified. Register on the category SDK. |
 | **Prim UIs** | View plugins keyed `profile/subtype`. How a Prim *opens*. Never the file. |
@@ -67,10 +68,10 @@ Prim Tools are category language, not a family of repos. Do not mint `prim.surfa
 
 ## Composition rules
 
-1. **Every Prim is OKF-compatible.** A renderer that understands only OKF can still display the pack (and ignore profile-specific keys).
-2. **Profiles are additive.** Declaring `profile: ocsf` (or orf, opf, obif, osf, …) adds domain structure; it does not remove OKF properties.
-3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF (`prim.ocsf`). Research stays in ORF (`prim.orf`). Brand stays in OBIF (`prim.obif`). Session state stays in OSF (`prim.osf`). Cross-references are preferred over forced unification.
-4. **Evidence and trust follow OKF.** Profiles may tighten requirements but do not invent a parallel trust model.
+1. **OKF-shaped prims stay OKF-compatible.** A renderer that understands only OKF can display those packs and ignore extra keys.
+2. **Not every Prim is OKF.** A profile may name another store (for example `.docket/`). That prim is still a prim.
+3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF. Research stays in ORF. Execution stays in the docket. Cross-references are preferred over forced unification.
+4. **Evidence and trust follow the profile.** OKF profiles use the OKF ladder. Other profiles do not inherit it by default.
 5. **Human intent stays in EMF** (`prim.emf`) where that distinction matters.
 
 ---
@@ -91,8 +92,8 @@ The goal is that **prim** is the default noun. Profile codes and `prim.*` repo n
 
 A new domain becomes part of the Prim family when:
 
-1. It is specified as an additive OKF profile with clear kinds, validation gates, and pack conventions.
-2. It respects the shared Prim properties (AI-native, evidence-first, durable, no fixed UX, human-readable).
+1. It names a store and how tools cite it (kinds, gates, layout — OKF or not).
+2. It respects the category split: the file stores; tools interact; no fixed UX required.
 3. Its canonical repo is named `prim.<shortname>` under `eidos-agi`.
 4. It is linked from this family map and from the Prim README.
 

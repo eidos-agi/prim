@@ -1,28 +1,29 @@
-# Prim — Category Specification (v0.3.0-draft)
+# Prim — Category Specification (v0.4.0-draft)
 
-**Prim is the category name for AI-native knowledge and memory packs.**
+**Prim is the category: a file that stores information, and tools that interact with it.**
 
 The category has two nouns: **Prims** and **Prim Tools**. A Prim is the file. A Prim Tool operates on it.
 
-This document defines what makes something a Prim, how Prim Tools relate to that file, how Prims relate to the OKF family, and the non-negotiable properties of the category.
+This document defines that split, how tools relate to the file, and how Prim relates to OKF. OKF is one grammar some prims use. It is not Prim.
 
-Domain-specific structure lives in the individual profile SPECs (ORF, OCSF, OPF, etc.). This SPEC defines the shared category contract.
+Domain-specific structure lives in profile SPECs (`prim.orf`, `prim.docket`, …). This SPEC is the shared category contract.
 
 ---
 
 ## 1. Definition
 
-A **Prim** is a self-contained, structured, evidence-backed pack of knowledge that:
+A **Prim** is a file (or directory of files) that stores information so both agents and humans can use the same store. A **Prim Tool** is how you interact with that file.
 
-1. Is designed so agents can read, validate, reason over, and act on it without translation layers.
-2. Serves as durable memory that can persist, be versioned, superseded, and shared across sessions and agents.
-3. Treats traditional application files (spreadsheets, documents, decks, notes) as optional projections rather than the primary store.
-4. Generates interfaces on demand rather than shipping a fixed UX.
-5. Remains human-inspectable.
+The file is the source of truth. Views and tools are not.
 
-In short:
+A Prim:
 
-> The Prim is the source of truth. Everything else is a view.
+1. Can be opened by agents and humans without scraping a presentation format.
+2. Outlives a single session.
+3. Has no shipped canonical UI. `ui` opens it; a Prim Tool operates on it.
+4. Stays human-inspectable.
+
+It does **not** have to be an OKF pack, carry claim hashes, or use a trust ladder. Those belong to profiles that need them.
 
 A **Prim Tool** is not a second kind of Prim. It cites a Prim and operates on it (SPEC §10).
 
@@ -30,62 +31,63 @@ A **Prim Tool** is not a second kind of Prim. It cites a Prim and operates on it
 
 ## 2. Relationship to OKF
 
-Prim is the **product identity and category**.
+Prim is the **category**. It can evolve without becoming OKF.
 
-OKF (Open Knowledge Format) and its additive profiles are the **underlying format family**.
+OKF (Open Knowledge Format) is **one** pack grammar. Many current `prim.*` profiles use it. New profiles may use another store — a `.docket/` tree, a session pack, something not invented yet — and still be Prims.
 
 | Layer | Role |
 |-------|------|
-| **Prim** | What people call it. The category. The brand. |
-| **OKF + profiles** | The grammar, validation model, pack layout, and domain schemas. |
-
-Every valid Prim is (or is composed of) one or more OKF packs using one or more profiles.
+| **Prim** | The category. File + tools. The brand. |
+| **Profile** | Domain store and rules (`prim.orf`, `prim.docket`, …). |
+| **OKF** | Optional grammar some profiles adopt (face, evidence, trust). |
 
 A Prim may be:
 
-- A single-profile pack (e.g. an ORF research prim, an OCSF corporate structure prim)
-- A composed pack that references or embeds multiple profiles
-- A higher-level index that points at a set of related Prims
+- An OKF-shaped pack (ORF, OCSF, OBIF, …)
+- A profile store that is not OKF (a docket directory is a Prim if its profile says so)
+- A composition that cites other prims
 
-The profile SPECs remain authoritative for their domains. Prim does not override them.
+The profile SPEC is authoritative for its store. Prim does not require OKF. The category SDK’s current `validateBase()` implements the OKF-shaped pack; that is an implementation, not the membership test.
 
 ---
 
 ## 3. Core properties (normative)
 
-These properties define the category. A pack that violates them is not a Prim in the intended sense.
+These properties define the category. Profiles may add stricter gates. They do not get to redefine Prim as OKF.
 
-### 3.1 AI-native
+### 3.1 Store and interact
 
-Agents must be able to open, validate, query, and reason over the pack using the declared profile rules without custom one-off parsers or brittle scraping of presentation formats.
+The file stores the information. A surface or connector cites it and does work. If you only have a script that happens to touch files, you do not yet have a Prim Tool.
 
-### 3.2 Evidence and trust are first-class
+### 3.2 AI-native
 
-Material claims carry provenance, trust tiers, and (where required) content hashes. The trust ladder follows OKF: `human:` > `job:` > `agent:`.
+Agents open and act on the store using the declared profile, not by scraping a deck or a sheet.
 
-Validation is fail-closed for hard rules defined by the active profile(s).
+### 3.3 Durable
 
-### 3.3 Durable memory
-
-A Prim is intended to outlive any single session or agent run. It supports versioning, supersession, and temporal reconstruction of state where the profile requires it.
+A Prim outlives a session. Versioning and supersession are profile rules, not a second category.
 
 ### 3.4 No fixed UX
 
-There is no canonical interface shipped with the Prim. Views (tables, graphs, narratives, brand boards, capitalization summaries, etc.) are generated on demand from the structure. The category primitive **`ui`** is how anything *opens* a Prim (`view_key = profile/subtype`). **Prim Tools** (SPEC §10) *operate on* a Prim. Neither becomes the source of truth.
+There is no canonical interface shipped with the Prim. The category primitive **`ui`** opens a Prim. **Prim Tools** (SPEC §10) operate on it. Neither becomes the file.
 
-### 3.5 Human-readable remains a feature
+### 3.5 Human-inspectable
 
-Prims must remain inspectable by people. Opacity is not a goal. Markdown + structured data (YAML frontmatter, JSON graph files, etc.) is the preferred surface.
+Opacity is not a goal. Markdown + structured data is fine. So is any other inspectable store the profile names.
 
-### 3.6 Additive and profile-based
+### 3.6 Additive profiles
 
-New domains extend the family through additive profiles rather than monolithic version bumps. Existing Prims continue to validate under their declared profiles.
+New domains become `prim.<name>`. They do not have to be OKF profiles. Existing prims keep their own grammar.
+
+### 3.7 Evidence, trust, fail-closed (profile, not category)
+
+When a profile’s domain is claims, it may require provenance, the OKF trust ladder (`human:` > `job:` > `agent:`), hashes, and fail-closed validation on its hard rules. A docket that stores tasks does not become “not a Prim” for lacking those. Fail-closed means: if that profile’s hard rule fails, reject — it is not the definition of Prim.
 
 ---
 
-## 4. Pack conventions (shared)
+## 4. OKF-shaped pack conventions
 
-Exact layout is defined per profile. Shared conventions across the Prim category:
+These conventions apply when a profile uses the OKF pack layout. They are not required of every Prim. Exact layout is always defined per profile.
 
 ```
 prim-pack/
@@ -134,7 +136,7 @@ A Prim exists in two complementary forms:
 
 ### 5.1 Canonical form — directory pack
 
-The working and source-of-truth form is a directory that follows the pack conventions above. This is what lives in git, on disk while editing, and what validators operate on directly.
+The working and source-of-truth form is the profile’s store on disk (git, edit, validate). For OKF-shaped profiles that is the pack directory in §4. For others it is whatever the profile names (for example `.docket/`).
 
 ### 5.2 Interchange forms — single-file containers
 
@@ -282,7 +284,7 @@ The TypeScript SDK names `ToolKind`, `ToolDirection`, and `createTool` so this v
 
 ## 11. Status
 
-**v0.3.0-draft** (category primitives + Prim Tools).
+**v0.4.0-draft** (Prim is not OKF; OKF is one grammar).
 
 This category SPEC will evolve as the family of profiles hardens and as real Prim usage surfaces additional shared requirements.
 
