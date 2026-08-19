@@ -33,6 +33,18 @@ The structured, validated, evidence-backed knowledge *is* the file. Interfaces a
 - **Human-readable** — still openable and understandable by people
 - **Generative interfaces** — no fixed UX; views are rendered on demand (json-render style)
 
+## Packaging
+
+| Form | Role |
+|------|------|
+| **Directory pack** | Canonical source of truth (git, editing, validation) |
+| **`.prim.zip`** | Primary interchange — “send me the prim” |
+| **`.prim.tar.gz`** | Allowed, Unix/agent-friendly |
+| **`.prim`** | Reserved branded container (zip-compatible) |
+
+A `.prim.zip` or `.prim` is simply a zip whose root is a valid Prim pack.  
+See [SPEC.md §5](./SPEC.md) for the full packaging rules.
+
 ## The Prim family
 
 Prim is the product identity and category name.

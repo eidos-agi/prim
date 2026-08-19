@@ -97,7 +97,42 @@ prim-pack/
 
 ---
 
-## 5. Generative interfaces
+## 5. Packaging and interchange forms
+
+A Prim exists in two complementary forms:
+
+### 5.1 Canonical form — directory pack
+
+The working and source-of-truth form is a directory that follows the pack conventions above. This is what lives in git, on disk while editing, and what validators operate on directly.
+
+### 5.2 Interchange forms — single-file containers
+
+For sharing (“send me the prim”), a Prim is packaged as a single archive whose root contains a valid Prim pack.
+
+| Extension | Status | Notes |
+|-----------|--------|-------|
+| **`.prim.zip`** | Primary interchange | Required to support. Universal compatibility. |
+| **`.prim.tar.gz`** | Allowed | Preferred on Unix/agent/server workflows. |
+| **`.prim`** | Reserved | Branded container; treated as zip-compatible under the hood. |
+| `.prim.7z` | Optional | Allowed but not required. |
+| `.prim.rar` | Not part of the format | Proprietary; do not use as a standard interchange. |
+
+**Rules**
+
+1. A `.prim.zip` (or `.prim`) MUST be a zip archive whose root contains a valid Prim pack (`index.md` present, profile conventions satisfied).
+2. A `.prim.tar.gz` MUST be a gzip-compressed tar archive with the same root contents requirement.
+3. The archive root is the pack root — do not wrap an extra top-level folder unless that folder *is* the pack.
+4. Tools that “open a prim” SHOULD accept the directory form and the primary interchange forms (`.prim.zip`, `.prim`, `.prim.tar.gz`).
+5. The directory form remains the canonical source of truth for version control and editing. Archives are interchange and distribution.
+
+**Everyday language remains the same:**
+
+> “Send me the prim.”  
+> → attach `ford-group.prim.zip` or `ford-group.prim`
+
+---
+
+## 6. Generative interfaces
 
 Prims deliberately separate storage from presentation.
 
@@ -109,7 +144,7 @@ This is the same separation of concerns that makes “send me the prim” viable
 
 ---
 
-## 6. Language conventions
+## 7. Language conventions
 
 Preferred everyday language:
 
@@ -124,7 +159,7 @@ Profile names (ORF, OCSF, etc.) remain useful in technical and agent contexts. P
 
 ---
 
-## 7. What Prim is not
+## 8. What Prim is not
 
 - Not a single monolithic schema that replaces all profiles
 - Not a replacement for pure data formats (Parquet, images, audio, etc.)
@@ -135,7 +170,7 @@ Prim is the category for knowledge and memory that benefits from being structure
 
 ---
 
-## 8. Status
+## 9. Status
 
 **v0.1.0-draft.**
 
