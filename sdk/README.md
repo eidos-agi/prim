@@ -1,33 +1,33 @@
-# Prim SDKs
+# Prim SDK
 
-Reference implementations of the **category-level** Prim conventions: open a pack, read its face, check the shared gates, write an interchange archive.
+Reference implementation of the **category-level** Prim conventions: open a pack, read its face, check the shared gates, write an interchange archive.
 
-Profile rules (OCSF, OMF, OPAF, OSF, …) live in their own repositories and build on top of these. Nothing profile-specific belongs here.
+The kernel is TypeScript. Profiles (OCSF, OMF, OPAF, OBF, …) live in their own repositories and register a validator + view on top. Nothing profile-specific belongs here.
 
 | Language | Path | Status |
 |---|---|---|
-| Python | [`python/`](python) | v0.1.0 — stdlib only |
+| TypeScript | [`typescript/`](typescript) | **kernel** — v0.2.0, no npm runtime deps |
 
 ## Why this exists
 
 Every profile repo was re-implementing the same three things: frontmatter parsing, pack loading, and archive handling. Three copies of a bug is three fixes.
 
-## Python
+## TypeScript
 
-```python
-from prim import open_prim
+```ts
+import { openPrim } from "@eidos-agi/prim";
 
-p = open_prim("ford-group.prim.zip")   # dir, .prim.zip, .prim, or .prim.tar.gz
-p.profile                              # 'ocsf'
-p.face["okf_version"]                  # '0.2'
-p.validate_base()                      # [] when the SPEC §4 gates pass
-p.write("ford-group.prim.tar.gz")      # SPEC §5.2 interchange
+const p = openPrim("ford-group.prim.zip");
+p.profile; // 'ocsf'
+p.viewKey; // 'ocsf/entity_structure'
+p.authorityPaths();
+p.trust();
+p.validate();
+p.write("ford-group.prim.tar.gz");
 ```
-
-Run the check:
 
 ```bash
-python3 sdk/python/tests/test_pack.py
+node --experimental-strip-types sdk/typescript/tests/pack.test.ts
+node --experimental-strip-types sdk/typescript/src/cli.ts open <pack>
+node --experimental-strip-types sdk/typescript/src/cli.ts validate <pack>
 ```
-
-No dependencies, by design. A validator you cannot run is not a gate.

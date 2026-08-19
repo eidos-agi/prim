@@ -16,7 +16,7 @@ Prims reverse the relationship:
 ## Design commitments
 
 ### 1. Primitive, not product-specific
-A Prim is a fundamental building block, not a feature of any single application.
+A Prim is a fundamental building block, not a feature of any single application. Prim itself has a closed set of primitives (file, face, authority, constraint, log, validator, ui, compose, trust). Profiles add domains. They do not invent a second category.
 
 ### 2. AI-native by default
 Agents must be able to open, validate, query, reason over, and update a Prim without custom parsers or brittle scraping.

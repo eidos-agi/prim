@@ -97,6 +97,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |
 | [BRAND.md](./BRAND.md) | Identity, language, and positioning |
+| [sdk/typescript/](./sdk/typescript) | Category SDK (open, face, validate, write) |
 | [examples/](./examples/) | Illustrative packs and references |
 
 ## Status

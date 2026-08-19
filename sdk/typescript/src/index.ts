@@ -1,0 +1,39 @@
+/** Prim SDK — TypeScript. The primitives of Prim itself. */
+
+export { parse, split, type Face, type FaceMap, type FaceValue } from "./face.ts";
+export {
+  BASE_REQUIRED,
+  Pack,
+  PrimError,
+  TAR_SUFFIXES,
+  ZIP_SUFFIXES,
+  openPrim,
+} from "./pack.ts";
+export {
+  CONSTRAINT_FACE_KEYS,
+  IDENTITY_FACE_KEYS,
+  LOG_FACE_KEYS,
+  PRIMITIVE_NAMES,
+  PRIMITIVES,
+  PROJECTION_FACE_KEYS,
+  primitive,
+  type Primitive,
+} from "./primitives.ts";
+export { TRUST_ORDER, trustTier, type TrustTier } from "./trust.ts";
+export {
+  FACE_VIEW,
+  createView,
+  registerView,
+  resolveView,
+  viewKey,
+  type View,
+} from "./ui.ts";
+export {
+  createValidator,
+  registerValidator,
+  validate,
+  validators,
+  type Validator,
+} from "./validator.ts";
+
+export const VERSION = "0.2.0";

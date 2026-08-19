@@ -87,13 +87,40 @@ Exact layout is defined per profile. Shared conventions across the Prim category
 prim-pack/
   index.md          # required face (title, profile, version, status)
   log.md            # append-only timeline (strongly recommended)
-  ...               # profile-specific semantic files (structure.json, findings/, etc.)
+  ...               # profile-specific semantic files (structure.json, book.json, etc.)
   evidence/         # native proof artifacts when required
 ```
 
 - `index.md` is the human- and agent-facing entry point.
-- Semantic authority for structured claims lives in the profile’s designated files (e.g. `structure.json` for OCSF), not in folder names or free-form prose alone.
+- Semantic authority for structured claims lives in the profile’s designated files (e.g. `structure.json` for OCSF, `book.json` for OBF), not in folder names or free-form prose alone.
 - Evidence for material claims lives under `evidence/` or equivalent and is referenced with content hashes when the profile requires it.
+
+### 4.1 Face path pointers (additive)
+
+If a **top-level** face value (or item in a top-level list) looks like a relative pack path — a string with a file extension and no `://` / `:` scheme — that path MUST resolve to a file under the pack root.
+
+This is how the category SDK checks `book: book.json` or `log: log.md` without learning profile names. Profile ids (`obf:ns:slug`) and trust marks (`human:`, `agent:`) are not paths.
+
+### 4.2 Compose, don't merge (additive)
+
+Optional face key `compose:` is a list of related prims:
+
+- a relative directory that contains `index.md` (another pack beside or inside this one), or
+- a prim id (`orf:…`, `emf:…`) which is a citation, not a file check.
+
+A composed prim MUST NOT copy the neighbor’s claims into this pack’s authority file. Cite it. Profiles add their own constraint layers (e.g. OBF `bible/`) as **constraints on** the authority file, not a second authority.
+
+### 4.3 `log.md`
+
+Strongly recommended. Append-only. Preferred line shape:
+
+```text
+# Log
+
+- 2026-08-19 — what changed
+```
+
+Absence is a category warning, not a profile-specific invention.
 
 ---
 
@@ -170,9 +197,35 @@ Prim is the category for knowledge and memory that benefits from being structure
 
 ---
 
-## 9. Status
+## 9. Category primitives
 
-**v0.1.0-draft.**
+These are the primitives of Prim itself. Profiles add domain grammar. They do not invent a parallel set.
+
+A tool that “opens a prim” uses these — not a book app, not a slide viewer, not a profile-specific product.
+
+| Primitive | What it is | What it is not |
+|-----------|------------|----------------|
+| **file** | The Prim. Directory pack or `.prim.zip` / `.prim` / `.prim.tar.gz`. | A PDF, xlsx, or HTML export |
+| **face** | `index.md`. Identity: `profile`, `type`, optional `subtype`. How anything opens a Prim without knowing the domain. | The story, the graph, the claims |
+| **authority** | The profile’s sole semantic file(s), pointed from the face (`book:`, `structure:`, …). | A projection, a bible, a render |
+| **constraint** | `bible/`, `evidence/`, and other gates on authority. | A second authority |
+| **log** | Append-only production memory (`log.md`). | A changelog written into authority |
+| **validator** | Category gates (`validate_base`) plus a registered profile validator. Fail-closed. | A linter you run if you feel like it |
+| **ui** | A view plugin keyed `profile/subtype` (or `profile/type`). Generated on demand. | A fixed application shipped with the file |
+| **compose** | Cite another Prim. Do not copy its claims into this authority. | A merge, a fork-in-place |
+| **trust** | OKF ladder on claims: `human:` > `job:` > `agent:`. | A confidence score |
+
+**UI key.** `view_key = profile + "/" + (subtype or type)`. Example: `obf/picture-book`. A Prim UI resolves that key to a plugin. Unknown keys fall back to a face-only view.
+
+**Validator stack.** Always run category gates. Then run the validator registered for `face.profile`, if any. Profile validators MUST NOT re-implement archive handling or face parsing.
+
+The TypeScript SDK (`sdk/typescript`) names these primitives so agents and humans share one vocabulary.
+
+---
+
+## 10. Status
+
+**v0.2.0-draft** (category primitives + face path pointers + compose).
 
 This category SPEC will evolve as the family of profiles hardens and as real Prim usage surfaces additional shared requirements.
 

@@ -55,7 +55,10 @@ Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 | **OKF** (via okflify and profile bases) | Document model, provenance, trust tiers, pack face conventions |
 | **prim.\*** profiles | Domain kinds, edges, validation gates, pack layouts |
 | **prim-web** / renderers | Generate views on demand; never become the source of truth |
-| **Validators** | Enforce profile rules; fail-closed where specified |
+| **Validators** | Enforce profile rules; fail-closed where specified. Register on the category SDK. |
+| **Prim UIs** | View plugins keyed `profile/subtype`. Generated on demand. Never the file. |
+
+Category primitives (file, face, authority, constraint, log, validator, ui, compose, trust) live in the TypeScript Prim SDK (`sdk/typescript`). See SPEC §9.
 
 ---
 
