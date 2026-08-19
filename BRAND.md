@@ -14,6 +14,14 @@ Identity, language, and positioning for the Prim category.
 
 Pronunciation: /prɪm/ (same as the English adjective).
 
+### Repository naming
+
+| Pattern | Use |
+|---------|-----|
+| `prim` | Category home |
+| `prim.<profile>` | Domain profiles (`prim.ocsf`, `prim.obif`, `prim.osf`, …) |
+| `prim-web` | Public web surface |
+
 ---
 
 ## One-line positioning
@@ -65,7 +73,7 @@ Avoid: hype, “revolutionary”, consumer-app cheerfulness, vague “AI platfor
 - “The prim is the source of truth.”
 - “Generate a view from the prim.”
 - “Latest prim”
-- “Corporate prim”, “research prim” (when domain helps)
+- “Corporate prim”, “brand prim”, `prim.ocsf`, `prim.obif` (when domain helps)
 
 ### Avoid as primary language
 
@@ -92,7 +100,7 @@ Concrete logo and asset work can follow once the verbal identity is stable. This
 ## Relationship to Eidos
 
 - **Prim** = category and product identity
-- **Eidos** = the organization developing the open format family (OKF profiles) and tools that make Prims reliable and interoperable
+- **Eidos** = the organization developing the open format family (OKF profiles under `prim.*`) and tools that make Prims reliable and interoperable
 
 Prim should be able to stand as a clear concept even when the underlying profile names are not mentioned.
 

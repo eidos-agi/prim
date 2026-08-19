@@ -65,7 +65,7 @@ Once this is understood, the sentence becomes obvious:
 
 ---
 
-## 4. Relationship to the OKF family
+## 4. Relationship to the family
 
 **Prim** is the product identity and category name.
 
@@ -76,18 +76,27 @@ Once this is understood, the sentence becomes obvious:
 | **Prim** | What people call it. The category. The brand. |
 | **OKF + profiles** | The format rules, validation model, pack layout, and domain schemas. |
 
-Current profiles under the Prim umbrella include:
+### Repository naming
 
-- **OKF** — base knowledge + trust model
-- **EMF** — human intent + durable memory
-- **ORF** — research / investigation packs
-- **OPF** — product graphs
-- **ODFW** — spreadsheet → bronze proof packages
-- **OPFF** — personal finance packs
-- **OMF** — meeting occurrences
-- **OCSF** — corporate structure, ownership, capital, governance
+| Pattern | Role |
+|---------|------|
+| `prim` | Category home |
+| `prim.<profile>` | Domain profile repo |
+| `prim-web` | Public web surface |
 
-A Prim can be a single-profile pack (e.g., “the corporate prim”) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
+Current profiles (non-exhaustive):
+
+- **prim.emf** — human intent + durable memory
+- **prim.orf** — research / investigation packs
+- **prim.opf** — product graphs
+- **prim.odwf** — spreadsheet → bronze proof packages
+- **prim.opff** — personal finance packs
+- **prim.omf** — meeting occurrences
+- **prim.ocsf** — corporate structure, ownership, capital, governance
+- **prim.obif** — brand & identity
+- **prim.osf** — open session format (movable session packs)
+
+A Prim can be a single-profile pack (e.g., “the corporate prim” / `prim.ocsf`) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
 
 See [FAMILY.md](./FAMILY.md) for the full map.
 
@@ -129,7 +138,7 @@ Prims reverse that relationship: structure first, views later.
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
 - “Generate a view from the prim.”
-- “Corporate prim,” “research prim” (when the domain helps)
+- “Corporate prim,” “brand prim,” `prim.ocsf`, `prim.obif` (when the domain helps)
 
 **Avoid as primary language**
 
@@ -176,7 +185,7 @@ If the explanation requires a long technical preamble, it has not yet landed.
 
 **Technical one-liner**
 
-“Prim is the category name for OKF-profile packs that are AI-native, evidence-first, durable memory, and deliberately free of fixed UX.”
+“Prim is the category name for OKF-profile packs that are AI-native, evidence-first, durable memory, and deliberately free of fixed UX. Profile repos are named `prim.<name>`.”
 
 ---
 
@@ -204,10 +213,11 @@ When that happens, the category has landed.
 
 - **Prim** = category and product identity
 - **Eidos AGI** = the organization developing the open OKF-family formats and tools that make Prims reliable
+- Repo convention: `prim` + `prim.<profile>` + `prim-web`
 - Current status: early (v0.1.0-draft category specification)
 - Home: https://github.com/eidos-agi/prim
 
-Domain profiles remain in their own repositories. Prim is the name of the category they all belong to.
+Domain profiles remain in their own `prim.*` repositories. Prim is the name of the category they all belong to.
 
 ---
 

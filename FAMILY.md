@@ -1,45 +1,49 @@
 # Prim Family Map
 
-Prim is the category. The OKF additive profiles are the domain grammars that make Prims real.
+Prim is the category. Additive OKF profiles are the domain grammars that make Prims real.
 
-This document maps the current family and how the pieces compose.
+**Repository naming convention**
+
+| Pattern | Role |
+|---------|------|
+| `prim` | Category home (this repo) |
+| `prim.<profile>` | Domain profile (spec, validator, examples) |
+| `prim-web` | Public web surface / generated views |
+
+Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`.
 
 ---
 
 ## Family at a glance
 
 ```
-Prim  (category / product identity)
+prim              Category / product identity
+                  https://github.com/eidos-agi/prim
+
+prim-web          Public surface (views on demand)
+                  https://github.com/eidos-agi/prim-web
+
+Profiles (additive OKF)
 │
-├── OKF          Base knowledge + trust model + pack conventions
-│                 https://github.com/eidos-agi/okflify
+├── prim.emf      Human intent + durable memory
+├── prim.orf      Research / investigation packs
+├── prim.opf      Product graph
+├── prim.odwf     Spreadsheet → bronze proof packages
+├── prim.opff     Personal / household finance packs
+├── prim.omf      Meeting occurrences
+├── prim.ocsf     Corporate structure, ownership, capital, governance
+├── prim.obif     Brand identity (logo, color, type, voice, assets)
+├── prim.osf      Open Session Format (movable session packs)
+└── prim.obf      (private / emerging)
+
+Base grammar + render
 │
-├── EMF          Human intent + durable personal/agent memory
-│                 https://github.com/eidos-agi/emf
-│
-├── ORF          Research / investigation packs
-│                 https://github.com/eidos-agi/orf
-│
-├── OPF          Product graph
-│                 https://github.com/eidos-agi/opf
-│
-├── ODFW         Spreadsheet → bronze proof packages
-│                 https://github.com/eidos-agi/odwf
-│
-├── OPFF         Personal / household finance packs
-│                 https://github.com/eidos-agi/opff
-│
-├── OMF          Meeting occurrences (invite / record / outcome)
-│                 https://github.com/eidos-agi/omf
-│
-├── OCSF         Corporate structure, ownership, capital, governance
-│                 https://github.com/eidos-agi/ocsf
-│
-└── OBIF         Brand identity (logo, color, type, voice, assets, governance)
-                  https://github.com/eidos-agi/obif
+└── okflify       OKF pack → HTML / base knowledge + trust model
+                  https://github.com/eidos-agi/okflify
 ```
 
-Future profiles will appear as additional rows in this map without breaking existing Prims.
+Profile short names (EMF, ORF, OCSF, …) remain valid in technical and agent contexts.  
+Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 
 ---
 
@@ -47,10 +51,10 @@ Future profiles will appear as additional rows in this map without breaking exis
 
 | Layer | Responsibility |
 |-------|----------------|
-| **Prim** | Category name, positioning, shared properties, language |
-| **OKF** | Base document model, provenance, trust tiers, pack face conventions |
-| **Profiles** | Domain kinds, edges, validation gates, pack layouts |
-| **Renderers** (okflify, future Prim viewers, brand-standards views) | Generate views on demand; never become the source of truth |
+| **prim** | Category name, positioning, shared properties, language, packaging |
+| **OKF** (via okflify and profile bases) | Document model, provenance, trust tiers, pack face conventions |
+| **prim.\*** profiles | Domain kinds, edges, validation gates, pack layouts |
+| **prim-web** / renderers | Generate views on demand; never become the source of truth |
 | **Validators** | Enforce profile rules; fail-closed where specified |
 
 ---
@@ -58,10 +62,10 @@ Future profiles will appear as additional rows in this map without breaking exis
 ## Composition rules
 
 1. **Every Prim is OKF-compatible.** A renderer that understands only OKF can still display the pack (and ignore profile-specific keys).
-2. **Profiles are additive.** Declaring `profile: ocsf` (or orf, opf, obif, …) adds domain structure; it does not remove OKF properties.
-3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF. Research stays in ORF. Product surfaces stay in OPF. Brand identity stays in OBIF. Cross-references are preferred over forced unification.
-4. **Evidence and trust follow OKF.** Profiles may tighten requirements (e.g. mandatory hashes for material ownership or locked logo claims) but do not invent a parallel trust model.
-5. **Human intent stays in EMF** where that distinction matters. Profiles that need intent link to or compose with EMF rather than redefining it.
+2. **Profiles are additive.** Declaring `profile: ocsf` (or orf, opf, obif, osf, …) adds domain structure; it does not remove OKF properties.
+3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF (`prim.ocsf`). Research stays in ORF (`prim.orf`). Brand stays in OBIF (`prim.obif`). Session state stays in OSF (`prim.osf`). Cross-references are preferred over forced unification.
+4. **Evidence and trust follow OKF.** Profiles may tighten requirements but do not invent a parallel trust model.
+5. **Human intent stays in EMF** (`prim.emf`) where that distinction matters.
 
 ---
 
@@ -70,10 +74,10 @@ Future profiles will appear as additional rows in this map without breaking exis
 | Context | Preferred language |
 |---------|-------------------|
 | Everyday / human | “the prim”, “send me the prim”, “latest prim” |
-| Technical / agent | “OCSF pack”, “OBIF prim”, “OKF profile: obif” |
-| Mixed | “the corporate prim (OCSF)”, “the brand prim (OBIF)”, “the research prim” |
+| Profile precision | “the brand prim”, “the corporate prim”, “prim.obif”, “prim.ocsf” |
+| Technical / agent | `profile: obif`, `profile: ocsf`, pack path / repo name |
 
-The goal is that “prim” becomes the default noun, with the profile name available when precision is needed.
+The goal is that **prim** is the default noun. Profile codes and `prim.*` repo names appear when precision is needed.
 
 ---
 
@@ -83,7 +87,8 @@ A new domain becomes part of the Prim family when:
 
 1. It is specified as an additive OKF profile with clear kinds, validation gates, and pack conventions.
 2. It respects the shared Prim properties (AI-native, evidence-first, durable, no fixed UX, human-readable).
-3. It is linked from this family map and from the Prim README.
+3. Its canonical repo is named `prim.<shortname>` under `eidos-agi`.
+4. It is linked from this family map and from the Prim README.
 
 The Prim category SPEC does not need to change for every new profile. The family map does.
 
@@ -91,7 +96,7 @@ The Prim category SPEC does not need to change for every new profile. The family
 
 ## Status
 
-This map reflects the publicly visible Eidos OKF-family repositories as of the current draft. It will be updated as profiles mature and new ones are added.
+This map reflects the `prim` / `prim.*` repositories in the Eidos org as of the current draft. It will be updated as profiles mature and new ones are added.
 
 ---
 
