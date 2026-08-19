@@ -33,7 +33,7 @@ A **Prim Tool** is not a second kind of Prim. It cites a Prim and operates on it
 
 Prim is the **category**. It can evolve without becoming OKF.
 
-OKF (Open Knowledge Format) is **one** pack grammar. Many current `prim.*` profiles use it. New profiles may use another store — a `.docket/` tree, a session pack, something not invented yet — and still be Prims.
+OKF (Open Knowledge Format) is **one** pack grammar. Many current `prim.*` profiles use it. New profiles may use another store — a docket-prim pack, a session pack, something not invented yet — and still be Prims.
 
 | Layer | Role |
 |-------|------|
@@ -44,7 +44,7 @@ OKF (Open Knowledge Format) is **one** pack grammar. Many current `prim.*` profi
 A Prim may be:
 
 - An OKF-shaped pack (ORF, OCSF, OBIF, …)
-- A profile store that is not OKF (a docket directory is a Prim if its profile says so)
+- A profile store that is not OKF (`docket-prim` is a Prim; `docket-md` is markdown)
 - A composition that cites other prims
 
 The profile SPEC is authoritative for its store. Prim does not require OKF. The category SDK’s current `validateBase()` implements the OKF-shaped pack; that is an implementation, not the membership test.
@@ -136,7 +136,7 @@ A Prim exists in two complementary forms:
 
 ### 5.1 Canonical form — directory pack
 
-The working and source-of-truth form is the profile’s store on disk (git, edit, validate). For OKF-shaped profiles that is the pack directory in §4. For others it is whatever the profile names (for example `.docket/`).
+The working and source-of-truth form is the profile’s store on disk (git, edit, validate). For OKF-shaped profiles that is the pack directory in §4. For others it is whatever the profile names (for example a `docket-prim` pack).
 
 ### 5.2 Interchange forms — single-file containers
 
@@ -275,16 +275,36 @@ An app may host a surface tool (example: Cerebro `/print/prim` drawing `obf/pict
 ### 10.4 Discipline
 
 - Cite the Prim. Do not copy its claims into the tool.
-- Do not grow a registry of forges for every pairing. Prove one real surface tool, then one real connector, before expanding.
+- Do not grow a registry of forges for every pairing. The first real surface tool is **`docket-prim`** (`prim.docket`): kind surface, direction talk, cites a docket prim. Prove a connector next, before expanding.
 - `ui` stays how anything *opens* a Prim. Tools implement surface or connector. They are not a third face or trust model.
 
 The TypeScript SDK names `ToolKind`, `ToolDirection`, and `createTool` so this vocabulary stays shared. That is category language, not a surface SDK and not a connector runtime.
 
 ---
 
-## 11. Status
+## 11. Registry
 
-**v0.4.0-draft** (Prim is not OKF; OKF is one grammar).
+The category keeps one registry of **types** and **tools**. It lives at [`registry/registry.json`](./registry/registry.json). FAMILY.md is a sketch. The registry is the list.
+
+A **type** is a kind of Prim (`docket`, `orf`, …). It names a store. It is not a tool.
+
+A **tool** is a Prim Tool. It must be `surface` or `connector`, name one direction, and **cite a registered type**. It is not a type and not a pack.
+
+```bash
+prim registry
+prim registry types
+prim registry tools
+prim registry type docket
+prim registry tool docket-prim
+```
+
+Do not mint `prim.surface` or `prim.connector` as types. Those are kinds of tools.
+
+---
+
+## 12. Status
+
+**v0.4.0-draft** (Prim is not OKF; registry of types and tools).
 
 This category SPEC will evolve as the family of profiles hardens and as real Prim usage surfaces additional shared requirements.
 

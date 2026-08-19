@@ -2,6 +2,8 @@
 
 Prim is the category: a file that stores information, and tools that interact with it. Some profiles use OKF as their grammar. They do not have to. Prim can evolve without being OKF.
 
+The live list of **types** and **tools** is [`registry/registry.json`](./registry/registry.json). This map is a sketch. `prim registry` prints the catalog.
+
 **Repository naming convention**
 
 | Pattern | Role |
@@ -35,7 +37,7 @@ Profiles (OKF-shaped unless noted)
 ├── prim.obif     Brand identity (logo, color, type, voice, assets)
 ├── prim.osf      Open Session Format (movable session packs)
 ├── prim.obf      (private / emerging)
-└── prim.docket   Execution queue (not OKF — `.docket/` is the store)
+└── prim.docket   Execution prim + first Prim Tool (`docket-prim`, surface / talk)
 
 Base grammar + render
 │
@@ -69,7 +71,7 @@ Prim Tools are category language, not a family of repos. Do not mint `prim.surfa
 ## Composition rules
 
 1. **OKF-shaped prims stay OKF-compatible.** A renderer that understands only OKF can display those packs and ignore extra keys.
-2. **Not every Prim is OKF.** A profile may name another store (for example `.docket/`). That prim is still a prim.
+2. **Not every Prim is OKF.** A profile may name another store. `docket-md` stays markdown. `docket-prim` (`prim.docket`) is the new-format execution prim.
 3. **Profiles do not merge domains by default.** Corporate structure stays in OCSF. Research stays in ORF. Execution stays in the docket. Cross-references are preferred over forced unification.
 4. **Evidence and trust follow the profile.** OKF profiles use the OKF ladder. Other profiles do not inherit it by default.
 5. **Human intent stays in EMF** (`prim.emf`) where that distinction matters.

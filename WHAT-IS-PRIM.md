@@ -99,7 +99,7 @@ Current profiles (non-exhaustive):
 - **prim.ocsf** — corporate structure, ownership, capital, governance
 - **prim.obif** — brand & identity
 - **prim.osf** — open session format (movable session packs)
-- **prim.docket** — execution queue (`.docket/` store; not OKF)
+- **prim.docket** — execution prim; first Prim Tool is `docket-prim` (surface / talk)
 
 A Prim can be a single-profile pack (e.g., “the corporate prim” / `prim.ocsf`) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
 

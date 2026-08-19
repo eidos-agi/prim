@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "types": [
+    {
+      "name": "emf",
+      "repo": "eidos-agi/prim.emf",
+      "description": "Human intent + durable memory",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "orf",
+      "repo": "eidos-agi/prim.orf",
+      "description": "Research / investigation",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "opf",
+      "repo": "eidos-agi/prim.opf",
+      "description": "Product graph",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "odwf",
+      "repo": "eidos-agi/prim.odwf",
+      "description": "Spreadsheet → bronze proof",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "opff",
+      "repo": "eidos-agi/prim.opff",
+      "description": "Personal / household finance",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "omf",
+      "repo": "eidos-agi/prim.omf",
+      "description": "Meeting occurrences",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "ocsf",
+      "repo": "eidos-agi/prim.ocsf",
+      "description": "Corporate structure, ownership, capital, governance",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "obif",
+      "repo": "eidos-agi/prim.obif",
+      "description": "Brand identity",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "osf",
+      "repo": "eidos-agi/prim.osf",
+      "description": "Open Session Format",
+      "okf": true,
+      "status": "active"
+    },
+    {
+      "name": "obf",
+      "repo": "eidos-agi/prim.obf",
+      "description": "Private / emerging",
+      "okf": true,
+      "status": "private"
+    },
+    {
+      "name": "docket",
+      "repo": "eidos-agi/prim.docket",
+      "description": "Execution queue (docket-prim format, not markdown)",
+      "okf": false,
+      "status": "active"
+    }
+  ],
+  "tools": [
+    {
+      "name": "docket-prim",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "docket",
+      "bin": "docket-prim",
+      "repo": "eidos-agi/prim.docket"
+    }
+  ]
+}

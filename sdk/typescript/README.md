@@ -22,6 +22,7 @@ p.write("ford-group.prim.tar.gz");
 ```bash
 node --experimental-strip-types sdk/typescript/src/cli.ts open <pack>
 node --experimental-strip-types sdk/typescript/src/cli.ts validate <pack>
+node --experimental-strip-types sdk/typescript/src/cli.ts registry
 node --experimental-strip-types sdk/typescript/tests/pack.test.ts
 ```
 
@@ -38,5 +39,6 @@ node --experimental-strip-types sdk/typescript/tests/pack.test.ts
 | `registerValidator` / `validate` | Profile validators plug in here |
 | `PRIMITIVES` / `primitive(name)` | The nine category primitives |
 | `createTool` / `TOOL_KINDS` | Prim Tools: `surface` or `connector`; `emit` / `talk` / `receive`. Cite a Prim. Not a tenth primitive. |
+| `listTypes` / `listTools` / `registerType` / `registerTool` | Category registry. Types are prim kinds. Tools cite a type. |
 
 `validateBase()` checks `okf_version` / `profile` / `type`, recommends `log.md`, resolves face path pointers, checks `compose:` targets, and rejects secret-shaped strings.

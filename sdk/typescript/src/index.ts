@@ -47,5 +47,20 @@ export {
   validators,
   type Validator,
 } from "./validator.ts";
+export {
+  getTool,
+  getType,
+  listTools,
+  listTypes,
+  loadRegistry,
+  registerTool,
+  registerType,
+  registry,
+  resetRegistry,
+  type PrimType,
+  type RegisteredTool,
+  type Registry,
+  type TypeStatus,
+} from "./registry.ts";
 
-export const VERSION = "0.3.0";
+export const VERSION = "0.4.0";

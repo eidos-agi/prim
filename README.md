@@ -78,7 +78,7 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | [prim.ocsf](https://github.com/eidos-agi/prim.ocsf) | Corporate structure & capital |
 | [prim.obif](https://github.com/eidos-agi/prim.obif) | Brand & identity |
 | [prim.osf](https://github.com/eidos-agi/prim.osf) | Open Session Format |
-| [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution queue (not OKF) |
+| [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution prim + first Prim Tool (`docket-prim`, surface / talk) |
 
 OKF provides the grammar ([okflify](https://github.com/eidos-agi/okflify)).  
 **Prim** is what people call the thing.
@@ -105,15 +105,14 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 | [INTENTION.md](./INTENTION.md) | North-star design commitments |
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim; Prim Tools in §10) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |
+| [registry/registry.json](./registry/registry.json) | **Registry** — Prim types and Prim Tools |
 | [BRAND.md](./BRAND.md) | Identity, language, and positioning |
 | [sdk/typescript/](./sdk/typescript) | Category SDK (open, face, validate, write) |
 | [examples/](./examples/) | Illustrative packs and references |
 
 ## Status
 
-Early. This repository is the home for the Prim identity, intention, category specification, and family map.
-
-Domain profiles live in `prim.<name>` repositories and remain additive OKF profiles. Prim is the name of the category they all belong to.
+Early. Types and tools are listed in [`registry/registry.json`](./registry/registry.json). `prim registry` prints them. Domain profiles live in `prim.<name>` repositories. They do not have to be OKF.
 
 ## License
 

@@ -34,7 +34,7 @@ There is no canonical interface. `ui` is how anything opens a Prim. A Prim Tool 
 Prims must still be inspectable and understandable by people. Opacity is not a goal.
 
 ### 7. Additive profiles, not one format
-New domains become `prim.<name>`. Some of those profiles will be OKF packs. Some will not (a docket is a Prim). Prim does not freeze itself to OKF.
+New domains become `prim.<name>`. Some of those profiles will be OKF packs. Some will not (`docket-prim` is a Prim; `docket-md` stays markdown). Prim does not freeze itself to OKF.
 
 ## What success looks like
 
