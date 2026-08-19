@@ -35,6 +35,7 @@ This repo keeps the category-level illustration only.
 Examples should reinforce:
 
 - The Prim is the source of truth
-- Views are generated or projected
+- Views are generated or projected (`ui` opens; a Prim Tool operates)
 - Evidence and structure are first-class
 - Humans and agents can both inspect the same pack
+- A print host or bake job cites the Prim; it is not itself a Prim

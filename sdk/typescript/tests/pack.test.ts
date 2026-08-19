@@ -8,6 +8,10 @@ import {
   FACE_VIEW,
   PRIMITIVE_NAMES,
   PrimError,
+  TOOL_DIRECTIONS,
+  TOOL_KINDS,
+  counterpartOf,
+  createTool,
   createValidator,
   createView,
   openPrim,
@@ -134,6 +138,37 @@ assert.deepEqual(PRIMITIVE_NAMES, [
   "trust",
 ]);
 assert.ok(primitive("ui").notThis.startsWith("A fixed application"));
+assert.ok(!PRIMITIVE_NAMES.includes("tool"));
+assert.ok(!PRIMITIVE_NAMES.includes("surface"));
+assert.ok(!PRIMITIVE_NAMES.includes("connector"));
+assert.deepEqual([...TOOL_KINDS], ["surface", "connector"]);
+assert.deepEqual([...TOOL_DIRECTIONS], ["emit", "talk", "receive"]);
+assert.equal(counterpartOf("surface"), "human");
+assert.equal(counterpartOf("connector"), "system");
+const surface = createTool({
+  name: "cerebro-print",
+  kind: "surface",
+  direction: "emit",
+  cites: "obf:metrics-gold-fairy-tale",
+});
+assert.equal(surface.kind, "surface");
+assert.equal(counterpartOf(surface.kind), "human");
+assert.throws(() =>
+  createTool({
+    name: "not-a-tool",
+    kind: "script" as "surface",
+    direction: "emit",
+    cites: "obf:example",
+  }),
+);
+assert.throws(() =>
+  createTool({
+    name: "orphan",
+    kind: "surface",
+    direction: "emit",
+    cites: "",
+  }),
+);
 assert.equal(viewKey({ profile: "obf", subtype: "picture-book", type: "Book" }), "obf/picture-book");
 assert.equal(resolveView({ profile: "obf", subtype: "picture-book" }), FACE_VIEW);
 assert.equal(p.view().key, "okf/face");
@@ -183,5 +218,5 @@ mkdirSync(empty);
 assert.throws(() => openPrim(empty), PrimError);
 
 process.stdout.write(
-  "ok — face parse, primitives, ui key, validator registry, zip+tar, base gates\n",
+  "ok — face parse, primitives, prim tools, ui key, validator registry, zip+tar, base gates\n",
 );

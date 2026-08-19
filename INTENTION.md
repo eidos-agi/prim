@@ -2,7 +2,7 @@
 
 ## North Star
 
-Prims are the primitive units of knowledge and durable memory in an agent-native world.
+There are Prims and Prim Tools. Prims are the primitive units of knowledge and durable memory in an agent-native world. Prim Tools operate on them.
 
 Traditional application files (documents, spreadsheets, presentations, notes) were designed for human tools first. Agents are forced to reverse-engineer meaning from them.
 
@@ -16,7 +16,7 @@ Prims reverse the relationship:
 ## Design commitments
 
 ### 1. Primitive, not product-specific
-A Prim is a fundamental building block, not a feature of any single application. Prim itself has a closed set of primitives (file, face, authority, constraint, log, validator, ui, compose, trust). Profiles add domains. They do not invent a second category.
+A Prim is a fundamental building block, not a feature of any single application. Prim itself has a closed set of primitives (file, face, authority, constraint, log, validator, ui, compose, trust). Profiles add domains. They do not invent a second category. **Prim Tools** (surface / connector) operate on a Prim. They are not a tenth primitive and not new pack types (`prim.surface`, `prim.connector` do not exist).
 
 ### 2. AI-native by default
 Agents must be able to open, validate, query, reason over, and update a Prim without custom parsers or brittle scraping.
@@ -28,7 +28,7 @@ Claims carry provenance, trust tiers (human > job > agent), timestamps, and hash
 A Prim is durable memory. It can be versioned, superseded, forked, and shared across agents and time.
 
 ### 5. No fixed UX
-There is no canonical interface. Views are generated on the fly from the structure of the Prim (inspired by systems like json-render). The file itself remains the source of truth.
+There is no canonical interface. `ui` is how anything opens a Prim. A Prim Tool operates on that file: surface talks to a human, connector talks to a system. The file itself remains the source of truth.
 
 ### 6. Human-readable remains a feature
 Prims must still be inspectable and understandable by people. Opacity is not a goal.

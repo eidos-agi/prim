@@ -1,8 +1,10 @@
-# Prim — Category Specification (v0.1.0-draft)
+# Prim — Category Specification (v0.3.0-draft)
 
 **Prim is the category name for AI-native knowledge and memory packs.**
 
-This document defines what makes something a Prim, how Prims relate to the OKF family, and the non-negotiable properties of the category.
+The category has two nouns: **Prims** and **Prim Tools**. A Prim is the file. A Prim Tool operates on it.
+
+This document defines what makes something a Prim, how Prim Tools relate to that file, how Prims relate to the OKF family, and the non-negotiable properties of the category.
 
 Domain-specific structure lives in the individual profile SPECs (ORF, OCSF, OPF, etc.). This SPEC defines the shared category contract.
 
@@ -21,6 +23,8 @@ A **Prim** is a self-contained, structured, evidence-backed pack of knowledge th
 In short:
 
 > The Prim is the source of truth. Everything else is a view.
+
+A **Prim Tool** is not a second kind of Prim. It cites a Prim and operates on it (SPEC §10).
 
 ---
 
@@ -67,7 +71,7 @@ A Prim is intended to outlive any single session or agent run. It supports versi
 
 ### 3.4 No fixed UX
 
-There is no canonical interface shipped with the Prim. Views (tables, graphs, narratives, brand boards, capitalization summaries, etc.) are generated on demand from the structure. Tools such as okflify and future Prim viewers produce projections; they do not become the source of truth.
+There is no canonical interface shipped with the Prim. Views (tables, graphs, narratives, brand boards, capitalization summaries, etc.) are generated on demand from the structure. The category primitive **`ui`** is how anything *opens* a Prim (`view_key = profile/subtype`). **Prim Tools** (SPEC §10) *operate on* a Prim. Neither becomes the source of truth.
 
 ### 3.5 Human-readable remains a feature
 
@@ -164,10 +168,11 @@ For sharing (“send me the prim”), a Prim is packaged as a single archive who
 Prims deliberately separate storage from presentation.
 
 - The Prim stores structure, claims, evidence, and provenance.
-- Renderers and agents generate views (HTML, tables, graphs, brand boards, capitalization waterfalls, etc.) on demand.
+- The **`ui`** primitive opens a view plugin keyed `profile/subtype` (or `profile/type`). Unknown keys fall back to a face-only view.
+- **Prim Tools** (SPEC §10) operate on that file: a surface tool talks to a human; a connector tool talks to a system. A tool cites the Prim. It does not own pages and it is not a second pack type.
 - Traditional formats (xlsx, docx, pptx, pdf) may be emitted as exports or projections; they are not the primary store for knowledge that belongs in a Prim.
 
-This is the same separation of concerns that makes “send me the prim” viable: the recipient receives the source of truth, not a frozen view.
+This is the same separation of concerns that makes “send me the prim” viable: the recipient receives the source of truth, not a frozen view. Drag two things into an agent when you want work done: the content Prim, and the tool that says how this pairing emits, talks, or receives.
 
 ---
 
@@ -180,6 +185,8 @@ Preferred everyday language:
 | “Send me the prim.” | “Send me the knowledge pack / OKF bundle / YAML.” |
 | “The prim is the source of truth.” | “The spreadsheet is the source of truth.” |
 | “Generate a view from the prim.” | “Update the deck and the sheet and the doc.” |
+| “A surface tool on this prim.” | “A prim.surface pack.” |
+| “A connector tool that cites this prim.” | “Mint a prim.connector.” |
 | “Latest prim” | “Latest version of the files” |
 
 Profile names (ORF, OCSF, etc.) remain useful in technical and agent contexts. Prim is the human-facing category name.
@@ -192,6 +199,8 @@ Profile names (ORF, OCSF, etc.) remain useful in technical and agent contexts. P
 - Not a replacement for pure data formats (Parquet, images, audio, etc.)
 - Not a requirement that every document in the world become a Prim
 - Not a fixed application or UI
+- Not a `prim.surface` or `prim.connector` pack type — those would be tools, not Prims
+- Not a script that happens to touch a pack. If it is not surface or connector, it is not a Prim Tool.
 
 Prim is the category for knowledge and memory that benefits from being structured, evidence-backed, agent-native, and view-independent.
 
@@ -219,13 +228,61 @@ A tool that “opens a prim” uses these — not a book app, not a slide viewer
 
 **Validator stack.** Always run category gates. Then run the validator registered for `face.profile`, if any. Profile validators MUST NOT re-implement archive handling or face parsing.
 
+**Tools are not a tenth primitive.** `ui` opens a Prim. A Prim Tool operates on one. See §10. Do not add `surface` or `connector` to this table, and do not mint them as profiles.
+
 The TypeScript SDK (`sdk/typescript`) names these primitives so agents and humans share one vocabulary.
 
 ---
 
-## 10. Status
+## 10. Prim Tools
 
-**v0.2.0-draft** (category primitives + face path pointers + compose).
+A **Prim Tool** operates *on* a Prim. It is not a Prim. It does not become the file, the face, the authority, or a view plugin. It cites a Prim (pack path or prim id) and does work in one pairing.
+
+Do **not** invent `prim.surface` or `prim.connector` as pack types. Those names describe tools, not files.
+
+### 10.1 Two kinds only
+
+| Kind | Counterpart | What it does | Not this |
+|------|-------------|--------------|----------|
+| **surface** | A human | Print, page turns, a panel, receive a listener run | A book app shipped inside the pack |
+| **connector** | A system | Bake, warehouse read, gold write, export | A second authority file |
+
+If it is not surface or connector, it is not a Prim Tool. It is a script.
+
+### 10.2 Three directions, both kinds
+
+The same three directions apply to surface and connector:
+
+| Direction | Meaning |
+|-----------|---------|
+| **emit** | The pairing produces something outward (a print, an export, a bake artifact). |
+| **talk** | The pairing holds a live exchange (page turns with a listener; a query against a system). |
+| **receive** | The pairing takes something in (a listener run; a warehouse read). |
+
+A tool names one kind and one direction. It does not own pages. The Prim remains the file.
+
+### 10.3 Pairing
+
+Work is two things, not one:
+
+1. The content Prim (the file / authority).
+2. The tool that says how this pairing emits, talks, or receives.
+
+An app may host a surface tool (example: Cerebro `/print/prim` drawing `obf/picture-book`). Hosting does not make the app a Prim, and it does not mint a new profile.
+
+### 10.4 Discipline
+
+- Cite the Prim. Do not copy its claims into the tool.
+- Do not grow a registry of forges for every pairing. Prove one real surface tool, then one real connector, before expanding.
+- `ui` stays how anything *opens* a Prim. Tools implement surface or connector. They are not a third face or trust model.
+
+The TypeScript SDK names `ToolKind`, `ToolDirection`, and `createTool` so this vocabulary stays shared. That is category language, not a surface SDK and not a connector runtime.
+
+---
+
+## 11. Status
+
+**v0.3.0-draft** (category primitives + Prim Tools).
 
 This category SPEC will evolve as the family of profiles hardens and as real Prim usage surfaces additional shared requirements.
 

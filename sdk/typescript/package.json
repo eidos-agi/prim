@@ -1,8 +1,8 @@
 {
   "name": "@eidos-agi/prim",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
-  "description": "Category-level Prim SDK — file, face, authority, constraint, log, validator, ui, compose, trust",
+  "description": "Category-level Prim SDK — primitives plus Prim Tools (surface / connector)",
   "exports": {
     ".": "./src/index.ts"
   },

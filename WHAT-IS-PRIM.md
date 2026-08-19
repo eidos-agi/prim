@@ -2,11 +2,13 @@
 
 A complete reference for understanding Prims and communicating the idea clearly.
 
+The category has two nouns: **Prims** and **Prim Tools**.
+
 ---
 
 ## 1. What a Prim is
 
-A **Prim** is the primitive unit of knowledge and memory for AI.
+A **Prim** is the primitive unit of knowledge and memory for AI. A **Prim Tool** operates on one. That is the whole split.
 
 It is a self-contained, structured, evidence-backed pack of knowledge that:
 
@@ -138,6 +140,8 @@ Prims reverse that relationship: structure first, views later.
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
 - “Generate a view from the prim.”
+- “There are prims and prim tools.”
+- “A surface tool on this prim.” / “A connector that cites this prim.”
 - “Corporate prim,” “brand prim,” `prim.ocsf`, `prim.obif` (when the domain helps)
 
 **Avoid as primary language**
@@ -196,8 +200,11 @@ If the explanation requires a long technical preamble, it has not yet landed.
 - Not a requirement that every document become a Prim
 - Not a fixed application or UI
 - Not “yet another knowledge base product”
+- Not a `prim.surface` or `prim.connector` file — those are Prim Tools (operators), not Prims
 
 Prim is the category for knowledge and memory that benefits from being structured, evidence-backed, agent-native, and view-independent.
+
+A **Prim Tool** operates on a Prim. Two kinds only: **surface** (counterpart is a human — print, page turns, a panel) and **connector** (counterpart is a system — bake, warehouse read, export). Both use the same three directions: emit, talk, receive. The tool cites the Prim. It does not become one. If it is not surface or connector, it is a script. See [SPEC.md §10](./SPEC.md).
 
 ---
 
@@ -214,7 +221,7 @@ When that happens, the category has landed.
 - **Prim** = category and product identity
 - **Eidos AGI** = the organization developing the open OKF-family formats and tools that make Prims reliable
 - Repo convention: `prim` + `prim.<profile>` + `prim-web`
-- Current status: early (v0.1.0-draft category specification)
+- Current status: early (v0.3.0-draft category specification)
 - Home: https://github.com/eidos-agi/prim
 
 Domain profiles remain in their own `prim.*` repositories. Prim is the name of the category they all belong to.

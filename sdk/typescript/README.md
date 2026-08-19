@@ -34,8 +34,9 @@ node --experimental-strip-types sdk/typescript/tests/pack.test.ts
 | `Pack.viewKey` | `profile/subtype` or `profile/type` |
 | `Pack.validate()` | Category gates + registered profile validator |
 | `Pack.validateBase()` | Shared SPEC §4 gates only |
-| `registerView` / `resolveView` | Prim UI dispatch |
+| `registerView` / `resolveView` | Prim UI dispatch (`ui` — how a Prim opens) |
 | `registerValidator` / `validate` | Profile validators plug in here |
 | `PRIMITIVES` / `primitive(name)` | The nine category primitives |
+| `createTool` / `TOOL_KINDS` | Prim Tools: `surface` or `connector`; `emit` / `talk` / `receive`. Cite a Prim. Not a tenth primitive. |
 
 `validateBase()` checks `okf_version` / `profile` / `type`, recommends `log.md`, resolves face path pointers, checks `compose:` targets, and rejects secret-shaped strings.

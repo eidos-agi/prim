@@ -28,11 +28,14 @@ Pronunciation: /prɪm/ (same as the English adjective).
 
 > The primitive unit of knowledge and memory for AI.
 
+The category has two nouns: **Prims** and **Prim Tools**.
+
 Alternate short forms:
 
 - “AI-native knowledge files.”
 - “The source of truth. Everything else is a view.”
 - “Send me the prim.”
+- “There are prims and prim tools.”
 
 ---
 
@@ -72,6 +75,7 @@ Avoid: hype, “revolutionary”, consumer-app cheerfulness, vague “AI platfor
 - “Send me the prim.”
 - “The prim is the source of truth.”
 - “Generate a view from the prim.”
+- “A surface tool on this prim.” / “A connector that cites this prim.”
 - “Latest prim”
 - “Corporate prim”, “brand prim”, `prim.ocsf`, `prim.obif` (when domain helps)
 
@@ -81,6 +85,7 @@ Avoid: hype, “revolutionary”, consumer-app cheerfulness, vague “AI platfor
 - “Knowledge management platform”
 - “AI document format” (too soft and generic)
 - Claiming that every file in the world must become a Prim
+- Calling a print host or a bake job a Prim (`prim.surface`, `prim.connector` are not pack types)
 
 Technical accuracy (OKF, profile names, validators) belongs in specs and agent-facing docs. Everyday speech should stay on “prim.”
 

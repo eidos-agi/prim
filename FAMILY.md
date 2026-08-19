@@ -56,9 +56,12 @@ Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 | **prim.\*** profiles | Domain kinds, edges, validation gates, pack layouts |
 | **prim-web** / renderers | Generate views on demand; never become the source of truth |
 | **Validators** | Enforce profile rules; fail-closed where specified. Register on the category SDK. |
-| **Prim UIs** | View plugins keyed `profile/subtype`. Generated on demand. Never the file. |
+| **Prim UIs** | View plugins keyed `profile/subtype`. How a Prim *opens*. Never the file. |
+| **Prim Tools** | Operators on a Prim. Two kinds: **surface** (human counterpart) and **connector** (system counterpart). Cite a Prim. Not a pack type. |
 
 Category primitives (file, face, authority, constraint, log, validator, ui, compose, trust) live in the TypeScript Prim SDK (`sdk/typescript`). See SPEC §9.
+
+Prim Tools are category language, not a family of repos. Do not mint `prim.surface` or `prim.connector`. See SPEC §10.
 
 ---
 
@@ -94,6 +97,8 @@ A new domain becomes part of the Prim family when:
 4. It is linked from this family map and from the Prim README.
 
 The Prim category SPEC does not need to change for every new profile. The family map does.
+
+A new renderer, print host, bake job, or warehouse reader is a **Prim Tool**, not a new profile. If it is not surface or connector, it is a script. Do not add it here.
 
 ---
 

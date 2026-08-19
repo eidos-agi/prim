@@ -2,9 +2,11 @@
 
 **The primitive unit of knowledge and memory for AI.**
 
-Prims are AI-native files.
+There are Prims and Prim Tools.
 
-They are structured, evidence-backed, versionable packs of knowledge that both agents and humans can trust. Traditional documents (Excel, Word, PDFs, decks) become projections — views generated on demand from the Prim.
+**Prims** are AI-native files: structured, evidence-backed, versionable packs of knowledge that both agents and humans can trust. Traditional documents (Excel, Word, PDFs, decks) become projections — views generated on demand from the Prim.
+
+**Prim Tools** operate on a Prim. Two kinds: surface (human counterpart) and connector (system counterpart). A tool cites the file. It is not a Prim.
 
 > “Send me the prim.”
 
@@ -54,8 +56,9 @@ See [SPEC.md §5](./SPEC.md) for the full packaging rules.
 | **`prim`** | This repo — category home |
 | **`prim.<profile>`** | Domain profile (spec + validator + examples) |
 | **`prim-web`** | Public web surface |
+| **Prim Tool** | Operator on a Prim — **surface** (human) or **connector** (system). Not a repo pattern. |
 
-Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`.
+Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.surface` or `prim.connector`.
 
 ## The Prim family
 
@@ -85,6 +88,8 @@ See [FAMILY.md](./FAMILY.md) for composition rules and how to talk about profile
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
 - “Brand prim” / `prim.obif` when you need the profile.
+- “There are prims and prim tools.”
+- “A surface tool on this prim.” / “A connector that cites this prim.” — not a new pack type.
 
 Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 
@@ -94,7 +99,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 |------|---------|
 | [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) | **Start here** — complete public explanation and how to talk about it |
 | [INTENTION.md](./INTENTION.md) | North-star design commitments |
-| [SPEC.md](./SPEC.md) | Category specification (what makes a Prim) |
+| [SPEC.md](./SPEC.md) | Category specification (what makes a Prim; Prim Tools in §10) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |
 | [BRAND.md](./BRAND.md) | Identity, language, and positioning |
 | [sdk/typescript/](./sdk/typescript) | Category SDK (open, face, validate, write) |

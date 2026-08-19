@@ -29,6 +29,18 @@ export {
   type View,
 } from "./ui.ts";
 export {
+  TOOL_DIRECTIONS,
+  TOOL_KINDS,
+  counterpartOf,
+  createTool,
+  isToolDirection,
+  isToolKind,
+  type PrimTool,
+  type ToolCounterpart,
+  type ToolDirection,
+  type ToolKind,
+} from "./tools.ts";
+export {
   createValidator,
   registerValidator,
   validate,
@@ -36,4 +48,4 @@ export {
   type Validator,
 } from "./validator.ts";
 
-export const VERSION = "0.2.0";
+export const VERSION = "0.3.0";
