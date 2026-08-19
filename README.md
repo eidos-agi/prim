@@ -10,6 +10,8 @@ They are structured, evidence-backed, versionable packs of knowledge that both a
 
 That should feel as natural as “send me the link” or “drop the JSON.”
 
+**New here?** Read [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) — the complete explanation and how to talk about it.
+
 ## Why Prim exists
 
 Most knowledge today lives in application-specific files:
@@ -74,10 +76,13 @@ See [FAMILY.md](./FAMILY.md) for the full map and composition rules.
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
 
+Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
+
 ## Documents in this repo
 
 | File | Purpose |
 |------|---------|
+| [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) | **Start here** — complete public explanation and how to talk about it |
 | [INTENTION.md](./INTENTION.md) | North-star design commitments |
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim) |
 | [FAMILY.md](./FAMILY.md) | Map of OKF profiles under Prim |
