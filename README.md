@@ -33,18 +33,27 @@ The structured, validated, evidence-backed knowledge *is* the file. Interfaces a
 - **Human-readable** — still openable and understandable by people
 - **Generative interfaces** — no fixed UX; views are rendered on demand (json-render style)
 
-## Relationship to the OKF family
+## The Prim family
 
 Prim is the product identity and category name.
 
 Under the hood, Prims are built on the Open Knowledge Format (OKF) family of additive profiles developed by Eidos:
 
-- ORF, OPF, ODFW, OCSF, and future profiles
-- Shared validation, evidence, and trust model
-- Pack-based layout
+| Profile | Domain | Repo |
+|---------|--------|------|
+| **OKF** | Base knowledge + trust model | [okflify](https://github.com/eidos-agi/okflify) |
+| **EMF** | Human intent + durable memory | [emf](https://github.com/eidos-agi/emf) |
+| **ORF** | Research / investigation packs | [orf](https://github.com/eidos-agi/orf) |
+| **OPF** | Product graph | [opf](https://github.com/eidos-agi/opf) |
+| **ODFW** | Spreadsheet → bronze proof | [odwf](https://github.com/eidos-agi/odwf) |
+| **OPFF** | Personal finance packs | [opff](https://github.com/eidos-agi/opff) |
+| **OMF** | Meeting occurrences | [omf](https://github.com/eidos-agi/omf) |
+| **OCSF** | Corporate structure & capital | [ocsf](https://github.com/eidos-agi/ocsf) |
 
 OKF provides the grammar.  
 Prim is what people call the thing.
+
+See [FAMILY.md](./FAMILY.md) for the full map and composition rules.
 
 ## Language
 
@@ -53,8 +62,22 @@ Prim is what people call the thing.
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
 
+## Documents in this repo
+
+| File | Purpose |
+|------|---------|
+| [INTENTION.md](./INTENTION.md) | North-star design commitments |
+| [SPEC.md](./SPEC.md) | Category specification (what makes a Prim) |
+| [FAMILY.md](./FAMILY.md) | Map of OKF profiles under Prim |
+| [BRAND.md](./BRAND.md) | Identity, language, and positioning |
+| [examples/](./examples/) | Illustrative packs and references |
+
 ## Status
 
-Early. This repository is the home for the Prim identity, intention, and eventual specification of the category.
+Early. This repository is the home for the Prim identity, intention, category specification, and family map.
 
-See [INTENTION.md](./INTENTION.md) for the north star.
+Domain profiles (ORF, OCSF, etc.) live in their own repositories and remain additive OKF profiles. Prim is the name of the category they all belong to.
+
+## License
+
+MIT — Eidos AGI

@@ -1,0 +1,19 @@
+{
+  "prim": "minimal-concept",
+  "as_of": "2026-08-19",
+  "facts": [
+    {
+      "id": "atlas-runway",
+      "subject": "Project Atlas",
+      "predicate": "runway_months",
+      "value": 14,
+      "unit": "months",
+      "basis": "current_burn",
+      "provenance": {
+        "by": "human:illustrative",
+        "at": "2026-08-19",
+        "method": "illustrative example only"
+      }
+    }
+  ]
+}
