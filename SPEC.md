@@ -275,7 +275,7 @@ An app may host a surface tool (example: Cerebro `/print/prim` drawing `obf/pict
 ### 10.4 Discipline
 
 - Cite the Prim. Do not copy its claims into the tool.
-- Do not grow a registry of forges for every pairing. The first real surface tool is **`docket-editor`** (`prim.docket`, bin `docket-prim`): kind surface, direction talk, as editor, cites a docket prim. Prove a connector next, before expanding.
+- Do not grow a registry of forges for every pairing. The first real surface tool is **`docket-editor`**. The first connector is **`docket-webmcp`**: kind connector, direction talk, as webmcp, cites a docket prim. The connector may validate a pack without handing its contents to a model.
 - `ui` stays how anything *opens* a Prim. Tools implement surface or connector. They are not a third face or trust model.
 
 The TypeScript SDK names `ToolKind`, `ToolDirection`, and `createTool` so this vocabulary stays shared. That is category language, not a surface SDK and not a connector runtime.

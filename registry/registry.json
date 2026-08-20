@@ -133,6 +133,14 @@
       "cites": "session",
       "as": "editor",
       "repo": "eidos-agi/prim.session"
+    },
+    {
+      "name": "docket-webmcp",
+      "kind": "connector",
+      "direction": "talk",
+      "cites": "docket",
+      "as": "webmcp",
+      "repo": "eidos-agi/prim.docket"
     }
   ]
 }

@@ -42,6 +42,8 @@ Profiles (OKF-shaped unless noted)
 ├── prim.invoice  Bill pack + `invoice-editor` (emerging, not OKF)
 └── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
 
+First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed.
+
 Base grammar + render
 │
 └── okflify       OKF pack → HTML / base knowledge + trust model

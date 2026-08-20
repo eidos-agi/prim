@@ -15,4 +15,6 @@ prim registry tool docket-editor
 
 Emerging file+editor pairings: `deck-editor`, `invoice-editor`, `session-editor`. `session` is not OSF.
 
+First connector: `docket-webmcp` (connector / talk, as webmcp, cites `docket`). Validates the file. Does not feed contents to a model unless you expose it.
+
 A type is not a tool. A tool is not a `prim.surface` pack.

@@ -34,6 +34,14 @@ assert.equal(listed.counterpart, "human");
 assert.equal(listed.cites, "docket");
 assert.equal(listed.as, "editor");
 assert.equal(listTools({ kind: "surface", cites: "docket" }).length, 1);
+const mcp = getTool("docket-webmcp");
+assert.ok(mcp);
+assert.equal(mcp.kind, "connector");
+assert.equal(mcp.direction, "talk");
+assert.equal(mcp.counterpart, "system");
+assert.equal(mcp.cites, "docket");
+assert.equal(mcp.as, "webmcp");
+assert.equal(listTools({ kind: "connector", cites: "docket" }).length, 1);
 
 const extra = registerType({
   name: "demo",
