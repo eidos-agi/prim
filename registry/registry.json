@@ -102,7 +102,7 @@
     {
       "name": "arcade",
       "repo": "eidos-agi/prim.arcade",
-      "description": "A playable cart. NES (JSNES) or N64 (EmulatorJS). The ROM is the file.",
+      "description": "A playable cart. NES, N64, or Doom (Freedoom). The ROM is the file.",
       "okf": false,
       "status": "emerging"
     }
