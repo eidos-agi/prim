@@ -19,4 +19,6 @@ First connector: `docket-webmcp` (connector / talk, as webmcp, cites `docket`). 
 
 `prim-arcade` is a surface tool on an `arcade` prim. The cart is the file. JSNES embeds in chat.
 
+`log` is the category primitive as a store. `prim-sim` is the Mac surface that simulates other tools and writes that log prim.
+
 A type is not a tool. A tool is not a `prim.surface` pack.

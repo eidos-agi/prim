@@ -105,6 +105,13 @@
       "description": "A playable cart. NES, N64, or Doom (Freedoom). The ROM is the file.",
       "okf": false,
       "status": "emerging"
+    },
+    {
+      "name": "log",
+      "repo": "eidos-agi/prim.log",
+      "description": "The category primitive log as a file. Append-only run / debug events. Tools write here; they do not copy the target.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
@@ -164,6 +171,15 @@
       "cites": "docket",
       "as": "webmcp",
       "repo": "eidos-agi/prim.docket"
+    },
+    {
+      "name": "prim-sim",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "log",
+      "as": "sim",
+      "bin": "prim-sim",
+      "repo": "eidos-agi/prim-sim"
     }
   ]
 }

@@ -40,7 +40,8 @@ Profiles (OKF-shaped unless noted)
 ├── prim.docket   Execution prim + first Prim Tool (`docket-editor`, surface / talk)
 ├── prim.deck     Slide records + `deck-editor` (emerging, not OKF)
 ├── prim.invoice  Bill pack + `invoice-editor` (emerging, not OKF)
-└── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
+├── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
+└── prim.log      Append-only debug / run log + `prim-sim` (emerging; the log primitive as a file)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed.
 
