@@ -98,6 +98,13 @@
       "description": "Thin transcript file + editor. Not OSF.",
       "okf": false,
       "status": "emerging"
+    },
+    {
+      "name": "arcade",
+      "repo": "eidos-agi/prim.arcade",
+      "description": "A playable cart. The ROM is the file.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
@@ -133,6 +140,14 @@
       "cites": "session",
       "as": "editor",
       "repo": "eidos-agi/prim.session"
+    },
+    {
+      "name": "prim-arcade",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "arcade",
+      "as": "arcade",
+      "repo": "eidos-agi/prim.arcade"
     },
     {
       "name": "docket-webmcp",

@@ -44,6 +44,8 @@ Profiles (OKF-shaped unless noted)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed.
 
+Prim Arcade (`prim-arcade`) is a surface tool on an `arcade` prim. The cart is the file. JSNES embeds in chat.
+
 Base grammar + render
 │
 └── okflify       OKF pack → HTML / base knowledge + trust model
