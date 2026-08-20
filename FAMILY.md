@@ -27,21 +27,21 @@ prim-web          Public surface (views on demand)
 
 Profiles (OKF-shaped unless noted)
 │
-├── prim.emf      Human intent + durable memory
-├── prim.orf      Research / investigation packs
-├── prim.opf      Product graph
-├── prim.odwf     Spreadsheet → bronze proof packages
-├── prim.opff     Personal / household finance packs
-├── prim.omf      Meeting occurrences
-├── prim.ocsf     Corporate structure, ownership, capital, governance
-├── prim.obif     Brand identity (logo, color, type, voice, assets)
-├── prim.osf      Open Session Format (movable session packs)
-├── prim.obf      (private / emerging)
+├── prim.emf      Human intent + durable memory + `emf-editor`
+├── prim.orf      Research / investigation packs + `orf-editor`
+├── prim.opf      Product graph + `opf-editor`
+├── prim.odwf     Spreadsheet → bronze proof packages + `odwf-editor`
+├── prim.opff     Personal / household finance packs + `opff-editor` (surface / talk, as ledger)
+├── prim.omf      Meeting occurrences + `omf-editor` (surface / talk)
+├── prim.ocsf     Corporate structure, ownership, capital, governance + `ocsf-editor`
+├── prim.obif     Brand identity (logo, color, type, voice, assets) + `obif-editor`
+├── prim.osf      Open Session Format (movable session packs) + `osf-editor`
+├── prim.obf      Open Book Format + `obf-editor`
 ├── prim.docket   Execution prim + first Prim Tool (`docket-editor`, surface / talk)
 ├── prim.deck     Slide records + `deck-editor` (emerging, not OKF)
 ├── prim.invoice  Bill pack + `invoice-editor` (emerging, not OKF)
 ├── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
-└── prim.log      Append-only debug / run log + `prim-sim` (emerging; the log primitive as a file)
+└── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed.
 

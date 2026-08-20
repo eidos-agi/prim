@@ -72,8 +72,9 @@ for (const ext of [".prim.zip", ".prim.tar.gz"]) {
   const back = openPrim(out);
   assert.deepEqual(back.face, p.face, ext);
   assert.deepEqual(back.validateBase(), [], ext);
-  const names = new Set(back.files().map((f) => f.split(/[/\\]/).pop()));
+  const names = new Set(back.files());
   assert.ok(names.has("index.md"), ext);
+  back.close();
 }
 
 const broken = join(tmp, "broken");
@@ -153,6 +154,65 @@ const surface = createTool({
 });
 assert.equal(surface.kind, "surface");
 assert.equal(counterpartOf(surface.kind), "human");
+const ledger = createTool({
+  name: "opff-editor",
+  kind: "surface",
+  direction: "talk",
+  cites: "opff",
+  as: "ledger",
+  repo: "eidos-agi/prim.opff",
+});
+assert.equal(ledger.as, "ledger");
+assert.equal(ledger.repo, "eidos-agi/prim.opff");
+
+const house = join(tmp, "harbor");
+mkdirSync(house);
+writeFileSync(
+  join(house, "index.md"),
+  `---
+okf_version: "0.2"
+profile: opff
+type: household
+title: Harbor House
+plane: personal
+---
+
+Fictional ledger.
+`,
+  "utf8",
+);
+writeFileSync(join(house, "log.md"), "# Log\n\n- created\n", "utf8");
+const hp = openPrim(house);
+assert.equal(hp.profile, "opff");
+assert.equal(hp.title, "Harbor House");
+assert.equal(hp.surface()?.name, "opff-editor");
+assert.equal(hp.surface({ as: "ledger" })?.as, "ledger");
+assert.equal(hp.surface({ as: "editor" }), undefined);
+assert.equal(hp.connector(), undefined);
+assert.deepEqual(hp.tools().map((t) => t.name), ["opff-editor"]);
+assert.equal(hp.pair().surface?.name, "opff-editor");
+assert.deepEqual(p.tools().map((t) => t.name), ["ocsf-editor"]);
+assert.ok(hp.files().includes("index.md"));
+assert.ok(hp.files("**/*.md").includes("log.md"));
+assert.throws(() => hp.read("../secret.md"), PrimError);
+
+writeFileSync(join(house, "accounts.jsonl"), '{"id":"ACC-CHK","name":"Harbor Checking"}\n\n{"id":"ACC-HYSA"}\n', "utf8");
+assert.deepEqual(
+  hp.jsonl<{ id: string }>("accounts.jsonl").map((r) => r.id),
+  ["ACC-CHK", "ACC-HYSA"],
+);
+
+const mem = openPrim({
+  files: {
+    "index.md": hp.read("index.md"),
+    "log.md": hp.read("log.md"),
+    "accounts.jsonl": hp.read("accounts.jsonl"),
+  },
+});
+assert.equal(mem.title, "Harbor House");
+assert.equal(mem.surface()?.name, "opff-editor");
+assert.equal(mem.jsonl("accounts.jsonl").length, 2);
+mem.close();
 assert.throws(() =>
   createTool({
     name: "not-a-tool",

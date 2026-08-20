@@ -1,0 +1,44 @@
+{
+  "approval_gates": [
+    "credentials",
+    "payments",
+    "production mutations",
+    "public publish/tag",
+    "customer/outbound messaging"
+  ],
+  "artifact_types": [],
+  "description": "bootstrapped by testr (sibling ensure)",
+  "distribution_channels": [],
+  "forge_stack": [
+    "testr"
+  ],
+  "learning_questions": [
+    "What broke or slowed this release?",
+    "What proof was missing until late?",
+    "Which gate should become automatic next time?",
+    "Which human approval should remain explicit?"
+  ],
+  "license": null,
+  "memory_paths": {
+    "attempts_dir": ".shipr/release-attempts",
+    "model": ".shipr/product-release-model.json"
+  },
+  "open_source_status": "unknown",
+  "product_id": "prim",
+  "project_root": "/Users/dshanklinbv/repos-eidos-agi/prim",
+  "proof_commands": [
+    "define product-specific test command before claiming green"
+  ],
+  "proof_source": "testr",
+  "purpose": "Tell AI agents how this product ships. Store repeatable release config and attempt ledgers. Does not ship, deploy, or run proofs.",
+  "related_testr": {
+    "loaded": true,
+    "model_path": ".testr/product-test-model.json",
+    "note": "When present, testr test_commands become shipr proof_commands"
+  },
+  "repository_visibility": "unknown",
+  "role": "ai_config_and_memory",
+  "rollback_paths": [],
+  "schema_version": 1,
+  "updated_at": "2026-08-20T05:11:51.220383Z"
+}

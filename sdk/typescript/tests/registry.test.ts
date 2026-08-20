@@ -48,6 +48,39 @@ assert.equal(listed.counterpart, "human");
 assert.equal(listed.cites, "docket");
 assert.equal(listed.as, "editor");
 assert.equal(listTools({ kind: "surface", cites: "docket" }).length, 1);
+const ledger = getTool("opff-editor");
+assert.ok(ledger);
+assert.equal(ledger.kind, "surface");
+assert.equal(ledger.direction, "talk");
+assert.equal(ledger.counterpart, "human");
+assert.equal(ledger.cites, "opff");
+assert.equal(ledger.as, "ledger");
+assert.equal(listTools({ kind: "surface", cites: "opff" }).length, 1);
+assert.equal(listTools({ as: "ledger" })[0]?.name, "opff-editor");
+assert.ok(getType("opff")?.okf);
+const meeting = getTool("omf-editor");
+assert.ok(meeting);
+assert.equal(meeting.kind, "surface");
+assert.equal(meeting.direction, "talk");
+assert.equal(meeting.cites, "omf");
+assert.equal(meeting.as, "editor");
+assert.equal(listTools({ kind: "surface", cites: "omf" }).length, 1);
+for (const [name, cites] of [
+  ["emf-editor", "emf"],
+  ["orf-editor", "orf"],
+  ["opf-editor", "opf"],
+  ["odwf-editor", "odwf"],
+  ["ocsf-editor", "ocsf"],
+  ["obif-editor", "obif"],
+  ["osf-editor", "osf"],
+  ["obf-editor", "obf"],
+  ["log-editor", "log"],
+]) {
+  const tool = getTool(name);
+  assert.ok(tool, name);
+  assert.equal(tool.cites, cites);
+  assert.equal(tool.as, "editor");
+}
 const mcp = getTool("docket-webmcp");
 assert.ok(mcp);
 assert.equal(mcp.kind, "connector");

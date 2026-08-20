@@ -3,6 +3,7 @@
 import { spawnSync } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
   readdirSync,
@@ -11,7 +12,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, relative, resolve, sep } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 
 import { parse, type Face, type FaceValue } from "./face.ts";
 import {
@@ -21,12 +22,25 @@ import {
   PROJECTION_FACE_KEYS,
 } from "./primitives.ts";
 import { trustTier } from "./trust.ts";
+import { listTools, type RegisteredTool } from "./registry.ts";
+import type { ToolKind } from "./tools.ts";
 import { resolveView, viewKey, type View } from "./ui.ts";
 import { validate } from "./validator.ts";
 
 export const ZIP_SUFFIXES = [".prim.zip", ".prim", ".prim.7z"] as const;
 export const TAR_SUFFIXES = [".prim.tar.gz", ".prim.tgz"] as const;
 export const BASE_REQUIRED = ["okf_version", "profile", "type"] as const;
+
+export type PackFiles = Record<string, string | Uint8Array>;
+export type PackSource = string | { files: PackFiles };
+export type PackPair = {
+  profile: string | null;
+  title: string | null;
+  viewKey: string;
+  tools: readonly RegisteredTool[];
+  surface: RegisteredTool | null;
+  connector: RegisteredTool | null;
+};
 
 const SECRET =
   /(api[_-]?key|secret|password|bearer\s|BEGIN [A-Z ]*PRIVATE KEY|sk-[A-Za-z0-9]{20,})/i;
@@ -75,10 +89,15 @@ function endsWithAny(name: string, suffixes: readonly string[]): boolean {
 }
 
 function assertSafeArchiveName(name: string): void {
-  const norm = name.replace(/\\/g, "/");
-  if (norm.startsWith("/") || norm.split("/").includes("..")) {
-    throw new PrimError(`unsafe path in archive: ${name}`);
+  safeRel(name, "archive");
+}
+
+function safeRel(rel: string, label = "path"): string {
+  const norm = String(rel || "").replace(/\\/g, "/");
+  if (!norm || norm.startsWith("/") || norm.split("/").includes("..")) {
+    throw new PrimError(`unsafe ${label}: ${rel}`);
   }
+  return norm;
 }
 
 export class Pack {
@@ -111,12 +130,43 @@ export class Pack {
     return typeof v === "string" ? v : undefined;
   }
 
+  get title(): string | undefined {
+    const v = this.face.title;
+    return typeof v === "string" ? v : undefined;
+  }
+
   get viewKey(): string {
     return viewKey(this.face);
   }
 
   view(): View {
     return resolveView(this.face);
+  }
+
+  /** Registered Prim Tools that cite this pack's profile. The pack stays the file. */
+  tools(filter?: { kind?: ToolKind; as?: string }): readonly RegisteredTool[] {
+    const cites = this.profile;
+    if (!cites) return [];
+    return listTools({ cites, kind: filter?.kind, as: filter?.as });
+  }
+
+  surface(filter?: { as?: string }): RegisteredTool | undefined {
+    return this.tools({ kind: "surface", as: filter?.as })[0];
+  }
+
+  connector(filter?: { as?: string }): RegisteredTool | undefined {
+    return this.tools({ kind: "connector", as: filter?.as })[0];
+  }
+
+  pair(): PackPair {
+    return Object.freeze({
+      profile: this.profile ?? null,
+      title: this.title ?? null,
+      viewKey: this.viewKey,
+      tools: this.tools(),
+      surface: this.surface() ?? null,
+      connector: this.connector() ?? null,
+    });
   }
 
   validate(): string[] {
@@ -187,7 +237,7 @@ export class Pack {
   }
 
   files(pattern = "**/*"): string[] {
-    const all = walkFiles(this.root);
+    const all = walkFiles(this.root).map((p) => relative(this.root, p).replace(/\\/g, "/"));
     if (pattern === "**/*") return all;
     if (pattern.startsWith("**/") && pattern.includes("*", 3)) {
       const ext = pattern.slice(pattern.lastIndexOf("*") + 1);
@@ -197,15 +247,29 @@ export class Pack {
   }
 
   read(relpath: string): string {
-    return readFileSync(join(this.root, relpath), "utf8");
+    return readFileSync(join(this.root, safeRel(relpath)), "utf8");
   }
 
   readBytes(relpath: string): Buffer {
-    return readFileSync(join(this.root, relpath));
+    return readFileSync(join(this.root, safeRel(relpath)));
+  }
+
+  jsonl<T = unknown>(relpath: string): T[] {
+    return this.read(relpath)
+      .split(/\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as T);
   }
 
   faceOf(relpath: string): Face {
     return parse(this.read(relpath));
+  }
+
+  close(): void {
+    if (!this.#tmp) return;
+    rmSync(this.#tmp, { recursive: true, force: true });
+    this.#tmp = undefined;
   }
 
   appendLog(line: string, when?: string): void {
@@ -272,10 +336,9 @@ export class Pack {
       }
     }
 
-    for (const path of this.files("**/*.md")) {
-      const text = readFileSync(path, "utf8");
-      if (SECRET.test(text)) {
-        problems.push(`${relative(this.root, path)}: secret-shaped string`);
+    for (const rel of this.files("**/*.md")) {
+      if (SECRET.test(this.read(rel))) {
+        problems.push(`${rel}: secret-shaped string`);
       }
     }
 
@@ -314,7 +377,19 @@ export class Pack {
   }
 }
 
-export function openPrim(source: string): Pack {
+function materialize(files: PackFiles): Pack {
+  const tmp = mkdtempSync(join(tmpdir(), "prim-"));
+  for (const [rel, body] of Object.entries(files)) {
+    const dest = join(tmp, safeRel(rel, "pack file"));
+    mkdirSync(dirname(dest), { recursive: true });
+    if (typeof body === "string") writeFileSync(dest, body, "utf8");
+    else writeFileSync(dest, Buffer.from(body));
+  }
+  return new Pack(tmp, tmp);
+}
+
+export function openPrim(source: PackSource): Pack {
+  if (typeof source !== "string") return materialize(source.files);
   const path = resolve(source);
   if (existsSync(path) && statSync(path).isDirectory()) return new Pack(path);
   if (!existsSync(path) || !statSync(path).isFile()) {

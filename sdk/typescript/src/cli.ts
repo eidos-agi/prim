@@ -24,20 +24,32 @@ try {
   }
   const pack = openPrim(target);
   if (cmd === "open") {
+    const pair = pack.pair();
     process.stdout.write(
       `${JSON.stringify({
-        profile: pack.profile,
+        profile: pair.profile,
         type: pack.type,
         subtype: pack.subtype,
-        viewKey: pack.viewKey,
+        title: pair.title,
+        viewKey: pair.viewKey,
         trust: pack.trust(),
+        tools: pair.tools.map((t) => t.name),
+        surface: pair.surface?.name ?? null,
+        connector: pair.connector?.name ?? null,
       })}\n`,
     );
+    pack.close();
+    process.exit(0);
+  }
+  if (cmd === "tools") {
+    process.stdout.write(`${JSON.stringify(pack.pair(), null, 2)}\n`);
+    pack.close();
     process.exit(0);
   }
   if (cmd === "validate") {
     const problems = pack.validate();
     for (const item of problems) process.stdout.write(`${item}\n`);
+    pack.close();
     process.exit(problems.length ? 1 : 0);
   }
   usage();
@@ -51,8 +63,8 @@ try {
 }
 
 function usage(): void {
-  console.error("usage: prim <open|validate> <path>");
-  console.error("       prim registry [types|tools|type <name>|tool <name>]");
+  console.error("usage: prim <open|validate|tools> <path>");
+  console.error("       prim registry [types|tools [citing <type>]|type <name>|tool <name>]");
 }
 
 function registryCmd(rest: string[]): void {
@@ -65,9 +77,10 @@ function registryCmd(rest: string[]): void {
   }
   if (sub === "tools" || sub === "all") {
     if (sub === "all") process.stdout.write("tools:\n");
-    for (const tool of listTools()) {
+    const cites = rest[1] === "citing" ? rest[2] : undefined;
+    for (const tool of listTools(cites ? { cites } : undefined)) {
       process.stdout.write(
-        `${tool.name}\t${tool.kind}/${tool.direction}\tcites ${tool.cites}\n`,
+        `${tool.name}\t${tool.kind}/${tool.direction}\tcites ${tool.cites}${tool.as ? `\tas ${tool.as}` : ""}\n`,
       );
     }
     if (sub === "all") return;

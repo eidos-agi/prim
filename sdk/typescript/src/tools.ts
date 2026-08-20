@@ -13,6 +13,9 @@ export type PrimTool = {
   kind: ToolKind;
   direction: ToolDirection;
   cites: string;
+  as?: string;
+  bin?: string;
+  repo?: string;
 };
 
 export function counterpartOf(kind: ToolKind): ToolCounterpart {
@@ -45,5 +48,8 @@ export function createTool(tool: PrimTool): Readonly<PrimTool> {
     kind: tool.kind,
     direction: tool.direction,
     cites: tool.cites,
+    ...(tool.as ? { as: tool.as } : {}),
+    ...(tool.bin ? { bin: tool.bin } : {}),
+    ...(tool.repo ? { repo: tool.repo } : {}),
   });
 }

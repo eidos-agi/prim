@@ -73,7 +73,7 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | [prim.orf](https://github.com/eidos-agi/prim.orf) | Research / investigation |
 | [prim.opf](https://github.com/eidos-agi/prim.opf) | Product graph |
 | [prim.odwf](https://github.com/eidos-agi/prim.odwf) | Spreadsheet → bronze proof |
-| [prim.opff](https://github.com/eidos-agi/prim.opff) | Personal finance |
+| [prim.opff](https://github.com/eidos-agi/prim.opff) | Personal finance + `opff-editor` (surface / talk, as ledger) |
 | [prim.omf](https://github.com/eidos-agi/prim.omf) | Meeting occurrences |
 | [prim.ocsf](https://github.com/eidos-agi/prim.ocsf) | Corporate structure & capital |
 | [prim.obif](https://github.com/eidos-agi/prim.obif) | Brand & identity |

@@ -8,6 +8,9 @@ export {
   TAR_SUFFIXES,
   ZIP_SUFFIXES,
   openPrim,
+  type PackFiles,
+  type PackPair,
+  type PackSource,
 } from "./pack.ts";
 export {
   CONSTRAINT_FACE_KEYS,
@@ -63,4 +66,4 @@ export {
   type TypeStatus,
 } from "./registry.ts";
 
-export const VERSION = "0.4.0";
+export const VERSION = "0.4.2";

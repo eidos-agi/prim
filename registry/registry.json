@@ -67,9 +67,9 @@
     {
       "name": "obf",
       "repo": "eidos-agi/prim.obf",
-      "description": "Private / emerging",
+      "description": "Open Book Format — ordered pages. book.json is authority.",
       "okf": true,
-      "status": "private"
+      "status": "emerging"
     },
     {
       "name": "docket",
@@ -155,6 +155,86 @@
       "cites": "opff",
       "as": "ledger",
       "repo": "eidos-agi/prim.opff"
+    },
+    {
+      "name": "omf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "omf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.omf"
+    },
+    {
+      "name": "emf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "emf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.emf"
+    },
+    {
+      "name": "orf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "orf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.orf"
+    },
+    {
+      "name": "opf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "opf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.opf"
+    },
+    {
+      "name": "odwf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "odwf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.odwf"
+    },
+    {
+      "name": "ocsf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "ocsf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.ocsf"
+    },
+    {
+      "name": "obif-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "obif",
+      "as": "editor",
+      "repo": "eidos-agi/prim.obif"
+    },
+    {
+      "name": "osf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "osf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.osf"
+    },
+    {
+      "name": "obf-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "obf",
+      "as": "editor",
+      "repo": "eidos-agi/prim.obf"
+    },
+    {
+      "name": "log-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "log",
+      "as": "editor",
+      "repo": "eidos-agi/prim.log"
     },
     {
       "name": "prim-arcade",

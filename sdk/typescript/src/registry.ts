@@ -37,7 +37,7 @@ export type Registry = {
 type RawRegistry = {
   version: number;
   types: PrimType[];
-  tools: Array<PrimTool & { as?: string; bin?: string; repo?: string }>;
+  tools: PrimTool[];
 };
 
 function committedPath(): string {
@@ -67,24 +67,16 @@ function freezeType(t: PrimType): PrimType {
 }
 
 function hydrateTool(
-  tool: PrimTool & { as?: string; bin?: string; repo?: string },
+  tool: PrimTool,
   typeNames: Set<string>,
 ): RegisteredTool {
-  const created = createTool({
-    name: tool.name,
-    kind: tool.kind,
-    direction: tool.direction,
-    cites: tool.cites,
-  });
+  const created = createTool(tool);
   if (!typeNames.has(created.cites)) {
     throw new Error(`tool ${created.name} cites unknown type: ${created.cites}`);
   }
   return Object.freeze({
     ...created,
     counterpart: counterpartOf(created.kind),
-    as: tool.as,
-    bin: tool.bin,
-    repo: tool.repo,
   });
 }
 
@@ -106,10 +98,12 @@ export function listTypes(): readonly PrimType[] {
 export function listTools(filter?: {
   kind?: ToolKind;
   cites?: string;
+  as?: string;
 }): readonly RegisteredTool[] {
   return current.tools.filter((tool) => {
     if (filter?.kind && tool.kind !== filter.kind) return false;
     if (filter?.cites && tool.cites !== filter.cites) return false;
+    if (filter?.as && tool.as !== filter.as) return false;
     return true;
   });
 }
@@ -134,7 +128,7 @@ export function registerType(type: PrimType): PrimType {
   return next;
 }
 
-export function registerTool(tool: PrimTool & { as?: string; bin?: string; repo?: string }): RegisteredTool {
+export function registerTool(tool: PrimTool): RegisteredTool {
   if (getTool(tool.name)) {
     throw new Error(`Prim Tool already registered: ${tool.name}`);
   }

@@ -6,7 +6,7 @@ The kernel is TypeScript. Profiles (OCSF, OMF, OPAF, OBF, …) live in their own
 
 | Language | Path | Status |
 |---|---|---|
-| TypeScript | [`typescript/`](typescript) | **kernel** — v0.3.0, no npm runtime deps |
+| TypeScript | [`typescript/`](typescript) | **kernel** — v0.4.2, no npm runtime deps |
 
 ## Why this exists
 

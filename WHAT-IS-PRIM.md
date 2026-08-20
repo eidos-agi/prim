@@ -94,7 +94,7 @@ Current profiles (non-exhaustive):
 - **prim.orf** — research / investigation packs
 - **prim.opf** — product graphs
 - **prim.odwf** — spreadsheet → bronze proof packages
-- **prim.opff** — personal finance packs
+- **prim.opff** — personal finance packs; Prim Tool is `opff-editor` (surface / talk, as ledger)
 - **prim.omf** — meeting occurrences
 - **prim.ocsf** — corporate structure, ownership, capital, governance
 - **prim.obif** — brand & identity

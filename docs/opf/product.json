@@ -1,0 +1,1253 @@
+{
+  "format": "opf",
+  "version": "1.0",
+  "product": "opf:prim:product",
+  "entities": [
+    {
+      "id": "opf:prim:product",
+      "type": "product",
+      "title": "Prim SDKs",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "Category kernel plus one internal SDK per Prim type. The file is the Prim. Tools cite it. The host does not grow a type switch.",
+      "content": "index.md"
+    },
+    {
+      "id": "opf:prim:area:intent",
+      "type": "area",
+      "title": "Intent",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:area:experience",
+      "type": "area",
+      "title": "Experience",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:area:governance",
+      "type": "area",
+      "title": "Governance",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:area:delivery",
+      "type": "area",
+      "title": "Delivery",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:area:assurance",
+      "type": "area",
+      "title": "Evidence",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:area:gaps",
+      "type": "area",
+      "title": "Known gaps",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:intent:kernel-and-profile-sdks",
+      "type": "intent",
+      "title": "One kernel; each Prim type owns its domain SDK",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "Agents and hosts open any Prim through the category SDK. Domain verbs and fail-closed gates live in prim.<type>.",
+      "content": "content/sdk-split.md"
+    },
+    {
+      "id": "opf:prim:user:profile-author",
+      "type": "user",
+      "title": "Profile author",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Writes prim.<type>: store shape, validator, domain verbs. Does not re-parse zip or face."
+    },
+    {
+      "id": "opf:prim:user:agent",
+      "type": "user",
+      "title": "Agent",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Opens a pack with the kernel, then uses the profile SDK for type-specific work."
+    },
+    {
+      "id": "opf:prim:user:host-builder",
+      "type": "user",
+      "title": "Host builder",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Wires Grayscale, prim-web, or another host. Adds a type by adding a profile SDK, not a switch."
+    },
+    {
+      "id": "opf:prim:problem:copied-pack-code",
+      "type": "problem",
+      "title": "Profile repos reimplemented pack load, face parse, and archives",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "The category SDK exists because those three jobs were copied. Three copies of a bug is three fixes.",
+      "content": "content/sdk-split.md"
+    },
+    {
+      "id": "opf:prim:problem:kernel-type-switch",
+      "type": "problem",
+      "title": "Putting domain verbs in the kernel grows a type switch",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "OMF import and docket task-create are not interchangeable. The category README forbids profile-specific code in the kernel.",
+      "content": "content/sdk-split.md"
+    },
+    {
+      "id": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "type": "promise",
+      "title": "Category SDK opens packs; profile SDK owns verbs and gates",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "Same pattern as Grayscale file plugins: one kernel, one plugin per type. A type that only needs the face registers a validator and stops.",
+      "content": "content/sdk-split.md"
+    },
+    {
+      "id": "opf:prim:outcome:add-type-without-growing-host",
+      "type": "outcome",
+      "title": "Add a Prim type without growing the host",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "A new domain becomes prim.<name> with its own internal SDK. The kernel and the host stay stable."
+    },
+    {
+      "id": "opf:prim:journey:add-a-prim-type",
+      "type": "journey",
+      "title": "Add a Prim type",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Open with the kernel, register the profile validator and view, implement domain verbs in prim.<type>."
+    },
+    {
+      "id": "opf:prim:moment:open-with-kernel",
+      "type": "moment",
+      "title": "Open the pack with the category SDK",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:moment:register-profile",
+      "type": "moment",
+      "title": "Register the profile validator and view on the kernel",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:moment:implement-verbs",
+      "type": "moment",
+      "title": "Implement domain verbs in the profile SDK",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:surface:category-sdk",
+      "type": "surface",
+      "title": "Category Prim SDK",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "prim/sdk TypeScript kernel. openPrim, face, zip, validateBase, registerValidator, registerView. Not a domain store."
+    },
+    {
+      "id": "opf:prim:state:pack-open",
+      "type": "state",
+      "title": "Pack open",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Face, profile, view key, and files are readable without knowing the domain."
+    },
+    {
+      "id": "opf:prim:interaction:open-prim",
+      "type": "interaction",
+      "title": "openPrim / validateBase",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:surface:profile-sdk",
+      "type": "surface",
+      "title": "Profile internal SDK",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Lives in prim.<type>. Store, gates, and verbs for that type only. Must not reimplement archive handling or face parsing."
+    },
+    {
+      "id": "opf:prim:state:domain-ready",
+      "type": "state",
+      "title": "Domain verbs available",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      }
+    },
+    {
+      "id": "opf:prim:interaction:run-domain-verb",
+      "type": "interaction",
+      "title": "Run a type-specific verb",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Examples: docket-prim task-create; OMF Plaud import; brand identity commit."
+    },
+    {
+      "id": "opf:prim:authority:daniel",
+      "type": "authority",
+      "title": "Daniel Shanklin",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "Accepted the SDK split. Owns Prim family direction."
+    },
+    {
+      "id": "opf:prim:decision:profile-internal-sdk",
+      "type": "decision",
+      "title": "Each Prim type has an internal SDK; none reimplements the category kernel",
+      "status": "active",
+      "provenance": {
+        "by": "human:daniel",
+        "method": "Accepted in ARP cockpit session 2026-08-19: each Prim type needs its own internal SDK; none reimplements the category kernel."
+      },
+      "description": "Agree on a per-type SDK for domain operations and gates. Disagree that each type needs its own pack kernel.",
+      "content": "content/sdk-split.md",
+      "rationale": {
+        "why": "Domain verbs are not interchangeable, and pack/zip/face already had three copies. Split the kernel from the type SDK so a new type is a plugin, not a host change.",
+        "problems": [
+          "opf:prim:problem:copied-pack-code",
+          "opf:prim:problem:kernel-type-switch"
+        ],
+        "alternatives": [
+          {
+            "option": "One mega SDK with every domain type in the kernel",
+            "disposition": "ruled-out",
+            "reason": "That is a type switch. Category SDK README: nothing profile-specific belongs here."
+          },
+          {
+            "option": "Kernel only; no profile SDK",
+            "disposition": "ruled-out",
+            "reason": "OMF import and docket task-create are different jobs. Face-only types register a validator and stop; they do not need an SDK yet."
+          }
+        ],
+        "revisit_when": [
+          "A profile SDK reimplements zip or face parse.",
+          "The category SDK grows a type switch.",
+          "A new type ships an SDK before it has domain verbs."
+        ]
+      }
+    },
+    {
+      "id": "opf:prim:work:omf-internal-sdk",
+      "type": "work",
+      "title": "Give prim.omf an internal SDK / omf-prim CLI",
+      "status": "proposed",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "docket-prim already has pack verbs. OMF still validates as Python and has no omf-prim editor/SDK package."
+    },
+    {
+      "id": "opf:prim:work:register-validators",
+      "type": "work",
+      "title": "Register profile validators on the category SDK",
+      "status": "proposed",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "SPEC \u00a79: always run category gates, then the validator registered for face.profile. Profile validators must not re-parse archives or faces."
+    },
+    {
+      "id": "opf:prim:evidence:category-sdk-readme",
+      "type": "evidence",
+      "title": "prim/sdk README names the kernel and forbids profile code",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Local file prim/sdk/README.md: profiles live in their own repos and register a validator + view. Nothing profile-specific belongs here."
+    },
+    {
+      "id": "opf:prim:evidence:prim-spec-9",
+      "type": "evidence",
+      "title": "Prim SPEC \u00a79 validator stack and primitives",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Local file prim/SPEC.md: Pack.validate runs category gates then the registered profile validator. Tools are not a tenth primitive."
+    },
+    {
+      "id": "opf:prim:evidence:docket-prim-cli",
+      "type": "evidence",
+      "title": "docket-prim is a working profile SDK",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "prim.docket Go pack: init, convert, task-create, editor. Domain verbs. Does not claim to be the category kernel."
+    },
+    {
+      "id": "opf:prim:evidence:session-accept",
+      "type": "evidence",
+      "title": "Daniel asked whether each type needs its own internal SDK, then asked for this OPF",
+      "status": "active",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "ARP cockpit session 2026-08-19. Mason agreed on per-type SDK and disagreed on per-type kernel. Daniel: create a prim.opf about this."
+    },
+    {
+      "id": "opf:prim:gap:omf-sdk-missing",
+      "type": "gap",
+      "title": "prim.omf has SPEC and validator, not an internal SDK package",
+      "status": "blocked",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "Python omf.validate exists. No omf-prim CLI or typed pack API analogous to docket-prim."
+    },
+    {
+      "id": "opf:prim:gap:kernel-okf-only",
+      "type": "gap",
+      "title": "Category SDK validateBase is still OKF-shaped",
+      "status": "blocked",
+      "provenance": {
+        "by": "agent:mason",
+        "method": "Structural grouping of the accepted SDK-split decision into an OPF v1 pack on 2026-08-20."
+      },
+      "description": "SPEC already says not every Prim is OKF. docket-prim is a Prim. The kernel's current validateBase implements OKF packs; that is an implementation, not the membership test."
+    }
+  ],
+  "relationships": [
+    {
+      "id": "opf:prim:rel:root-intent",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:intent",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:root-experience",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:experience",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:root-governance",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:governance",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:root-delivery",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:delivery",
+      "order": 3
+    },
+    {
+      "id": "opf:prim:rel:root-assurance",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:assurance",
+      "order": 4
+    },
+    {
+      "id": "opf:prim:rel:root-gaps",
+      "type": "contains",
+      "from": "opf:prim:product",
+      "to": "opf:prim:area:gaps",
+      "order": 5
+    },
+    {
+      "id": "opf:prim:rel:intent-intent",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:intent:kernel-and-profile-sdks",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:intent-author",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:user:profile-author",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:intent-agent",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:user:agent",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:intent-host",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:user:host-builder",
+      "order": 3
+    },
+    {
+      "id": "opf:prim:rel:intent-copied",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:problem:copied-pack-code",
+      "order": 4
+    },
+    {
+      "id": "opf:prim:rel:intent-switch",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:problem:kernel-type-switch",
+      "order": 5
+    },
+    {
+      "id": "opf:prim:rel:intent-promise",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "order": 6
+    },
+    {
+      "id": "opf:prim:rel:intent-outcome",
+      "type": "contains",
+      "from": "opf:prim:area:intent",
+      "to": "opf:prim:outcome:add-type-without-growing-host",
+      "order": 7
+    },
+    {
+      "id": "opf:prim:rel:exp-journey",
+      "type": "contains",
+      "from": "opf:prim:area:experience",
+      "to": "opf:prim:journey:add-a-prim-type",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:exp-category",
+      "type": "contains",
+      "from": "opf:prim:area:experience",
+      "to": "opf:prim:surface:category-sdk",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:exp-profile",
+      "type": "contains",
+      "from": "opf:prim:area:experience",
+      "to": "opf:prim:surface:profile-sdk",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:journey-open",
+      "type": "contains",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:open-with-kernel",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:journey-register",
+      "type": "contains",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:register-profile",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:journey-verbs",
+      "type": "contains",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:implement-verbs",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:cat-state",
+      "type": "contains",
+      "from": "opf:prim:surface:category-sdk",
+      "to": "opf:prim:state:pack-open",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:cat-open",
+      "type": "contains",
+      "from": "opf:prim:state:pack-open",
+      "to": "opf:prim:interaction:open-prim",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:prof-state",
+      "type": "contains",
+      "from": "opf:prim:surface:profile-sdk",
+      "to": "opf:prim:state:domain-ready",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:prof-verb",
+      "type": "contains",
+      "from": "opf:prim:state:domain-ready",
+      "to": "opf:prim:interaction:run-domain-verb",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:gov-authority",
+      "type": "contains",
+      "from": "opf:prim:area:governance",
+      "to": "opf:prim:authority:daniel",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:gov-decision",
+      "type": "contains",
+      "from": "opf:prim:area:governance",
+      "to": "opf:prim:decision:profile-internal-sdk",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:del-omf",
+      "type": "contains",
+      "from": "opf:prim:area:delivery",
+      "to": "opf:prim:work:omf-internal-sdk",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:del-register",
+      "type": "contains",
+      "from": "opf:prim:area:delivery",
+      "to": "opf:prim:work:register-validators",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:asr-readme",
+      "type": "contains",
+      "from": "opf:prim:area:assurance",
+      "to": "opf:prim:evidence:category-sdk-readme",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:asr-spec",
+      "type": "contains",
+      "from": "opf:prim:area:assurance",
+      "to": "opf:prim:evidence:prim-spec-9",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:asr-docket",
+      "type": "contains",
+      "from": "opf:prim:area:assurance",
+      "to": "opf:prim:evidence:docket-prim-cli",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:asr-session",
+      "type": "contains",
+      "from": "opf:prim:area:assurance",
+      "to": "opf:prim:evidence:session-accept",
+      "order": 3
+    },
+    {
+      "id": "opf:prim:rel:gap-omf",
+      "type": "contains",
+      "from": "opf:prim:area:gaps",
+      "to": "opf:prim:gap:omf-sdk-missing",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:gap-okf",
+      "type": "contains",
+      "from": "opf:prim:area:gaps",
+      "to": "opf:prim:gap:kernel-okf-only",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:expresses",
+      "type": "expresses",
+      "from": "opf:prim:product",
+      "to": "opf:prim:intent:kernel-and-profile-sdks"
+    },
+    {
+      "id": "opf:prim:rel:copied-author",
+      "type": "for-user",
+      "from": "opf:prim:problem:copied-pack-code",
+      "to": "opf:prim:user:profile-author"
+    },
+    {
+      "id": "opf:prim:rel:copied-agent",
+      "type": "for-user",
+      "from": "opf:prim:problem:copied-pack-code",
+      "to": "opf:prim:user:agent"
+    },
+    {
+      "id": "opf:prim:rel:switch-host",
+      "type": "for-user",
+      "from": "opf:prim:problem:kernel-type-switch",
+      "to": "opf:prim:user:host-builder"
+    },
+    {
+      "id": "opf:prim:rel:promise-author",
+      "type": "for-user",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:user:profile-author"
+    },
+    {
+      "id": "opf:prim:rel:promise-agent",
+      "type": "for-user",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:user:agent"
+    },
+    {
+      "id": "opf:prim:rel:promise-host",
+      "type": "for-user",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:user:host-builder"
+    },
+    {
+      "id": "opf:prim:rel:outcome-host",
+      "type": "for-user",
+      "from": "opf:prim:outcome:add-type-without-growing-host",
+      "to": "opf:prim:user:host-builder"
+    },
+    {
+      "id": "opf:prim:rel:journey-author",
+      "type": "for-user",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:user:profile-author"
+    },
+    {
+      "id": "opf:prim:rel:addr-copied",
+      "type": "addresses",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:problem:copied-pack-code"
+    },
+    {
+      "id": "opf:prim:rel:addr-switch",
+      "type": "addresses",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:problem:kernel-type-switch"
+    },
+    {
+      "id": "opf:prim:rel:serves-outcome",
+      "type": "serves",
+      "from": "opf:prim:promise:one-kernel-many-profile-sdks",
+      "to": "opf:prim:outcome:add-type-without-growing-host"
+    },
+    {
+      "id": "opf:prim:rel:journey-serves",
+      "type": "serves",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:outcome:add-type-without-growing-host"
+    },
+    {
+      "id": "opf:prim:rel:step-open",
+      "type": "has-step",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:open-with-kernel",
+      "order": 0
+    },
+    {
+      "id": "opf:prim:rel:step-reg",
+      "type": "has-step",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:register-profile",
+      "order": 1
+    },
+    {
+      "id": "opf:prim:rel:step-verbs",
+      "type": "has-step",
+      "from": "opf:prim:journey:add-a-prim-type",
+      "to": "opf:prim:moment:implement-verbs",
+      "order": 2
+    },
+    {
+      "id": "opf:prim:rel:use-open",
+      "type": "uses",
+      "from": "opf:prim:moment:open-with-kernel",
+      "to": "opf:prim:surface:category-sdk"
+    },
+    {
+      "id": "opf:prim:rel:use-reg",
+      "type": "uses",
+      "from": "opf:prim:moment:register-profile",
+      "to": "opf:prim:surface:category-sdk"
+    },
+    {
+      "id": "opf:prim:rel:use-verbs",
+      "type": "uses",
+      "from": "opf:prim:moment:implement-verbs",
+      "to": "opf:prim:surface:profile-sdk"
+    },
+    {
+      "id": "opf:prim:rel:has-pack",
+      "type": "has-state",
+      "from": "opf:prim:surface:category-sdk",
+      "to": "opf:prim:state:pack-open"
+    },
+    {
+      "id": "opf:prim:rel:allow-open",
+      "type": "allows",
+      "from": "opf:prim:state:pack-open",
+      "to": "opf:prim:interaction:open-prim"
+    },
+    {
+      "id": "opf:prim:rel:has-domain",
+      "type": "has-state",
+      "from": "opf:prim:surface:profile-sdk",
+      "to": "opf:prim:state:domain-ready"
+    },
+    {
+      "id": "opf:prim:rel:allow-verb",
+      "type": "allows",
+      "from": "opf:prim:state:domain-ready",
+      "to": "opf:prim:interaction:run-domain-verb"
+    },
+    {
+      "id": "opf:prim:rel:realizes",
+      "type": "realizes",
+      "from": "opf:prim:interaction:run-domain-verb",
+      "to": "opf:prim:outcome:add-type-without-growing-host"
+    },
+    {
+      "id": "opf:prim:rel:depends",
+      "type": "depends-on",
+      "from": "opf:prim:surface:profile-sdk",
+      "to": "opf:prim:surface:category-sdk"
+    },
+    {
+      "id": "opf:prim:rel:decides-promise",
+      "type": "decides",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:promise:one-kernel-many-profile-sdks"
+    },
+    {
+      "id": "opf:prim:rel:decides-category",
+      "type": "decides",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:surface:category-sdk"
+    },
+    {
+      "id": "opf:prim:rel:decides-profile",
+      "type": "decides",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:surface:profile-sdk"
+    },
+    {
+      "id": "opf:prim:rel:decides-outcome",
+      "type": "decides",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:outcome:add-type-without-growing-host"
+    },
+    {
+      "id": "opf:prim:rel:decision-governed",
+      "type": "governed-by",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:authority:daniel"
+    },
+    {
+      "id": "opf:prim:rel:impl-omf",
+      "type": "implements",
+      "from": "opf:prim:work:omf-internal-sdk",
+      "to": "opf:prim:decision:profile-internal-sdk"
+    },
+    {
+      "id": "opf:prim:rel:impl-omf-p",
+      "type": "implements",
+      "from": "opf:prim:work:omf-internal-sdk",
+      "to": "opf:prim:promise:one-kernel-many-profile-sdks"
+    },
+    {
+      "id": "opf:prim:rel:impl-reg",
+      "type": "implements",
+      "from": "opf:prim:work:register-validators",
+      "to": "opf:prim:decision:profile-internal-sdk"
+    },
+    {
+      "id": "opf:prim:rel:sup-readme",
+      "type": "supported-by",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:evidence:category-sdk-readme"
+    },
+    {
+      "id": "opf:prim:rel:sup-spec",
+      "type": "supported-by",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:evidence:prim-spec-9"
+    },
+    {
+      "id": "opf:prim:rel:sup-docket",
+      "type": "supported-by",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:evidence:docket-prim-cli"
+    },
+    {
+      "id": "opf:prim:rel:sup-session",
+      "type": "supported-by",
+      "from": "opf:prim:decision:profile-internal-sdk",
+      "to": "opf:prim:evidence:session-accept"
+    },
+    {
+      "id": "opf:prim:rel:block-omf",
+      "type": "blocks",
+      "from": "opf:prim:gap:omf-sdk-missing",
+      "to": "opf:prim:work:omf-internal-sdk"
+    },
+    {
+      "id": "opf:prim:rel:block-okf",
+      "type": "blocks",
+      "from": "opf:prim:gap:kernel-okf-only",
+      "to": "opf:prim:surface:category-sdk"
+    }
+  ],
+  "events": [
+    {
+      "id": "opf:prim:event:created-product",
+      "type": "created",
+      "at": "2026-08-20T04:59:00Z",
+      "subjects": [
+        "opf:prim:product"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created product Prim SDKs"
+    },
+    {
+      "id": "opf:prim:event:created-area-intent",
+      "type": "created",
+      "at": "2026-08-20T04:59:01Z",
+      "subjects": [
+        "opf:prim:area:intent"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Intent"
+    },
+    {
+      "id": "opf:prim:event:created-area-experience",
+      "type": "created",
+      "at": "2026-08-20T04:59:02Z",
+      "subjects": [
+        "opf:prim:area:experience"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Experience"
+    },
+    {
+      "id": "opf:prim:event:created-area-governance",
+      "type": "created",
+      "at": "2026-08-20T04:59:03Z",
+      "subjects": [
+        "opf:prim:area:governance"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Governance"
+    },
+    {
+      "id": "opf:prim:event:created-area-delivery",
+      "type": "created",
+      "at": "2026-08-20T04:59:04Z",
+      "subjects": [
+        "opf:prim:area:delivery"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Delivery"
+    },
+    {
+      "id": "opf:prim:event:created-area-assurance",
+      "type": "created",
+      "at": "2026-08-20T04:59:05Z",
+      "subjects": [
+        "opf:prim:area:assurance"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Evidence"
+    },
+    {
+      "id": "opf:prim:event:created-area-gaps",
+      "type": "created",
+      "at": "2026-08-20T04:59:06Z",
+      "subjects": [
+        "opf:prim:area:gaps"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created area Known gaps"
+    },
+    {
+      "id": "opf:prim:event:created-intent-kernel-and-profile-sdks",
+      "type": "created",
+      "at": "2026-08-20T04:59:07Z",
+      "subjects": [
+        "opf:prim:intent:kernel-and-profile-sdks"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created intent One kernel; each Prim type owns its domain SDK"
+    },
+    {
+      "id": "opf:prim:event:created-user-profile-author",
+      "type": "created",
+      "at": "2026-08-20T04:59:08Z",
+      "subjects": [
+        "opf:prim:user:profile-author"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created user Profile author"
+    },
+    {
+      "id": "opf:prim:event:created-user-agent",
+      "type": "created",
+      "at": "2026-08-20T04:59:09Z",
+      "subjects": [
+        "opf:prim:user:agent"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created user Agent"
+    },
+    {
+      "id": "opf:prim:event:created-user-host-builder",
+      "type": "created",
+      "at": "2026-08-20T04:59:10Z",
+      "subjects": [
+        "opf:prim:user:host-builder"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created user Host builder"
+    },
+    {
+      "id": "opf:prim:event:created-problem-copied-pack-code",
+      "type": "created",
+      "at": "2026-08-20T04:59:11Z",
+      "subjects": [
+        "opf:prim:problem:copied-pack-code"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created problem Profile repos reimplemented pack load, face parse, and archives"
+    },
+    {
+      "id": "opf:prim:event:created-problem-kernel-type-switch",
+      "type": "created",
+      "at": "2026-08-20T04:59:12Z",
+      "subjects": [
+        "opf:prim:problem:kernel-type-switch"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created problem Putting domain verbs in the kernel grows a type switch"
+    },
+    {
+      "id": "opf:prim:event:created-promise-one-kernel-many-profile-sdks",
+      "type": "created",
+      "at": "2026-08-20T04:59:13Z",
+      "subjects": [
+        "opf:prim:promise:one-kernel-many-profile-sdks"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created promise Category SDK opens packs; profile SDK owns verbs and gates"
+    },
+    {
+      "id": "opf:prim:event:created-outcome-add-type-without-growing-host",
+      "type": "created",
+      "at": "2026-08-20T04:59:14Z",
+      "subjects": [
+        "opf:prim:outcome:add-type-without-growing-host"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created outcome Add a Prim type without growing the host"
+    },
+    {
+      "id": "opf:prim:event:created-journey-add-a-prim-type",
+      "type": "created",
+      "at": "2026-08-20T04:59:15Z",
+      "subjects": [
+        "opf:prim:journey:add-a-prim-type"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created journey Add a Prim type"
+    },
+    {
+      "id": "opf:prim:event:created-moment-open-with-kernel",
+      "type": "created",
+      "at": "2026-08-20T04:59:16Z",
+      "subjects": [
+        "opf:prim:moment:open-with-kernel"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created moment Open the pack with the category SDK"
+    },
+    {
+      "id": "opf:prim:event:created-moment-register-profile",
+      "type": "created",
+      "at": "2026-08-20T04:59:17Z",
+      "subjects": [
+        "opf:prim:moment:register-profile"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created moment Register the profile validator and view on the kernel"
+    },
+    {
+      "id": "opf:prim:event:created-moment-implement-verbs",
+      "type": "created",
+      "at": "2026-08-20T04:59:18Z",
+      "subjects": [
+        "opf:prim:moment:implement-verbs"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created moment Implement domain verbs in the profile SDK"
+    },
+    {
+      "id": "opf:prim:event:created-surface-category-sdk",
+      "type": "created",
+      "at": "2026-08-20T04:59:19Z",
+      "subjects": [
+        "opf:prim:surface:category-sdk"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created surface Category Prim SDK"
+    },
+    {
+      "id": "opf:prim:event:created-state-pack-open",
+      "type": "created",
+      "at": "2026-08-20T04:59:20Z",
+      "subjects": [
+        "opf:prim:state:pack-open"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created state Pack open"
+    },
+    {
+      "id": "opf:prim:event:created-interaction-open-prim",
+      "type": "created",
+      "at": "2026-08-20T04:59:21Z",
+      "subjects": [
+        "opf:prim:interaction:open-prim"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created interaction openPrim / validateBase"
+    },
+    {
+      "id": "opf:prim:event:created-surface-profile-sdk",
+      "type": "created",
+      "at": "2026-08-20T04:59:22Z",
+      "subjects": [
+        "opf:prim:surface:profile-sdk"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created surface Profile internal SDK"
+    },
+    {
+      "id": "opf:prim:event:created-state-domain-ready",
+      "type": "created",
+      "at": "2026-08-20T04:59:23Z",
+      "subjects": [
+        "opf:prim:state:domain-ready"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created state Domain verbs available"
+    },
+    {
+      "id": "opf:prim:event:created-interaction-run-domain-verb",
+      "type": "created",
+      "at": "2026-08-20T04:59:24Z",
+      "subjects": [
+        "opf:prim:interaction:run-domain-verb"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created interaction Run a type-specific verb"
+    },
+    {
+      "id": "opf:prim:event:created-authority-daniel",
+      "type": "created",
+      "at": "2026-08-20T04:59:25Z",
+      "subjects": [
+        "opf:prim:authority:daniel"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created authority Daniel Shanklin"
+    },
+    {
+      "id": "opf:prim:event:created-decision-profile-internal-sdk",
+      "type": "created",
+      "at": "2026-08-20T04:59:26Z",
+      "subjects": [
+        "opf:prim:decision:profile-internal-sdk"
+      ],
+      "actor": "human:daniel",
+      "detail": "Created decision Each Prim type has an internal SDK; none reimplements the category kernel"
+    },
+    {
+      "id": "opf:prim:event:created-work-omf-internal-sdk",
+      "type": "created",
+      "at": "2026-08-20T04:59:27Z",
+      "subjects": [
+        "opf:prim:work:omf-internal-sdk"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created work Give prim.omf an internal SDK / omf-prim CLI"
+    },
+    {
+      "id": "opf:prim:event:created-work-register-validators",
+      "type": "created",
+      "at": "2026-08-20T04:59:28Z",
+      "subjects": [
+        "opf:prim:work:register-validators"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created work Register profile validators on the category SDK"
+    },
+    {
+      "id": "opf:prim:event:created-evidence-category-sdk-readme",
+      "type": "created",
+      "at": "2026-08-20T04:59:29Z",
+      "subjects": [
+        "opf:prim:evidence:category-sdk-readme"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created evidence prim/sdk README names the kernel and forbids profile code"
+    },
+    {
+      "id": "opf:prim:event:created-evidence-prim-spec-9",
+      "type": "created",
+      "at": "2026-08-20T04:59:30Z",
+      "subjects": [
+        "opf:prim:evidence:prim-spec-9"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created evidence Prim SPEC \u00a79 validator stack and primitives"
+    },
+    {
+      "id": "opf:prim:event:created-evidence-docket-prim-cli",
+      "type": "created",
+      "at": "2026-08-20T04:59:31Z",
+      "subjects": [
+        "opf:prim:evidence:docket-prim-cli"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created evidence docket-prim is a working profile SDK"
+    },
+    {
+      "id": "opf:prim:event:created-evidence-session-accept",
+      "type": "created",
+      "at": "2026-08-20T04:59:32Z",
+      "subjects": [
+        "opf:prim:evidence:session-accept"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created evidence Daniel asked whether each type needs its own internal SDK, then asked for this OPF"
+    },
+    {
+      "id": "opf:prim:event:created-gap-omf-sdk-missing",
+      "type": "created",
+      "at": "2026-08-20T04:59:33Z",
+      "subjects": [
+        "opf:prim:gap:omf-sdk-missing"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created gap prim.omf has SPEC and validator, not an internal SDK package"
+    },
+    {
+      "id": "opf:prim:event:created-gap-kernel-okf-only",
+      "type": "created",
+      "at": "2026-08-20T04:59:34Z",
+      "subjects": [
+        "opf:prim:gap:kernel-okf-only"
+      ],
+      "actor": "agent:mason",
+      "detail": "Created gap Category SDK validateBase is still OKF-shaped"
+    },
+    {
+      "id": "opf:prim:event:decision-accepted",
+      "type": "accepted",
+      "at": "2026-08-20T05:00:00Z",
+      "subjects": [
+        "opf:prim:decision:profile-internal-sdk"
+      ],
+      "actor": "human:daniel",
+      "detail": "Each Prim type has an internal SDK; none reimplements the category kernel.",
+      "evidence": [
+        "opf:prim:evidence:session-accept"
+      ]
+    }
+  ]
+}
