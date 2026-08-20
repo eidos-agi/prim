@@ -37,7 +37,10 @@ Profiles (OKF-shaped unless noted)
 ├── prim.obif     Brand identity (logo, color, type, voice, assets)
 ├── prim.osf      Open Session Format (movable session packs)
 ├── prim.obf      (private / emerging)
-└── prim.docket   Execution prim + first Prim Tool (`docket-prim`, surface / talk)
+├── prim.docket   Execution prim + first Prim Tool (`docket-editor`, surface / talk)
+├── prim.deck     Slide records + `deck-editor` (emerging, not OKF)
+├── prim.invoice  Bill pack + `invoice-editor` (emerging, not OKF)
+└── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
 
 Base grammar + render
 │

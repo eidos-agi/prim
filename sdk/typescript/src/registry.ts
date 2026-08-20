@@ -23,6 +23,7 @@ export type PrimType = {
 
 export type RegisteredTool = PrimTool & {
   counterpart: "human" | "system";
+  as?: string;
   bin?: string;
   repo?: string;
 };
@@ -36,7 +37,7 @@ export type Registry = {
 type RawRegistry = {
   version: number;
   types: PrimType[];
-  tools: Array<PrimTool & { bin?: string; repo?: string }>;
+  tools: Array<PrimTool & { as?: string; bin?: string; repo?: string }>;
 };
 
 function committedPath(): string {
@@ -66,7 +67,7 @@ function freezeType(t: PrimType): PrimType {
 }
 
 function hydrateTool(
-  tool: PrimTool & { bin?: string; repo?: string },
+  tool: PrimTool & { as?: string; bin?: string; repo?: string },
   typeNames: Set<string>,
 ): RegisteredTool {
   const created = createTool({
@@ -81,6 +82,7 @@ function hydrateTool(
   return Object.freeze({
     ...created,
     counterpart: counterpartOf(created.kind),
+    as: tool.as,
     bin: tool.bin,
     repo: tool.repo,
   });
@@ -132,7 +134,7 @@ export function registerType(type: PrimType): PrimType {
   return next;
 }
 
-export function registerTool(tool: PrimTool & { bin?: string; repo?: string }): RegisteredTool {
+export function registerTool(tool: PrimTool & { as?: string; bin?: string; repo?: string }): RegisteredTool {
   if (getTool(tool.name)) {
     throw new Error(`Prim Tool already registered: ${tool.name}`);
   }

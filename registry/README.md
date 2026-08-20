@@ -8,9 +8,11 @@ Source of truth: [`registry.json`](./registry.json).
 prim registry
 prim registry types
 prim registry tools
-prim registry tool docket-prim
+prim registry tool docket-editor
 ```
 
-`docket-prim` is the first registered Prim Tool (surface / talk, cites `docket`).
+`docket-editor` is the first registered Prim Tool (surface / talk, as editor, cites `docket`). The binary is `docket-prim`.
+
+Emerging file+editor pairings: `deck-editor`, `invoice-editor`, `session-editor`. `session` is not OSF.
 
 A type is not a tool. A tool is not a `prim.surface` pack.

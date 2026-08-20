@@ -77,16 +77,62 @@
       "description": "Execution queue (docket-prim format, not markdown)",
       "okf": false,
       "status": "active"
+    },
+    {
+      "name": "deck",
+      "repo": "eidos-agi/prim.deck",
+      "description": "Slide records. The deck is a view of the file.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "invoice",
+      "repo": "eidos-agi/prim.invoice",
+      "description": "A bill as a pack. Lines are records.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "session",
+      "repo": "eidos-agi/prim.session",
+      "description": "Thin transcript file + editor. Not OSF.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
     {
-      "name": "docket-prim",
+      "name": "docket-editor",
       "kind": "surface",
       "direction": "talk",
       "cites": "docket",
+      "as": "editor",
       "bin": "docket-prim",
       "repo": "eidos-agi/prim.docket"
+    },
+    {
+      "name": "deck-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "deck",
+      "as": "editor",
+      "repo": "eidos-agi/prim.deck"
+    },
+    {
+      "name": "invoice-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "invoice",
+      "as": "editor",
+      "repo": "eidos-agi/prim.invoice"
+    },
+    {
+      "name": "session-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "session",
+      "as": "editor",
+      "repo": "eidos-agi/prim.session"
     }
   ]
 }

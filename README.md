@@ -78,7 +78,10 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | [prim.ocsf](https://github.com/eidos-agi/prim.ocsf) | Corporate structure & capital |
 | [prim.obif](https://github.com/eidos-agi/prim.obif) | Brand & identity |
 | [prim.osf](https://github.com/eidos-agi/prim.osf) | Open Session Format |
-| [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution prim + first Prim Tool (`docket-prim`, surface / talk) |
+| [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution prim + first Prim Tool (`docket-editor`, surface / talk) |
+| prim.deck | Slide records + `deck-editor` (emerging) |
+| prim.invoice | Bill pack + `invoice-editor` (emerging) |
+| prim.session | Thin transcript + `session-editor` (emerging; not OSF) |
 
 OKF provides the grammar ([okflify](https://github.com/eidos-agi/okflify)).  
 **Prim** is what people call the thing.

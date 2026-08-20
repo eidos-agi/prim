@@ -15,12 +15,24 @@ resetRegistry();
 assert.ok(listTypes().length >= 1);
 assert.ok(getType("docket"));
 assert.equal(getType("docket")?.okf, false);
-const listed = getTool("docket-prim");
+assert.ok(getType("deck"));
+assert.equal(getType("deck")?.okf, false);
+assert.ok(getType("invoice"));
+assert.ok(getType("session"));
+assert.equal(getType("session")?.okf, false);
+assert.ok(getType("osf"));
+assert.equal(getType("osf")?.okf, true);
+assert.ok(getTool("deck-editor"));
+assert.equal(getTool("deck-editor")?.cites, "deck");
+assert.ok(getTool("invoice-editor"));
+assert.ok(getTool("session-editor"));
+const listed = getTool("docket-editor");
 assert.ok(listed);
 assert.equal(listed.kind, "surface");
 assert.equal(listed.direction, "talk");
 assert.equal(listed.counterpart, "human");
 assert.equal(listed.cites, "docket");
+assert.equal(listed.as, "editor");
 assert.equal(listTools({ kind: "surface", cites: "docket" }).length, 1);
 
 const extra = registerType({
@@ -65,5 +77,5 @@ assert.throws(() =>
 );
 resetRegistry();
 assert.equal(getType("demo"), undefined);
-assert.ok(getTool("docket-prim"));
+assert.ok(getTool("docket-editor"));
 console.log("registry.test.ts ok");
