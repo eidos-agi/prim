@@ -142,6 +142,14 @@
       "repo": "eidos-agi/prim.session"
     },
     {
+      "name": "opff-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "opff",
+      "as": "ledger",
+      "repo": "eidos-agi/prim.opff"
+    },
+    {
       "name": "prim-arcade",
       "kind": "surface",
       "direction": "talk",
