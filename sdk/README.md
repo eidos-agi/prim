@@ -4,9 +4,12 @@ Reference implementation of the **category-level** Prim conventions: open a pack
 
 The kernel is TypeScript. Profiles (OCSF, OMF, OPAF, OBF, …) live in their own repositories and register a validator + view on top. Nothing profile-specific belongs here.
 
-| Language | Path | Status |
+The category player is a separate package: [`@eidos-agi/prim-viewer`](../tools/prim-viewer) — `<showprim>` plus React and Next components. It is a Prim Tool, not the kernel.
+
+| Package | Path | Status |
 |---|---|---|
-| TypeScript | [`typescript/`](typescript) | **kernel** — v0.4.2, no npm runtime deps |
+| `@eidos-agi/prim` | [`typescript/`](typescript) | **kernel** — v0.4.2, no npm runtime deps |
+| `@eidos-agi/prim-viewer` | [`../tools/prim-viewer/`](../tools/prim-viewer) | **player** — `<ShowPrim filename="yadda.prim" />` |
 
 ## Why this exists
 
@@ -31,3 +34,13 @@ node --experimental-strip-types sdk/typescript/tests/pack.test.ts
 node --experimental-strip-types sdk/typescript/src/cli.ts open <pack>
 node --experimental-strip-types sdk/typescript/src/cli.ts validate <pack>
 ```
+
+## Player (React / Next)
+
+```tsx
+import { ShowPrim } from "@eidos-agi/prim-viewer/next";
+
+<ShowPrim filename="yadda.prim" />
+```
+
+See [`tools/prim-viewer/`](../tools/prim-viewer).

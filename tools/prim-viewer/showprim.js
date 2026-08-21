@@ -3,7 +3,10 @@
  *
  *   <script type="module" src="showprim.js"></script>
  *   <showprim filename="yadda.prim"></showprim>
- *   <showprim src="/path/to/pack.prim.zip"></showprim>
+ *
+ *   import { ShowPrim } from "@eidos-agi/prim-viewer/react"
+ *   import { ShowPrim } from "@eidos-agi/prim-viewer/next"
+ *   <ShowPrim filename="yadda.prim" />
  *
  * The pack stays the file. This surface cites it. Unknown profiles
  * fall back to the face (SPEC §9). OBIF projects a brand board.

@@ -1,0 +1,66 @@
+{
+  "name": "@eidos-agi/prim-viewer",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Flash for .prim files — <showprim> plus React and Next components",
+  "main": "./showprim.js",
+  "types": "./showprim.d.ts",
+  "exports": {
+    ".": {
+      "types": "./showprim.d.ts",
+      "default": "./showprim.js"
+    },
+    "./react": {
+      "types": "./react.d.ts",
+      "default": "./react.js"
+    },
+    "./next": {
+      "types": "./next.d.ts",
+      "default": "./next.js"
+    },
+    "./showprim.js": "./showprim.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "showprim.js",
+    "showprim.d.ts",
+    "react.js",
+    "react.d.ts",
+    "next.js",
+    "next.d.ts",
+    "README.md"
+  ],
+  "sideEffects": [
+    "./showprim.js",
+    "./react.js",
+    "./next.js"
+  ],
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "test": "node test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eidos-agi/prim.git",
+    "directory": "tools/prim-viewer"
+  },
+  "homepage": "https://github.com/eidos-agi/prim/tree/main/tools/prim-viewer",
+  "keywords": [
+    "prim",
+    "prim-viewer",
+    "showprim",
+    "react",
+    "next"
+  ]
+}
