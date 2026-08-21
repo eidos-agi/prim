@@ -1,6 +1,6 @@
 {
   "name": "@eidos-agi/prim-viewer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Flash for .prim files — <showprim> plus React and Next components",
   "main": "./showprim.js",
@@ -18,6 +18,10 @@
       "types": "./next.d.ts",
       "default": "./next.js"
     },
+    "./webmcp": {
+      "types": "./webmcp.d.ts",
+      "default": "./webmcp.js"
+    },
     "./showprim.js": "./showprim.js",
     "./package.json": "./package.json"
   },
@@ -28,12 +32,15 @@
     "react.d.ts",
     "next.js",
     "next.d.ts",
+    "webmcp.js",
+    "webmcp.d.ts",
     "README.md"
   ],
   "sideEffects": [
     "./showprim.js",
     "./react.js",
-    "./next.js"
+    "./next.js",
+    "./webmcp.js"
   ],
   "peerDependencies": {
     "react": ">=18"

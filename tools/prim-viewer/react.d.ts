@@ -21,7 +21,7 @@ export default ShowPrim;
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
-      showprim: HTMLAttributes<HTMLElement> & {
+      "show-prim": HTMLAttributes<HTMLElement> & {
         src?: string;
         filename?: string;
         chrome?: string;

@@ -4,7 +4,7 @@ Reference implementation of the **category-level** Prim conventions: open a pack
 
 The kernel is TypeScript. Profiles (OCSF, OMF, OPAF, OBF, …) live in their own repositories and register a validator + view on top. Nothing profile-specific belongs here.
 
-The category player is a separate package: [`@eidos-agi/prim-viewer`](../tools/prim-viewer) — `<showprim>` plus React and Next components. It is a Prim Tool, not the kernel.
+The category player is a separate package: [`@eidos-agi/prim-viewer`](../tools/prim-viewer) — `<show-prim>` plus React and Next components. It is a Prim Tool, not the kernel.
 
 | Package | Path | Status |
 |---|---|---|

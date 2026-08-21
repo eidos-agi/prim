@@ -10,7 +10,7 @@
     h1 { font-weight: 500; letter-spacing: -0.04em; }
     h2 { font-weight: 500; font-size: 15px; margin: 28px 0 8px; }
     .kicker { color: #6a6a66; font: 12px/1.3 ui-monospace, monospace; }
-    showprim { display: block; margin-top: 22px; min-height: 360px; }
+    show-prim { display: block; margin-top: 22px; min-height: 360px; }
     pre, code { font: 13px/1.45 ui-monospace, monospace; }
     pre { background: #fffcf8; border: 1px solid #e4e2dc; border-radius: 12px; padding: 14px 16px; overflow: auto; }
   </style>
@@ -18,11 +18,11 @@
 </head>
 <body>
   <main>
-    <p class="kicker">prim-viewer · surface / talk · cites *</p>
+    <p class="kicker">prim-viewer · surface / talk · cites * · webmcp</p>
     <h1>Drop a .prim</h1>
-    <p>Same idea as Flash. The file is the thing. This tag is how you see it.</p>
-    <p><code><showprim filename="yadda.prim"></code></p>
-    <showprim></showprim>
+    <p>Same idea as Flash. The file is the thing. This tag is how you see it. A model talks to it through WebMCP.</p>
+    <p><code><show-prim filename="yadda.prim"></code></p>
+    <show-prim></show-prim>
     <h2>React</h2>
     <pre>import { ShowPrim } from "@eidos-agi/prim-viewer/react"
 
@@ -33,6 +33,11 @@
 export default function Page() {
   return <ShowPrim filename="yadda.prim" />
 }</pre>
+    <h2>WebMCP</h2>
+    <pre>prim-status · prim-open · prim-tab · prim-files · prim-face · prim-read
+
+The tag registers these on navigator.modelContext.
+A model talks to the prim. It does not scrape the page.</pre>
   </main>
 </body>
 </html>

@@ -48,7 +48,7 @@ assert.equal(viewer.counterpart, "human");
 assert.equal(viewer.cites, "*");
 assert.equal(viewer.as, "viewer");
 assert.equal(viewer.repo, "eidos-agi/prim");
-assert.equal(listTools({ cites: "*" }).length, 1);
+assert.equal(listTools({ cites: "*" }).length, 2);
 const listed = getTool("docket-editor");
 assert.ok(listed);
 assert.equal(listed.kind, "surface");
@@ -98,6 +98,14 @@ assert.equal(mcp.counterpart, "system");
 assert.equal(mcp.cites, "docket");
 assert.equal(mcp.as, "webmcp");
 assert.equal(listTools({ kind: "connector", cites: "docket" }).length, 1);
+const viewerMcp = getTool("prim-viewer-webmcp");
+assert.ok(viewerMcp);
+assert.equal(viewerMcp.kind, "connector");
+assert.equal(viewerMcp.direction, "talk");
+assert.equal(viewerMcp.counterpart, "system");
+assert.equal(viewerMcp.cites, "*");
+assert.equal(viewerMcp.as, "webmcp");
+assert.equal(listTools({ kind: "connector", cites: "*" }).length, 1);
 
 const extra = registerType({
   name: "demo",

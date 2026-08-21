@@ -6,10 +6,10 @@ function chromeAttr(chrome) {
   return undefined;
 }
 
-/** React wrapper for <showprim>. Same tag the HTML player uses. */
+/** React wrapper for <show-prim>. Same tag the HTML player uses. */
 export const ShowPrim = forwardRef(function ShowPrim(props, ref) {
   const { src, filename, chrome = true, className, style, ...rest } = props;
-  return createElement("showprim", {
+  return createElement("show-prim", {
     ...rest,
     ref,
     className,

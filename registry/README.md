@@ -25,7 +25,9 @@ First connector: `docket-webmcp` (connector / talk, as webmcp, cites `docket`). 
 
 `prim-arcade` is a surface tool on an `arcade` prim. The cart is the file. JSNES embeds in chat.
 
-`prim-viewer` is the category player (surface / talk, as viewer, cites `*`). Drop a `.prim` or write `<showprim filename="yadda.prim">`. React/Next: `npm i @eidos-agi/prim-viewer` then `<ShowPrim filename="yadda.prim" />`. It is Flash for prims. Source: [`tools/prim-viewer/`](../tools/prim-viewer/). Profile editors stay the operators on their types.
+`prim-viewer` is the category player (surface / talk, as viewer, cites `*`). Drop a `.prim` or write `<show-prim filename="yadda.prim">`. React/Next: `npm i @eidos-agi/prim-viewer` then `<ShowPrim filename="yadda.prim" />`. It is Flash for prims. Source: [`tools/prim-viewer/`](../tools/prim-viewer/). Profile editors stay the operators on their types.
+
+`prim-viewer-webmcp` is the category connector on that player (connector / talk, as webmcp, cites `*`). The tag registers WebMCP tools (`prim-status`, `prim-open`, `prim-tab`, `prim-files`, `prim-face`, `prim-read`) so a model talks to the open prim instead of scraping the page. The pack stays the file.
 
 `log` is the category primitive as a store. `log-editor` opens the file. `prim-sim` is the Mac surface that simulates other tools and writes that log prim.
 

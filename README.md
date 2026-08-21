@@ -110,7 +110,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim; Prim Tools in §10) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |
 | [registry/registry.json](./registry/registry.json) | **Registry** — Prim types and Prim Tools |
-| [tools/prim-viewer/](./tools/prim-viewer/) | Category player — `<showprim filename="yadda.prim">`. React: `@eidos-agi/prim-viewer/react`. Next: `@eidos-agi/prim-viewer/next`. |
+| [tools/prim-viewer/](./tools/prim-viewer/) | Category player — `<show-prim filename="yadda.prim">`. React: `@eidos-agi/prim-viewer/react`. Next: `@eidos-agi/prim-viewer/next`. WebMCP: `prim-viewer-webmcp`. |
 | [BRAND.md](./BRAND.md) | Identity, language, and positioning |
 | [sdk/typescript/](./sdk/typescript) | Category SDK (open, face, validate, write) |
 | [examples/](./examples/) | Illustrative packs and references |

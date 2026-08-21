@@ -2,15 +2,18 @@
  * prim-viewer — Flash for .prim files.
  *
  *   <script type="module" src="showprim.js"></script>
- *   <showprim filename="yadda.prim"></showprim>
+ *   <show-prim filename="yadda.prim"></show-prim>
  *
  *   import { ShowPrim } from "@eidos-agi/prim-viewer/react"
  *   import { ShowPrim } from "@eidos-agi/prim-viewer/next"
  *   <ShowPrim filename="yadda.prim" />
+ *   WebMCP: prim-status, prim-open, prim-tab, prim-files, prim-face, prim-read
+ *   (connector prim-viewer-webmcp — a model talks to this player)
  *
  * The pack stays the file. This surface cites it. Unknown profiles
  * fall back to the face (SPEC §9). OBIF projects a brand board.
  */
+import { bindWebmcp, SECRET } from "./webmcp.js";
 const TEXT = /\.(md|json|jsonl|txt|svg|css|html|csv|ics)$/i;
 const BIN = /\.(png|jpe?g|gif|webp|woff2?|ttf|otf|nes|z64|n64|v64|wad)$/i;
 
@@ -448,7 +451,7 @@ function mount(el, pack, opts = {}) {
       ${chrome ? `<div class="bar">
         <span class="file">${esc(filename)}</span>
         <span class="drop-hint">drop a .prim</span>
-        <span class="tool">prim-viewer</span>
+        <span class="tool">prim-viewer${el._webmcp ? " · webmcp" : ""}</span>
       </div>` : ""}
       <nav>${nav}</nav>
       <div class="stage">${pane(pack, tab, filename)}</div>
@@ -490,7 +493,23 @@ function mount(el, pack, opts = {}) {
       });
     });
   };
+  const ctl = {
+    pack,
+    filename,
+    tabs: tabs.map(([id, label]) => ({ id, label })),
+    get tab() {
+      return tab;
+    },
+    setTab(id) {
+      const hit = tabs.find(([t]) => t === id);
+      if (!hit) throw new Error("no tab " + id + " — have " + tabs.map(([t]) => t).join(", "));
+      tab = id;
+      draw();
+    },
+  };
+  el._ctl = ctl;
   draw();
+  return ctl;
 }
 
 function emptyHTML() {
@@ -503,6 +522,7 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
     super();
     this.attachShadow({ mode: "open" });
     this._gen = 0;
+    this._unbindMcp = null;
     this._onDrop = (e) => this.#drop(e);
     this._onOver = (e) => { e.preventDefault(); this.shadowRoot.querySelector(".player")?.classList.add("over"); };
     this._onLeave = () => this.shadowRoot.querySelector(".player")?.classList.remove("over");
@@ -513,6 +533,7 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
     this.addEventListener("dragleave", this._onLeave);
     this.addEventListener("drop", this._onDrop);
     window.addEventListener("message", this._onMsg);
+    if (this.getAttribute("webmcp") !== "0") this._unbindMcp = bindWebmcp(this);
     this.open();
   }
   disconnectedCallback() {
@@ -520,6 +541,8 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
     this.removeEventListener("dragleave", this._onLeave);
     this.removeEventListener("drop", this._onDrop);
     window.removeEventListener("message", this._onMsg);
+    this._unbindMcp?.();
+    this._unbindMcp = null;
   }
   attributeChangedCallback() { if (this.isConnected) this.open(); }
   _onMsg = async (e) => {
@@ -540,8 +563,56 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
       this.#show(files, src.split("/").pop());
     } catch (err) {
       if (token !== this._gen) return;
+      this._ctl = null;
       this.shadowRoot.innerHTML = `<style>${CSS}</style><div class="err">${esc(err.message || err)}</div>`;
     }
+  }
+  async openSrc(src, filename) {
+    if (filename) this.setAttribute("filename", filename);
+    this.setAttribute("src", src);
+    await this.open();
+  }
+  setTab(id) {
+    if (!this._ctl) throw new Error("no prim open");
+    this._ctl.setTab(id);
+  }
+  status() {
+    const c = this._ctl;
+    if (!c) return { open: false };
+    return {
+      open: true,
+      filename: c.filename,
+      kind: c.pack.kind,
+      title: c.pack.project?.name || "",
+      tab: c.tab,
+      tabs: c.tabs.map((t) => t.id),
+      files: c.pack.names || [],
+      brand: c.pack.identity?.brand?.display_name || undefined,
+    };
+  }
+  face() {
+    const c = this._ctl;
+    if (!c) throw new Error("no prim open");
+    const f = c.pack.face || {};
+    const body = String(f.body || "");
+    return {
+      title: f.title,
+      profile: f.profile || c.pack.kind,
+      type: f.type,
+      body: body.length > 4000 ? body.slice(0, 4000) + "…" : body,
+    };
+  }
+  readFile(path) {
+    const c = this._ctl;
+    if (!c) throw new Error("no prim open");
+    const name = String(path || "").replace(/^\.\//, "");
+    if (!name || name.includes("..") || name.startsWith("/")) throw new Error("bad path");
+    const data = getFile(c.pack.files, name);
+    if (data === "" || data == null) throw new Error("no file " + name);
+    if (typeof data !== "string") return { path: name, binary: true, bytes: data.byteLength };
+    if (SECRET.test(data)) throw new Error("refused: looks like a secret");
+    if (data.length > 80_000) return { path: name, truncated: true, text: data.slice(0, 80_000) };
+    return { path: name, text: data };
   }
   async #drop(e) {
     e.preventDefault();
@@ -552,17 +623,18 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
       const files = await readPrimFile(file);
       this.#show(files, file.name);
     } catch (err) {
+      this._ctl = null;
       this.shadowRoot.innerHTML = `<style>${CSS}</style><div class="err">${esc(err.message || err)}</div>`;
     }
   }
   #show(files, filename) {
     const pack = parsePrim(files);
-    mount(this, pack, { filename, chrome: this.getAttribute("chrome") !== "0" });
+    this._ctl = mount(this, pack, { filename, chrome: this.getAttribute("chrome") !== "0" });
   }
 }
 
-if (typeof customElements !== "undefined" && !customElements.get("showprim")) {
-  customElements.define("showprim", ShowPrim);
+if (typeof customElements !== "undefined" && !customElements.get("show-prim")) {
+  customElements.define("show-prim", ShowPrim);
 }
 
 export { ShowPrim };

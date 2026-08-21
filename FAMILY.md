@@ -43,7 +43,7 @@ Profiles (OKF-shaped unless noted)
 ├── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
 └── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
 
-First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed.
+First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed. Category connector: prim-viewer-webmcp — the player registers WebMCP tools so a model can operate any open prim.
 
 Prim Arcade (`prim-arcade`) is a surface tool on an `arcade` prim. The cart is the file. JSNES embeds in chat.
 
@@ -68,7 +68,7 @@ Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 | **prim-web** / renderers | Generate views on demand; never become the source of truth |
 | **Validators** | Enforce profile rules; fail-closed where specified. Register on the category SDK. |
 | **Prim UIs** | View plugins keyed `profile/subtype`. How a Prim *opens*. Never the file. |
-| **Prim Tools** | Operators on a Prim. Two kinds: **surface** (human counterpart) and **connector** (system counterpart). Cite a Prim. Not a pack type. The category player is **`prim-viewer`** (`<showprim filename="yadda.prim">`, or `<ShowPrim />` from `@eidos-agi/prim-viewer`). |
+| **Prim Tools** | Operators on a Prim. Two kinds: **surface** (human counterpart) and **connector** (system counterpart). Cite a Prim. Not a pack type. The category player is **`prim-viewer`** (`<show-prim filename="yadda.prim">`). The category connector on that player is **`prim-viewer-webmcp`**. |
 
 Category primitives (file, face, authority, constraint, log, validator, ui, compose, trust) live in the TypeScript Prim SDK (`sdk/typescript`). See SPEC §9.
 

@@ -33,10 +33,26 @@ export function readPrimFile(file: Blob): Promise<PrimFiles>;
 export function renderObif(el: Element, pack: PrimPack, opts?: RenderOpts): void;
 export function renderPrim(el: Element, pack: PrimPack, opts?: RenderOpts): void;
 
-/** Custom element. Pairing is the tag: <showprim filename="yadda.prim"> */
+export type PrimStatus = {
+  open: boolean;
+  filename?: string;
+  kind?: string;
+  title?: string;
+  tab?: string;
+  tabs?: string[];
+  files?: string[];
+  brand?: string;
+};
+
+/** Custom element. Pairing is the tag: <show-prim filename="yadda.prim"> */
 export class ShowPrim extends HTMLElement {
   static observedAttributes: ["src", "filename"];
   open(): Promise<void>;
+  openSrc(src: string, filename?: string): Promise<void>;
+  setTab(id: string): void;
+  status(): PrimStatus;
+  face(): { title?: string; profile?: string; type?: string; body?: string };
+  readFile(path: string): { path: string; text?: string; binary?: boolean; bytes?: number; truncated?: boolean };
 }
 
 export {};
