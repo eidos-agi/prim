@@ -18,9 +18,14 @@ export function getFile(files, name) {
 }
 
 function esc(s) {
-  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
-    "&": "&", "<": "<", ">": ">", '"': """, "'": "&#39;",
-  }[c]));
+  const AMP = String.fromCharCode(38);
+  return String(s ?? "").replace(/[&<>"']/g, (c) => {
+    if (c === "&") return AMP + "amp;";
+    if (c === "<") return AMP + "lt;";
+    if (c === ">") return AMP + "gt;";
+    if (c === '"') return AMP + "quot;";
+    return AMP + "#39;";
+  });
 }
 
 function faceMatter(md) {
@@ -489,7 +494,7 @@ function emptyHTML() {
   return `<div class="player"><div class="empty"><b>Drop a .prim</b><span>or set filename= on this tag. The pack stays the file.</span></div></div>`;
 }
 
-class ShowPrim extends HTMLElement {
+class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElement) {
   static get observedAttributes() { return ["src", "filename"]; }
   constructor() {
     super();
