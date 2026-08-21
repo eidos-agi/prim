@@ -143,11 +143,17 @@ export class Pack {
     return resolveView(this.face);
   }
 
-  /** Registered Prim Tools that cite this pack's profile. The pack stays the file. */
+  /** Registered Prim Tools that cite this pack's profile, plus the category viewer. The pack stays the file. */
   tools(filter?: { kind?: ToolKind; as?: string }): readonly RegisteredTool[] {
     const cites = this.profile;
-    if (!cites) return [];
-    return listTools({ cites, kind: filter?.kind, as: filter?.as });
+    const own = cites ? listTools({ cites, kind: filter?.kind, as: filter?.as }) : [];
+    const any = listTools({ cites: "*", kind: filter?.kind, as: filter?.as });
+    const seen = new Set<string>();
+    return [...own, ...any].filter((tool) => {
+      if (seen.has(tool.name)) return false;
+      seen.add(tool.name);
+      return true;
+    });
   }
 
   surface(filter?: { as?: string }): RegisteredTool | undefined {

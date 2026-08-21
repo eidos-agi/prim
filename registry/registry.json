@@ -260,6 +260,14 @@
       "as": "sim",
       "bin": "prim-sim",
       "repo": "eidos-agi/prim-sim"
+    },
+    {
+      "name": "prim-viewer",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "*",
+      "as": "viewer",
+      "repo": "eidos-agi/prim"
     }
   ]
 }

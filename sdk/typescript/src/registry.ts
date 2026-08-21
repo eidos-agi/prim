@@ -71,7 +71,7 @@ function hydrateTool(
   typeNames: Set<string>,
 ): RegisteredTool {
   const created = createTool(tool);
-  if (!typeNames.has(created.cites)) {
+  if (created.cites !== "*" && !typeNames.has(created.cites)) {
     throw new Error(`tool ${created.name} cites unknown type: ${created.cites}`);
   }
   return Object.freeze({

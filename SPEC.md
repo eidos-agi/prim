@@ -288,7 +288,7 @@ The category keeps one registry of **types** and **tools**. It lives at [`regist
 
 A **type** is a kind of Prim (`docket`, `orf`, …). It names a store. It is not a tool.
 
-A **tool** is a Prim Tool. It must be `surface` or `connector`, name one direction, and **cite a registered type**. It is not a type and not a pack.
+A **tool** is a Prim Tool. It must be `surface` or `connector`, name one direction, and **cite a registered type**. It is not a type and not a pack. A category viewer may cite `*` (any registered type). It still names one kind and one direction.
 
 ```bash
 prim registry
