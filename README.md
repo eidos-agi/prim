@@ -105,7 +105,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 | File | Purpose |
 |------|---------|
 | [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) | **Start here** — complete public explanation and how to talk about it |
-| [WHY-PEOPLE-NEED-PRIMS.md](./WHY-PEOPLE-NEED-PRIMS.md) | The human case — who needs a Prim, the test for a new one, and the personal Prims people would keep |
+| [WHY-PEOPLE-NEED-PRIMS.md](./WHY-PEOPLE-NEED-PRIMS.md) | Proposed `prim.*` profiles for people — home, vehicle, health, career, trip, estate, lineage |
 | [INTENTION.md](./INTENTION.md) | North-star design commitments |
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim; Prim Tools in §10) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |

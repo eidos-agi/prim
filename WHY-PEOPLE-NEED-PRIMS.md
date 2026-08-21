@@ -1,133 +1,124 @@
-# Why People Need Prims
+# Prim Profiles People Need
 
-The category docs explain *what* a Prim is. This one explains *who needs one, and why they would care* — starting from ordinary people rather than from agent architecture.
+Which `prim.<profile>` types should exist for **people** — the same way `prim.opff` exists for a household's money and `prim.opf` exists for a product graph.
 
-> The short version: people should own the important, changing parts of their lives as small, intelligible files that survive an app, a vendor, a device, or an assistant.
+The registered family today is weighted toward work: product graphs, corporate structure, research, execution, meetings, brand. Exactly one profile is about a person's own life — `prim.opff`. This document proposes the rest, using OPFF as the pattern.
 
----
-
-## 1. The human problem
-
-Nobody wakes up needing a portable knowledge format. People wake up needing to:
-
-- know what they spent and what is about to be due
-- remember which contractor fixed the water heater, and when
-- prove the truck's service history to a buyer
-- tell a new doctor what they are allergic to and what they already tried
-- hand a house-sitter, a spouse, an executor, or a new assistant the facts of a life
-
-Today those facts are scattered across bank portals, camera rolls, inboxes, PDFs, spreadsheets, calendars, and memory. Every app holds a slice and calls it an account. Exports are incomplete, arrive in whatever shape the vendor decided, and are only meaningful inside the product that produced them.
-
-The cost is not abstract:
-
-- **Re-explaining.** Every new tool, service provider, or assistant starts from zero.
-- **Lock-in by fragmentation.** Leaving a product means losing the accumulated context, not just the subscription.
-- **Decay.** History, decisions, and evidence are the first things lost, because no app is responsible for them.
-- **No handoff.** There is nothing you can give someone that means "this is my home" or "this is our money."
-
-The answer is not a universal personal database. It is a set of **bounded, recognizable files a person can name, inspect, hand over, and keep.**
+**What OPFF establishes as the pattern:** a domain a person recognizes as theirs, a bounded scope that refuses to become infrastructure (personal/household finance, not a bank connector, not `prim.ocsf` capital work), operational reality in the model (imports, stable ids, review queues, stale verification, reconciliation state), and a surface that cites the pack (`opff-editor`, as ledger). A candidate profile that cannot state all four is not ready.
 
 ---
 
-## 2. What a Prim gives a person
+## Proposed profiles
 
-A Prim is the store. A Prim Tool is a surface or connector that cites it. That split is what makes the file worth owning:
+| Profile | Name | Store | Tool | OKF | Status |
+|---------|------|-------|------|-----|--------|
+| `prim.ohf` | Open Home Format | One dwelling or property | `ohf-editor` | yes | proposed |
+| `prim.ovf` | Open Vehicle Format | One vehicle | `ovf-editor` | yes | proposed |
+| `prim.ophf` | Open Personal Health Format | One person's health record | `ophf-editor` | yes | proposed |
+| `prim.ocf` | Open Career Format | One person's working life | `ocf-editor` | yes | proposed |
+| `prim.otf` | Open Trip Format | One trip occurrence | `otf-editor` | yes | proposed |
+| `prim.oef` | Open Estate Format | Continuity if a person cannot act | `oef-editor` | yes | proposed |
+| `prim.olf` | Open Lineage Format | People, records, and descent | `olf-editor` | yes | proposed |
+| `prim.pet` | — | One animal | `pet-editor` | no | candidate |
+| `prim.collection` | — | One collection of owned things | `collection-editor` | no | candidate |
 
-| Property | What it means to a person |
-|----------|---------------------------|
-| The file is the authority | The app can be replaced without losing the reality it described |
-| Human-inspectable | You can open it and understand what it says about you |
-| Durable | History, decisions, and evidence accumulate instead of resetting |
-| Portable | "Send me the prim" works between people, tools, and assistants |
-| No fixed UX | A ledger, a dashboard, a chat, or an agent are all just views |
-
-An agent working on a Prim is working on something the person owns, with a defined scope, rather than on a temporary context window or a vendor's account.
-
----
-
-## 3. The test
-
-A domain deserves a Prim when all of these hold:
-
-1. **Recognizable ownership** — the person says "my money," "my home," "my car," "our trip."
-2. **It accumulates** — history, decisions, evidence, and relationships build up over time.
-3. **They would carry it** — moving tools or assistants without it would be a loss.
-4. **Multiple interfaces, one meaning** — several tools can help, none should own what it means.
-5. **Both readers work** — a human can read the file; an agent can validate and operate on its structure.
-
-The inverse test matters just as much. **A new UI, runtime, connector, or workflow is not a Prim.** If it disappeared and there is no durable human thing worth retaining, it is a surface, connector, cache, or event stream. Registering a pack type per interface is the anti-pattern; a tool cites a registered type instead.
+Acronym profiles follow the existing `O__F` convention and OKF grammar because these domains are claims about the real world with provenance and freshness. `prim.pet` and `prim.collection` follow the non-acronym convention already used by `docket`, `deck`, `invoice`, and `arcade`.
 
 ---
 
-## 4. `prim.opff` is the proof
+## Tier 1 — build these first
 
-Personal finance is the clearest existing demonstration, and it is worth reading as a template rather than as one profile among many.
+### `prim.ohf` — Open Home Format
 
-`prim.opff` does not model "a finance feature." It models a household's money as a thing the household possesses: accounts, transactions, categories, rules, review and reconciliation state, freshness, and provenance live in the pack. Bank feeds and imports are **inputs and provenance**, not the authority. `opff-editor` is a ledger surface that cites the pack.
+**Authority:** one dwelling, as an owner or tenant lives with it.
 
-> Don't send the bank CSV. Send the finance prim. The ledger is a view of that file.
+**Records:** property and parcel facts · rooms and systems · appliances with model and serial numbers · manuals · warranties with expiry · maintenance schedule · repair and service history with cost and vendor · contractors and trades · utility and insurance references · permits · photographs · active projects.
 
-Two things make it work, and both generalize:
+**Boundary:** it is a *home*, not real estate as an asset class and not a property-management system. No listings, valuations, tenants, or rent rolls. Ownership entities belong in `prim.ocsf`; a renovation's execution belongs in a `prim.docket` that cites the home.
 
-- **A real boundary.** It is personal and household finance. It deliberately does not drift into being a bank connector, an accounting system, or a capital-diligence tool. `prim.ocsf` exists for corporate structure and capital; the boundary is what keeps each pack intelligible.
-- **Operational honesty.** Imports, stable transaction identifiers, review queues, stale-account verification, and reconciliation state are in the model because real life has them.
+**Why it's first after finance:** highest recognition of any candidate ("this is our house, help us take care of it"), and the data is currently the most catastrophically scattered — model numbers in photos, warranties in email, repairs in memory. Every appliance failure is a re-research event today.
 
-A profile that skips either one produces a schema nobody keeps.
+**OPFF parallel:** the maintenance history is the transaction ledger. Warranty and service intervals are the freshness model. A receipt or invoice is provenance, and a `prim.invoice` can be cited rather than copied.
 
----
+### `prim.ovf` — Open Vehicle Format
 
-## 5. The personal Prims people would actually keep
+**Authority:** one vehicle, by VIN.
 
-### The essential set
+**Records:** VIN and identity · titles and registration references · mileage observations · scheduled maintenance · service and repair records with shop and parts · recalls and campaigns · tires · modifications · insurance references · fuel or charging history · incidents · ownership transfers.
 
-**Finance** — `prim.opff`. Accounts, transactions, categories, bills, rules, reconciliation, provenance. The one people feel immediately.
+**Boundary:** one vehicle, not a fleet and not a dealership CRM. A household with three cars holds three packs; the household composition is a reference, not a merge.
 
-**Home** — property facts, rooms, appliances and model numbers, manuals, warranties, maintenance schedule, repair history, contractors, utility and insurance references, photographs, active projects. The file you hand over and say: *this is our home, help us take care of it.*
+**Why:** it is the cleanest test case in the whole set. Bounded record types, a natural unique identifier, an obvious resale moment where the file has immediate cash value, and a validator that can actually check something (mileage monotonicity, service interval compliance, open recalls). Ship it to prove the pattern cheaply.
 
-**Vehicle** — identity and lifecycle: registration, insurance references, mileage, service and repair records, recalls, tires, parts, modifications, manuals, sale history. A complete portable service history instead of a dealership account and a pile of receipts.
+### `prim.ophf` — Open Personal Health Format
 
-**Health** — person-controlled record: care team, medications, allergies, conditions, immunizations, labs, appointments, insurance references, and explicit sharing boundaries. This one demands unusually strong consent, provenance, and access rules. That is a reason to design it deliberately, not a reason to leave a person's record fragmented.
+**Authority:** one person's health record, held by that person.
 
-**Household** — the shared operating record for people who live together: members, pets, recurring responsibilities, inventories, routines, emergency information, shared services, agreements. A consented record of a shared life, not a file about people.
+**Records:** conditions · medications with dose and dates · allergies and reactions · immunizations · procedures · labs and results with reference ranges · care team · appointments · insurance and coverage references · documents · directives · and an explicit disclosure and access model.
 
-**Career** — roles, skills, work samples, claims and the evidence behind them, references, preferences, goals, active opportunities. A résumé is one projection; a job-board profile is another. Neither should be the authority.
+**Boundary:** a person's own record. Not an EHR, not a clinical decision system, not a provider-side product. It receives portal exports and imports; it does not become an interoperability layer.
 
-**Travel** — one trip: travelers, itinerary, bookings, lodging, reservations, receipts, entry requirements, preferences, and what changed. Stays useful when the airline, hotel, or itinerary app does not.
-
-**Commitments and time** — not merely events: recurring responsibilities, availability rules, protected time, milestones, and which obligations can move. It lets a new assistant understand a person's time without a calendar product owning that reality.
-
-**Estate and digital life** — trusted contacts, document references, asset and obligation inventory, beneficiaries, instructions, review dates, ownership transitions; alongside devices, subscriptions, domains, recovery procedures, and account references. These store **policy, pointers, and secure references — never raw secrets.**
-
-**Memory and family history** — events, stories, photographs, recordings, artifacts, context, provenance, uncertainty, permissions. The point is not a photo dump; it is preserving what a memory means and where it came from.
-
-### The next tier
-
-Insurance across domains · a pet · a garden or plot of land · a collection (books, tools, art, instruments) · a personally significant project (renovation, move, wedding, legal matter, build) · a decision under research, with its question, sources, alternatives, conclusion, and revisit conditions.
+**Why it's hardest and still necessary:** every new provider relationship starts with a person reciting their own history from memory, badly. This is the domain where the OKF trust ladder and fail-closed rules matter most, and where a profile must be conservative: consent and disclosure scope are first-class fields, not metadata. Do not start here — start with `prim.ovf`, then `prim.ohf` — but design toward it.
 
 ---
 
-## 6. Why this matters for agents
+## Tier 2
 
-The value is not that an agent can read another document format. It is that a person can hand an agent **a bounded thing they own**, with a real scope and a durable authority.
-
-A person should be able to say:
-
-> "This is my house. Help me take care of it."
-
-or:
-
-> "This is our finance prim. Tell me what changed, reconcile what you can, and show me what needs a decision."
-
-The agent opens the file, cites it, proposes changes, validates, and produces views. It must not quietly convert the file into a proprietary account, treat session context as the authority, or make the person re-explain their life at every tool change.
+| Profile | Authority | Distinctive records | Boundary |
+|---------|-----------|--------------------|----------|
+| `prim.ocf` | One person's working life | Roles · skills with evidence · work samples · claims and the proof behind each · references · compensation history · preferences · active opportunities | A résumé and a job-board profile are both *views*. Not an ATS, not a recruiting pipeline. |
+| `prim.otf` | One trip | Travelers · itinerary legs · bookings and confirmations · lodging · reservations · entry and document requirements · receipts · change history | Per-occurrence, like `prim.omf` is per-meeting. Not a booking engine. Expenses cite `prim.opff` rather than duplicating it. |
+| `prim.oef` | Continuity when a person cannot act | Trusted contacts and roles · document location references · asset and obligation inventory · beneficiary designations · instructions · account and subscription references · recovery policy · review dates | **References and policy only — never raw secrets or credentials.** Not a password manager, not legal advice. |
+| `prim.olf` | People, records, and descent | Individuals · relationships · events with sources · source documents and images · conflicting evidence · confidence · living-person permissions | Genealogy with provenance, where uncertainty is representable. GEDCOM import is provenance, not the authority. Personal memory and intent stay in `prim.emf`. |
 
 ---
 
-## 7. The principle
+## Deliberately *not* new profiles
 
-**Prims are living files for the parts of life people need to carry forward.**
+Restraint is the point. Each of these was considered and folded, because minting a profile per noun destroys the category.
 
-The file is the durable authority. The interface is replaceable. The person stays in control.
+| Considered | Why not | Where it goes |
+|-----------|---------|---------------|
+| Insurance | Coverage is an attribute of a thing, not a domain | Policy references inside `prim.ohf`, `prim.ovf`, `prim.ophf`; the policy document is a cited file |
+| Household / family unit | Mostly people plus references to other packs | Residents in `prim.ohf`, shared money in `prim.opff`, intent and routines in `prim.emf` |
+| Personal research or a pending decision | Already the exact shape of research and investigation | `prim.orf`, scoped personally |
+| Memory and life archive | Human intent plus durable memory is already a profile | `prim.emf`; recordings of specific occurrences in `prim.osf` / `prim.omf` |
+| Calendar / commitments | Occurrences are covered; standing commitments are intent | `prim.omf` per occurrence, `prim.emf` for standing obligations |
+| Digital accounts and subscriptions | A continuity concern, not a life domain | `prim.oef` references and recovery policy |
+| Home renovation, move, wedding | These are plans, not durable domains | `prim.docket` citing the relevant pack |
+
+Two naming notes: `opf` is taken by the product graph, so "Open Property Format" is unavailable — hence `ohf`. Avoid `odf` entirely; it collides with OpenDocument.
 
 ---
 
-See also: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) · [INTENTION.md](./INTENTION.md) · [SPEC.md](./SPEC.md) · [FAMILY.md](./FAMILY.md) · [registry/registry.json](./registry/registry.json)
+## Sequencing
+
+```
+prim.opff   shipped   proves the pattern
+prim.ovf    next      cheapest complete proof: hard id, checkable validator, resale moment
+prim.ohf    then      highest human demand, richest record set
+prim.ocf    then      low privacy risk, immediate personal utility
+prim.otf    then      per-occurrence, cites opff and ohf — tests composition
+prim.oef    then      requires the reference-not-secret discipline to be settled
+prim.ophf   last      needs the strictest consent and disclosure model
+prim.olf    opportunistic
+```
+
+The composition test arrives at `prim.otf`: a trip that cites a finance pack for expenses and a vehicle pack for a road trip, without merging domains. Per FAMILY.md rule 3, cross-reference beats unification.
+
+## Admission requirement
+
+Before any of these gets a repo and a registry entry, it must state, in its own SPEC:
+
+1. The one real-world thing a person would call theirs.
+2. What the pack is authoritative for — and the adjacent system it refuses to become.
+3. The record kinds, including the ones that carry history, evidence, and freshness.
+4. Its validator's fail-closed rules.
+5. Its surface tool and the `as` role that tool plays (`ledger`, `editor`, …).
+6. Which existing profiles it cites instead of absorbing.
+
+A candidate that cannot fill in 2 and 6 is a feature request for an existing profile, or a Prim Tool — not a new type.
+
+---
+
+See also: [FAMILY.md](./FAMILY.md) · [registry/registry.json](./registry/registry.json) · [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md) · [SPEC.md](./SPEC.md) · [prim.opff](https://github.com/eidos-agi/prim.opff)
