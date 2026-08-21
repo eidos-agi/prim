@@ -12,7 +12,7 @@ The tag is the pairing. Hosting it on a site does not make the site a Prim.
 
 ## WebMCP
 
-The same tag is the connector. When `<show-prim>` is on a page it registers tools on `navigator.modelContext` (or `document.modelContext`). A model talks to the open prim. It does not scrape the page.
+The same tag is the connector. When `<show-prim>` is on a page it registers tools on `document.modelContext` (and `navigator.modelContext` on Chrome). A model talks to the open prim. It does not scrape the page.
 
 Registered as **prim-viewer-webmcp**: kind `connector`, direction `talk`, cites `*`, as `webmcp`.
 
@@ -25,7 +25,12 @@ Registered as **prim-viewer-webmcp**: kind `connector`, direction `talk`, cites 
 | `prim-face` | title, profile, type, body |
 | `prim-read` | `{ path }` — text file from the pack. Refuses secrets. |
 
-`webmcp="0"` on the tag turns the connector off. Native WebMCP is origin-trial / Chrome flag; without it the tools still land on `globalThis.modelContext` so a bridge can call them.
+`webmcp="0"` on the tag turns the connector off. Native WebMCP is origin-trial / Chrome flag. Without it the same tools still land on `document.modelContext` so an in-page agent (or a bridge) can call them.
+
+```js
+const ctx = document.modelContext;
+await ctx.executeTool("prim-tab", { tab: "color" });
+```
 
 ## HTML
 

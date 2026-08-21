@@ -21,23 +21,25 @@
     <p class="kicker">prim-viewer · surface / talk · cites * · webmcp</p>
     <h1>Drop a .prim</h1>
     <p>Same idea as Flash. The file is the thing. This tag is how you see it. A model talks to it through WebMCP.</p>
-    <p><code><show-prim filename="yadda.prim"></code></p>
+    <p><code>&lt;show-prim filename="yadda.prim"&gt;</code></p>
     <show-prim></show-prim>
     <h2>React</h2>
     <pre>import { ShowPrim } from "@eidos-agi/prim-viewer/react"
 
-<ShowPrim filename="yadda.prim" /></pre>
+&lt;ShowPrim filename="yadda.prim" /&gt;</pre>
     <h2>Next.js</h2>
     <pre>import { ShowPrim } from "@eidos-agi/prim-viewer/next"
 
 export default function Page() {
-  return <ShowPrim filename="yadda.prim" />
+  return &lt;ShowPrim filename="yadda.prim" /&gt;
 }</pre>
     <h2>WebMCP</h2>
     <pre>prim-status · prim-open · prim-tab · prim-files · prim-face · prim-read
 
-The tag registers these on navigator.modelContext.
-A model talks to the prim. It does not scrape the page.</pre>
+The tag registers these on document.modelContext.
+A model talks to the prim. It does not scrape the page.
+
+await document.modelContext.executeTool("prim-tab", { tab: "color" });</pre>
   </main>
 </body>
 </html>

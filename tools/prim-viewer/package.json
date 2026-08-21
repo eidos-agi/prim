@@ -1,8 +1,8 @@
 {
   "name": "@eidos-agi/prim-viewer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
-  "description": "Flash for .prim files — <showprim> plus React and Next components",
+  "description": "Flash for .prim files — <show-prim> plus React and Next components. WebMCP on the same tag.",
   "main": "./showprim.js",
   "types": "./showprim.d.ts",
   "exports": {
@@ -66,7 +66,8 @@
   "keywords": [
     "prim",
     "prim-viewer",
-    "showprim",
+    "show-prim",
+    "webmcp",
     "react",
     "next"
   ]

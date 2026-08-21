@@ -3,16 +3,19 @@ export type WebmcpResult = { content: WebmcpContent[]; [key: string]: unknown };
 
 export type WebmcpTool = {
   name: string;
+  title?: string;
   description: string;
   inputSchema: Record<string, unknown>;
-  execute: (input?: Record<string, unknown>) => Promise<WebmcpResult>;
+  annotations?: { readOnlyHint?: boolean; untrustedContentHint?: boolean };
+  execute: (input?: Record<string, unknown>, opts?: { signal?: AbortSignal }) => Promise<WebmcpResult>;
 };
 
 export function modelContext(): {
   registerTool: (tool: WebmcpTool, opts?: { signal?: AbortSignal }) => unknown;
   unregister?: (name: string) => void;
-  getTools?: () => unknown[];
-  executeTool?: (name: string, input?: Record<string, unknown>) => Promise<WebmcpResult>;
+  unregisterTool?: (name: string) => void;
+  getTools?: () => unknown[] | Promise<unknown[]>;
+  executeTool?: (tool: string | { name: string }, input?: Record<string, unknown>) => Promise<WebmcpResult>;
 } | null;
 
 export function result(data: unknown): WebmcpResult;

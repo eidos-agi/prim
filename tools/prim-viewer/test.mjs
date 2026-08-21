@@ -34,7 +34,7 @@ assert.match(player, /customElements\.define\("show-prim"/);
 assert.match(player, /bindWebmcp/);
 assert.match(player, /prim-status|webmcp/);
 
-const { toolsFor } = await import("./webmcp.js");
+const { toolsFor, bindWebmcp, modelContext } = await import("./webmcp.js");
 const fake = {
   _tab: "mark",
   status() {
@@ -65,6 +65,7 @@ const fake = {
 const tools = Object.fromEntries(toolsFor(() => fake).map((t) => [t.name, t]));
 for (const name of ["prim-status", "prim-open", "prim-tab", "prim-files", "prim-face", "prim-read"]) {
   assert.ok(tools[name], name);
+  assert.ok(tools[name].title, name + " title");
 }
 const st = await tools["prim-status"].execute({});
 assert.equal(st.kind, "obif");
@@ -75,5 +76,21 @@ const face = await tools["prim-face"].execute({});
 assert.equal(face.profile, "obif");
 const file = await tools["prim-read"].execute({ path: "identity.json" });
 assert.equal(file.text, "{}");
+
+fake._tab = "mark";
+bindWebmcp(fake);
+const ctx = modelContext();
+assert.ok(ctx?.registerTool);
+assert.ok(ctx?.executeTool);
+const listed = await ctx.getTools();
+assert.deepEqual(
+  listed.map((t) => t.name),
+  ["prim-status", "prim-open", "prim-tab", "prim-files", "prim-face", "prim-read"],
+);
+const viaName = await ctx.executeTool("prim-status", {});
+assert.equal(viaName.open, true);
+await ctx.executeTool({ name: "prim-tab" }, { tab: "color" });
+assert.equal(fake._tab, "color");
+assert.equal(globalThis.modelContext, ctx);
 
 console.log("ok @eidos-agi/prim-viewer");

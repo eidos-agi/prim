@@ -2,9 +2,9 @@
  * prim-viewer-webmcp — connector / talk / cites * / as webmcp
  *
  * The player is the human surface. This is how a model talks to it.
- * Native WebMCP: navigator.modelContext or document.modelContext.
- * Without a browser that has it, tools still land on globalThis.modelContext
- * so a page inspector (or an agent bridge) can call them.
+ * Spec: document.modelContext. Chrome still ships navigator.modelContext.
+ * Without a native implementation the same object lands on both, plus
+ * globalThis.modelContext, so an in-page agent can call the tools.
  */
 
 const SECRET =
@@ -12,6 +12,34 @@ const SECRET =
 
 const PLAYERS = new Set();
 let unbindNative = null;
+
+function publishContext(ctx) {
+  if (typeof globalThis !== "undefined") globalThis.modelContext = ctx;
+  const hosts = [];
+  if (typeof document !== "undefined") hosts.push(document);
+  if (typeof navigator !== "undefined") hosts.push(navigator);
+  for (const host of hosts) {
+    try {
+      if (host.modelContext?.registerTool) continue;
+    } catch {
+      /* native getter may throw */
+    }
+    try {
+      Object.defineProperty(host, "modelContext", {
+        value: ctx,
+        configurable: true,
+        enumerable: true,
+      });
+    } catch {
+      try {
+        host.modelContext = ctx;
+      } catch {
+        /* read-only native slot */
+      }
+    }
+  }
+  return ctx;
+}
 
 function fallbackContext() {
   if (typeof globalThis === "undefined") return null;
@@ -28,26 +56,26 @@ function fallbackContext() {
     unregisterTool(name) {
       tools.delete(name);
     },
-    getTools() {
+    async getTools() {
       return [...tools.values()].map(({ execute, ...rest }) => rest);
     },
-    async executeTool(name, input) {
-      const tool = tools.get(name);
-      if (!tool) throw new Error("no tool " + name);
-      return tool.execute(input || {});
+    async executeTool(tool, input) {
+      const name = typeof tool === "string" ? tool : tool?.name;
+      const hit = tools.get(name);
+      if (!hit) throw new Error("no tool " + name);
+      return hit.execute(input || {}, { signal: undefined });
     },
     _tools: tools,
   };
-  globalThis.modelContext = ctx;
-  return ctx;
+  return publishContext(ctx);
 }
 
 export function modelContext() {
-  if (typeof navigator !== "undefined" && navigator.modelContext?.registerTool) {
-    return navigator.modelContext;
-  }
   if (typeof document !== "undefined" && document.modelContext?.registerTool) {
     return document.modelContext;
+  }
+  if (typeof navigator !== "undefined" && navigator.modelContext?.registerTool) {
+    return navigator.modelContext;
   }
   return fallbackContext();
 }
@@ -84,9 +112,11 @@ export function toolsFor(getPlayer) {
   return [
     {
       name: "prim-status",
+      title: "Prim status",
       description:
         "What prim-viewer has open: filename, kind, title, current tab, tabs, file names. The pack stays the file.",
       inputSchema: { type: "object", properties: {}, additionalProperties: false },
+      annotations: { readOnlyHint: true },
       async execute() {
         const p = getPlayer();
         if (!p?.status) return result({ open: false, tool: "prim-viewer-webmcp" });
@@ -95,6 +125,7 @@ export function toolsFor(getPlayer) {
     },
     {
       name: "prim-open",
+      title: "Open a prim",
       description:
         "Open a .prim / .prim.zip (or a pack directory URL) in the player. Same as setting src= on <show-prim>.",
       inputSchema: {
@@ -105,6 +136,7 @@ export function toolsFor(getPlayer) {
         },
         required: ["src"],
       },
+      annotations: { readOnlyHint: false },
       async execute(input) {
         const p = getPlayer();
         if (!p?.openSrc) throw new Error("no prim-viewer on this page");
@@ -114,6 +146,7 @@ export function toolsFor(getPlayer) {
     },
     {
       name: "prim-tab",
+      title: "Switch tab",
       description: "Switch the player tab (face, mark, color, type, voice, rules, pack, …).",
       inputSchema: {
         type: "object",
@@ -122,6 +155,7 @@ export function toolsFor(getPlayer) {
         },
         required: ["tab"],
       },
+      annotations: { readOnlyHint: false },
       async execute(input) {
         const p = getPlayer();
         if (!p?.setTab) throw new Error("no prim-viewer on this page");
@@ -131,8 +165,10 @@ export function toolsFor(getPlayer) {
     },
     {
       name: "prim-files",
+      title: "List pack files",
       description: "List pack-relative file names in the open prim. Does not return contents.",
       inputSchema: { type: "object", properties: {}, additionalProperties: false },
+      annotations: { readOnlyHint: true },
       async execute() {
         const p = getPlayer();
         if (!p?.status) throw new Error("no prim-viewer on this page");
@@ -142,8 +178,10 @@ export function toolsFor(getPlayer) {
     },
     {
       name: "prim-face",
+      title: "Read the face",
       description: "Read the open prim's face (title, profile, type, body). The pack stays the file.",
       inputSchema: { type: "object", properties: {}, additionalProperties: false },
+      annotations: { readOnlyHint: true },
       async execute() {
         const p = getPlayer();
         if (!p?.face) throw new Error("no prim-viewer on this page");
@@ -152,6 +190,7 @@ export function toolsFor(getPlayer) {
     },
     {
       name: "prim-read",
+      title: "Read a pack file",
       description:
         "Read a text file from the open prim by pack-relative path (index.md, identity.json, …). Refuses secrets and binary.",
       inputSchema: {
@@ -161,6 +200,7 @@ export function toolsFor(getPlayer) {
         },
         required: ["path"],
       },
+      annotations: { readOnlyHint: true, untrustedContentHint: true },
       async execute(input) {
         const p = getPlayer();
         if (!p?.readFile) throw new Error("no prim-viewer on this page");
