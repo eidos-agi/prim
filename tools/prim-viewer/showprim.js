@@ -572,7 +572,7 @@ function renderMd(md) {
   return out.join("\n");
 }
 
-function tabsFor(pack) {
+export function tabsFor(pack) {
   if (pack.kind === "obif") {
     const id = pack.identity || {};
     const tabs = [];
@@ -584,8 +584,24 @@ function tabsFor(pack) {
     tabs.push(["pack", "Pack"]);
     return tabs;
   }
-  if (pagesFor(pack).length > 1) return [["read", "Read"], ["face", "Face"], ["pack", "Pack"]];
-  return [["face", "Face"], ["pack", "Pack"]];
+  const log = String(getFile(pack.files, "log.md") || "").trim();
+  if (pagesFor(pack).length > 1) {
+    const tabs = [["read", "Read"], ["face", "Face"]];
+    if (log) tabs.push(["history", "History"]);
+    tabs.push(["pack", "Pack"]);
+    return tabs;
+  }
+  const tabs = [["face", "Face"]];
+  if (log) tabs.push(["history", "History"]);
+  tabs.push(["pack", "Pack"]);
+  return tabs;
+}
+
+function renderHistory(pack) {
+  return `<div>
+    <p class="kicker">log.md · the prim keeps this</p>
+    <article class="prose">${renderMd(getFile(pack.files, "log.md") || "")}</article>
+  </div>`;
 }
 
 function renderMark(pack) {
@@ -713,6 +729,7 @@ function pane(pack, tab, filename, page) {
   if (tab === "voice") return renderVoice(pack);
   if (tab === "rules") return renderRules(pack);
   if (tab === "pack") return renderPackTab(pack, filename);
+  if (tab === "history") return renderHistory(pack);
   if (tab === "read") return renderRead(pack, page);
   return renderFace(pack);
 }
@@ -729,9 +746,13 @@ function mount(el, pack, opts = {}) {
   const filename = opts.filename || pack.project?.name || "untitled.prim";
   const th = theme(pack.identity);
   const tabs = tabsFor(pack);
-  let tab = opts.tab || tabs[0][0];
   const pages = pagesFor(pack);
   const hashPage = String(location.hash || "").replace(/^#/, "");
+  let tab = opts.tab || tabs[0][0];
+  if (hashPage === "history" && tabs.some(([id]) => id === "history")) tab = "history";
+  else if (hashPage === "pack") tab = "pack";
+  else if (hashPage === "face") tab = "face";
+  else if (opts.tab) tab = opts.tab;
   let page = pages.includes(hashPage) ? hashPage : (opts.page || pages[0] || "index.md");
   const chrome = opts.chrome !== false;
 
@@ -822,6 +843,10 @@ function mount(el, pack, opts = {}) {
       const hit = tabs.find(([t]) => t === id);
       if (!hit) throw new Error("no tab " + id + " — have " + tabs.map(([t]) => t).join(", "));
       tab = id;
+      if (typeof history !== "undefined") {
+        if (id === "history" || id === "pack" || id === "face") history.replaceState(null, "", "#" + id);
+        else if (id === "read" && page) history.replaceState(null, "", "#" + page);
+      }
       draw();
     },
   };
@@ -830,6 +855,8 @@ function mount(el, pack, opts = {}) {
   if (typeof window !== "undefined") {
     window.addEventListener("hashchange", () => {
       const next = String(location.hash || "").replace(/^#/, "");
+      if (next === "history" && tabs.some(([id]) => id === "history")) { tab = "history"; draw(); return; }
+      if (next === "pack" || next === "face") { tab = next; draw(); return; }
       if (pages.includes(next) && next !== page) {
         page = next;
         if (tabs.some(([id]) => id === "read")) tab = "read";

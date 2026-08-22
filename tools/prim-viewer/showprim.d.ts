@@ -37,6 +37,7 @@ export type NavNode = {
 };
 export function packPaths(text: string): string[];
 export function navTree(pack: PrimPack): NavNode[];
+export function tabsFor(pack: PrimPack): [string, string][];
 export function pagesFor(pack: PrimPack): string[];
 export function pageTitle(pack: PrimPack, name: string): string;
 export function loadPrim(src: string): Promise<PrimFiles>;

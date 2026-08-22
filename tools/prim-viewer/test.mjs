@@ -69,6 +69,20 @@ assert.deepEqual(navTree(nested).map((n) => [n.title, n.page, (n.children || [])
   ["The contract", "", ["spec.md"]],
 ]);
 
+const { tabsFor } = await import("./showprim.js");
+assert.deepEqual(
+  tabsFor(nested).map(([id]) => id),
+  ["read", "face", "pack"],
+);
+const withLog = parsePrim({
+  ...nested.files,
+  "log.md": "# Log\n\n- 2026-08-22 — History is a view of this file.\n",
+});
+assert.deepEqual(
+  tabsFor(withLog).map(([id]) => id),
+  ["read", "face", "history", "pack"],
+);
+
 const { toolsFor, bindWebmcp, modelContext } = await import("./webmcp.js");
 const fake = {
   _tab: "mark",
