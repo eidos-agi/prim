@@ -86,6 +86,7 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | prim.session | Thin transcript + `session-editor` (emerging; not OSF) |
 | [prim.scene](https://github.com/eidos-agi/prim.scene) | One cinematic beat. `scene.json` is authority (emerging) |
 | [prim.video](https://github.com/eidos-agi/prim.video) | Ordered collection of `prim.scene` packs (emerging) |
+| [prim.album](https://github.com/eidos-agi/prim.album) | One record. `album.json` is tracks and metadata (emerging) |
 
 OKF provides the grammar ([okflify](https://github.com/eidos-agi/okflify)).  
 **Prim** is what people call the thing.
