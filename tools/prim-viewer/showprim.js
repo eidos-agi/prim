@@ -498,7 +498,7 @@ function tabsFor(pack) {
     tabs.push(["pack", "Pack"]);
     return tabs;
   }
-  if (pagesFor(pack).length > 1) return [["read", "Read"], ["pack", "Pack"]];
+  if (pagesFor(pack).length > 1) return [["read", "Read"], ["face", "Face"], ["pack", "Pack"]];
   return [["face", "Face"], ["pack", "Pack"]];
 }
 
@@ -747,7 +747,7 @@ function emptyHTML() {
 }
 
 class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElement) {
-  static get observedAttributes() { return ["src", "filename"]; }
+  static get observedAttributes() { return ["src", "filename", "tab"]; }
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
@@ -774,7 +774,15 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
     this._unbindMcp?.();
     this._unbindMcp = null;
   }
-  attributeChangedCallback() { if (this.isConnected) this.open(); }
+  attributeChangedCallback(name) {
+    if (!this.isConnected) return;
+    if (name === "tab") {
+      const id = this.getAttribute("tab");
+      if (id && this._ctl) this._ctl.setTab(id);
+      return;
+    }
+    this.open();
+  }
   _onMsg = async (e) => {
     const d = e.data;
     if (!d || d.type !== "prim-drop") return;
@@ -859,7 +867,11 @@ class ShowPrim extends (typeof HTMLElement === "undefined" ? class {} : HTMLElem
   }
   #show(files, filename) {
     const pack = parsePrim(files);
-    this._ctl = mount(this, pack, { filename, chrome: this.getAttribute("chrome") !== "0" });
+    this._ctl = mount(this, pack, {
+      filename,
+      chrome: this.getAttribute("chrome") !== "0",
+      tab: this.getAttribute("tab") || undefined,
+    });
   }
 }
 
