@@ -47,6 +47,7 @@ export function detectKind(files) {
     const v = getFile(files, name);
     return !!(v && (typeof v === "string" ? v.trim() : v.byteLength));
   };
+  if (has("docs.json")) return "docs";
   if (has("identity.json")) return "obif";
   if (has("tasks.jsonl")) return "docket";
   if (has("slides.jsonl")) return "deck";
@@ -141,17 +142,61 @@ export async function unzipPrim(buf) {
   return flatten(files);
 }
 
+const PACK_FILE = /^(?:\.\/)?([A-Za-z0-9._/-]+\.(?:md|json|jsonl|ya?ml|txt|svg|css))$/i;
+
+export function packPaths(text) {
+  const out = [];
+  const seen = new Set();
+  const add = (raw) => {
+    const n = String(raw || "").trim().replace(/^\.\//, "").split("#")[0].split("?")[0].replace(/^["']|["']$/g, "");
+    if (!n || n.includes("..") || n.startsWith("/") || /:\/\//.test(n) || seen.has(n)) return;
+    if (!PACK_FILE.test(n)) return;
+    seen.add(n);
+    out.push(n);
+  };
+  const src = String(text || "");
+  const matter = src.match(/^---\n([\s\S]*?)\n---/);
+  if (matter) {
+    for (const line of matter[1].split("\n")) {
+      const kv = line.match(/^[A-Za-z0-9_-]+:\s+(\S+)$/);
+      if (kv) add(kv[1]);
+      const item = line.match(/^\s*-\s+(\S+)\s*$/);
+      if (item) add(item[1]);
+    }
+  }
+  for (const m of src.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) add(m[1]);
+  return out;
+}
+
 export async function loadPrim(src) {
   if (typeof src !== "string") throw new Error("need a path");
   const url = src;
   if (/\/$/.test(url) || !/\.(prim|zip|json|md)(\.zip)?$/i.test(url)) {
     const base = url.replace(/\/?$/, "/");
-    const index = await fetch(base + "index.md").then((r) => (r.ok ? r.text() : ""));
-    const identity = await fetch(base + "identity.json").then((r) => (r.ok ? r.text() : ""));
     const files = {};
-    if (index) files["index.md"] = index;
-    if (identity) files["identity.json"] = identity;
-    if (!index && !identity) throw new Error("no prim at " + url);
+    const missed = new Set();
+    const get = async (path) => {
+      if (files[path] != null) return files[path];
+      if (missed.has(path)) return "";
+      const res = await fetch(base + path);
+      if (!res.ok) {
+        missed.add(path);
+        return "";
+      }
+      const text = await res.text();
+      files[path] = text;
+      return text;
+    };
+    const index = await get("index.md");
+    await get("identity.json");
+    await get("log.md");
+    if (!index && !files["identity.json"]) throw new Error("no prim at " + url);
+    const queue = [...packPaths(index || "")];
+    while (queue.length) {
+      const path = queue.shift();
+      const text = await get(path);
+      if (text) queue.push(...packPaths(text).filter((p) => files[p] == null && !missed.has(p)));
+    }
     return flatten(files);
   }
   const res = await fetch(url);
@@ -219,9 +264,10 @@ function theme(identity) {
   const ink = hexOf(identity, (x) => x.role === "primary", "#111111");
   const accent = hexOf(identity, (x) => x.role === "accent" && !x.semantic, t.find((x) => x.role === "accent")?.hex) || "#b47e3c";
   const mute = hexOf(identity, (x) => (x.token || "").endsWith("500") && x.role !== "accent", "#6a6a66");
-  const display = identity?.typography?.roles?.find((r) => /display|body/i.test(r.role))?.family || "Georgia, serif";
-  const ui = identity?.typography?.roles?.find((r) => /UI|ui|sans/i.test(r.role))?.family || "system-ui, sans-serif";
-  const mono = identity?.typography?.roles?.find((r) => /mono/i.test(r.role))?.family || "ui-monospace, monospace";
+  const sans = '"Instrument Sans", "Segoe UI", sans-serif';
+  const display = identity?.typography?.roles?.find((r) => /display|body/i.test(r.role))?.family || sans;
+  const ui = identity?.typography?.roles?.find((r) => /UI|ui|sans/i.test(r.role))?.family || sans;
+  const mono = identity?.typography?.roles?.find((r) => /mono/i.test(r.role))?.family || '"IBM Plex Mono", ui-monospace, monospace';
   return { paper, ink, accent, mute, display, ui, mono };
 }
 
@@ -254,26 +300,56 @@ function boards(identity) {
 }
 
 const CSS = `
-  :host { display: block; color: var(--ink, #111); font: 15px/1.45 var(--ui, system-ui, sans-serif); }
+  @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap");
+  :host { display: block; height: 100%; color: var(--ink, #111); font: 16px/1.5 var(--ui, "Instrument Sans", "Segoe UI", sans-serif); -webkit-font-smoothing: antialiased; }
   * { box-sizing: border-box; }
+  ::selection { background: var(--ink, #111); color: var(--paper, #f4f3ef); }
   .player { border: 1px solid #e4e2dc; border-radius: 16px; overflow: hidden; background: var(--paper, #f4f3ef); }
+  .player.page { border: 0; border-radius: 0; height: 100%; display: grid; grid-template-rows: 1fr; }
+  .player.page.chrome { grid-template-rows: auto auto 1fr; }
+  .player.page .stage { min-height: 0; overflow: auto; padding: 0; }
   .player.over { outline: 2px solid var(--ink, #111); outline-offset: 2px; }
+  .read { display: grid; grid-template-columns: 16rem minmax(0, 1fr); min-height: 100%; }
+  @media (max-width: 800px) { .read { grid-template-columns: 1fr; } .side { border-right: 0; border-bottom: 1px solid #e4e2dc; } }
+  .side { padding: 2rem 1.25rem 3rem; border-right: 1px solid #e4e2dc; }
+  .side a { display: block; width: 100%; margin: 0; padding: 0.45rem 0; border: 0; border-radius: 0; background: transparent; color: #6a6a66; font: 0.9rem/1.35 var(--ui); text-align: left; text-decoration: none; cursor: pointer; }
+  .side a:hover { color: var(--ink, #111); }
+  .side a.on { background: transparent; color: var(--ink, #111); }
+  .side .kicker { margin: 0 0 1.25rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
+  .side .pack-link { margin-top: 2rem; font-size: 0.8rem; color: #8a8a84; }
+  article.prose { padding: 2.5rem 2.5rem 6rem; max-width: 44rem; }
+  article.prose h1, article.prose h2, article.prose h3 { text-wrap: balance; font-family: var(--display, "Instrument Sans", "Segoe UI", sans-serif); font-weight: 500; letter-spacing: -0.03em; }
+  article.prose h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; margin: 0 0 1.25rem; }
+  article.prose h2 { font-size: 1.35rem; margin: 2rem 0 0.6rem; }
+  article.prose h3 { font-size: 1.05rem; margin: 1.5rem 0 0.4rem; }
+  article.prose p, article.prose li { font-size: 1.05rem; line-height: 1.55; color: #111; }
+  article.prose p { text-wrap: pretty; margin: 0 0 0.9rem; }
+  article.prose ul, article.prose ol { padding-left: 1.2rem; margin: 0 0 1rem; }
+  article.prose code { font: 0.88em/1.4 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
+  article.prose pre { overflow: auto; padding: 1rem 1.1rem; border: 1px solid #e4e2dc; border-radius: 12px; background: #fffcf8; font: 0.8rem/1.45 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
+  article.prose blockquote { margin: 1.25rem 0 1.5rem; padding: 0 0 0 1rem; border-left: 1px solid var(--ink, #111); font-size: 1.25rem; font-weight: 500; letter-spacing: -0.03em; }
+  article.prose blockquote p { margin: 0.2rem 0; font-size: inherit; }
+  article.prose table { border-collapse: collapse; width: 100%; margin: 0 0 1.25rem; font-size: 0.92rem; }
+  article.prose th, article.prose td { border-bottom: 1px solid #e4e2dc; padding: 0.55rem 0.65rem 0.55rem 0; text-align: left; }
+  article.prose th { font-weight: 500; }
+  article.prose a { color: inherit; text-decoration: underline; text-decoration-color: #cfcbc3; text-underline-offset: 3px; }
+  article.prose a:hover { text-decoration-color: #111; }
   .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 14px; border-bottom: 1px solid #e4e2dc; background: #fffcf8; }
-  .bar .file { font: 12px/1.2 var(--mono, ui-monospace, monospace); }
-  .bar .tool { margin-left: auto; color: #6a6a66; font: 11px/1.2 var(--mono, ui-monospace, monospace); letter-spacing: 0.08em; text-transform: uppercase; }
-  .drop-hint { color: #6a6a66; font: 11px/1.2 var(--mono, ui-monospace, monospace); }
-  nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px; border-bottom: 1px solid #e4e2dc; }
-  nav button { height: 28px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; color: inherit; font: 12px/1 var(--ui); cursor: pointer; }
-  nav button.on { background: var(--ink, #111); color: var(--paper, #f4f3ef); }
+  .bar .file { font: 12px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
+  .bar .tool { margin-left: auto; color: #6a6a66; font: 11px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); letter-spacing: 0.08em; text-transform: uppercase; }
+  .drop-hint { color: #6a6a66; font: 11px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
+  nav.tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px; border-bottom: 1px solid #e4e2dc; }
+  nav.tabs button { height: 28px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; color: inherit; font: 12px/1 var(--ui); cursor: pointer; }
+  nav.tabs button.on { background: var(--ink, #111); color: var(--paper, #f4f3ef); }
   .stage { padding: 18px 16px 22px; min-height: 280px; }
   .empty { min-height: 280px; display: grid; place-content: center; text-align: center; gap: 8px; color: #6a6a66; }
   .empty b { color: var(--ink, #111); font-weight: 500; }
-  h2, h3 { font-family: var(--display, Georgia, serif); font-weight: 400; letter-spacing: -0.03em; margin: 0 0 8px; }
+  h2, h3 { font-family: var(--display, "Instrument Sans", "Segoe UI", sans-serif); font-weight: 500; letter-spacing: -0.03em; margin: 0 0 8px; }
   h2 { font-size: 28px; }
   h3 { font-size: 20px; }
   p { margin: 0 0 10px; }
   .mute { color: var(--mute, #6a6a66); }
-  .kicker { margin: 0 0 6px; color: #6a6a66; font: 11px/1.2 var(--mono, ui-monospace, monospace); }
+  .kicker { margin: 0 0 6px; color: #6a6a66; font: 11px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
   .marks { display: grid; gap: 16px; }
   .marks img { max-width: 100%; height: auto; display: block; }
   .mono-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: end; }
@@ -282,8 +358,8 @@ const CSS = `
   .swatch { border: 1px solid #e4e2dc; border-radius: 14px; overflow: hidden; background: #fffcf8; cursor: pointer; text-align: left; padding: 0; font: inherit; color: inherit; }
   .swatch .chip { height: 56px; }
   .swatch .meta { padding: 10px 12px 12px; }
-  .swatch .meta b { display: block; font-family: var(--display, Georgia, serif); font-weight: 400; }
-  .swatch .meta small { display: block; margin-top: 4px; font: 11px/1.3 var(--mono, ui-monospace, monospace); color: #6a6a66; }
+  .swatch .meta b { display: block; font-family: var(--display, "Instrument Sans", "Segoe UI", sans-serif); font-weight: 500; }
+  .swatch .meta small { display: block; margin-top: 4px; font: 11px/1.3 var(--mono, "IBM Plex Mono", ui-monospace, monospace); color: #6a6a66; }
   .typegrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
   .typecard { border: 1px solid #e4e2dc; border-radius: 14px; padding: 16px; background: #fffcf8; }
   .typecard .aa { font-size: 42px; line-height: 1; }
@@ -291,11 +367,114 @@ const CSS = `
   ol.voice li { border: 1px solid #e4e2dc; border-radius: 12px; padding: 12px 14px; background: #fffcf8; }
   .rules { display: grid; gap: 8px; }
   .rules p { margin: 0; padding: 10px 12px; border-radius: 12px; border: 1px solid #e4e2dc; background: #fffcf8; }
-  .files { font: 12px/1.6 var(--mono, ui-monospace, monospace); margin: 0; padding-left: 18px; color: #6a6a66; }
-  .toast { position: absolute; right: 16px; bottom: 16px; background: var(--ink, #111); color: var(--paper, #f4f3ef); font: 12px/1 var(--mono, ui-monospace, monospace); padding: 8px 10px; border-radius: 8px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .files { font: 12px/1.6 var(--mono, "IBM Plex Mono", ui-monospace, monospace); margin: 0; padding-left: 18px; color: #6a6a66; }
+  .toast { position: absolute; right: 16px; bottom: 16px; background: var(--ink, #111); color: var(--paper, #f4f3ef); font: 12px/1 var(--mono, "IBM Plex Mono", ui-monospace, monospace); padding: 8px 10px; border-radius: 8px; opacity: 0; transition: opacity .2s; pointer-events: none; }
   .toast.on { opacity: 1; }
-  .err { padding: 24px; color: #825b2b; font: 13px/1.4 var(--mono, ui-monospace, monospace); }
+  .err { padding: 24px; color: #825b2b; font: 13px/1.4 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
 `;
+
+function pagesFor(pack) {
+  const names = (pack.names || []).filter((n) => /\.md$/i.test(n));
+  names.sort((a, b) => {
+    if (a === "index.md") return -1;
+    if (b === "index.md") return 1;
+    return a.localeCompare(b);
+  });
+  return names;
+}
+
+function pageTitle(pack, name) {
+  const raw = String(getFile(pack.files, name) || "");
+  const face = faceMatter(raw);
+  if (face.title) return face.title;
+  const h = (face.body || raw).match(/^#\s+(.+)$/m);
+  return (h && h[1]) || name.replace(/\.md$/i, "");
+}
+
+function mdInline(s) {
+  return esc(s)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (all, label, href) => {
+      const path = String(href || "").split("#")[0];
+      if (PACK_FILE.test(path.replace(/^\.\//, ""))) {
+        return `<a href="#${esc(path.replace(/^\.\//, ""))}" data-page="${esc(path.replace(/^\.\//, ""))}">${esc(label)}</a>`;
+      }
+      return `<a href="${esc(href)}">${esc(label)}</a>`;
+    });
+}
+
+function renderMd(md) {
+  const { body } = faceMatter(md);
+  const lines = String(body || md || "").replace(/\r\n/g, "\n").split("\n");
+  let i = 0;
+  const out = [];
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) { i += 1; continue; }
+    if (line.startsWith("```")) {
+      const buf = [];
+      i += 1;
+      while (i < lines.length && !lines[i].startsWith("```")) { buf.push(lines[i]); i += 1; }
+      if (i < lines.length) i += 1;
+      out.push(`<pre><code>${esc(buf.join("\n"))}</code></pre>`);
+      continue;
+    }
+    if (line.startsWith("|") && i + 1 < lines.length && /^\|[\s\-:|]+\|$/.test(lines[i + 1])) {
+      const rows = [];
+      while (i < lines.length && lines[i].startsWith("|")) {
+        rows.push(lines[i].split("|").slice(1, -1).map((c) => c.trim()));
+        i += 1;
+      }
+      const hdr = rows[0] || [];
+      const bodyRows = rows.slice(2);
+      out.push("<table><thead><tr>" + hdr.map((c) => `<th>${mdInline(c)}</th>`).join("") + "</tr></thead><tbody>" +
+        bodyRows.map((r) => "<tr>" + r.map((c) => `<td>${mdInline(c)}</td>`).join("") + "</tr>").join("") +
+        "</tbody></table>");
+      continue;
+    }
+    const hm = /^(#{1,3})\s+(.*)$/.exec(line);
+    if (hm) {
+      out.push(`<h${hm[1].length}>${mdInline(hm[2])}</h${hm[1].length}>`);
+      i += 1;
+      continue;
+    }
+    if (/^[-*]\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
+        items.push(`<li>${mdInline(lines[i].replace(/^[-*]\s/, ""))}</li>`);
+        i += 1;
+      }
+      out.push(`<ul>${items.join("")}</ul>`);
+      continue;
+    }
+    if (/^\d+\.\s/.test(line)) {
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) {
+        items.push(`<li>${mdInline(lines[i].replace(/^\d+\.\s/, ""))}</li>`);
+        i += 1;
+      }
+      out.push(`<ol>${items.join("")}</ol>`);
+      continue;
+    }
+    if (line.startsWith(">")) {
+      const buf = [];
+      while (i < lines.length && lines[i].startsWith(">")) {
+        buf.push(lines[i].replace(/^>\s?/, ""));
+        i += 1;
+      }
+      out.push(`<blockquote>${buf.filter(Boolean).map((p) => `<p>${mdInline(p)}</p>`).join("")}</blockquote>`);
+      continue;
+    }
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^#{1,3}\s/.test(lines[i]) && !lines[i].startsWith("```") && !lines[i].startsWith("|") && !/^[-*]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith(">")) {
+      para.push(lines[i]);
+      i += 1;
+    }
+    out.push(`<p>${mdInline(para.join(" "))}</p>`);
+  }
+  return out.join("\n");
+}
 
 function tabsFor(pack) {
   if (pack.kind === "obif") {
@@ -309,6 +488,7 @@ function tabsFor(pack) {
     tabs.push(["pack", "Pack"]);
     return tabs;
   }
+  if (pagesFor(pack).length > 1) return [["read", "Read"], ["pack", "Pack"]];
   return [["face", "Face"], ["pack", "Pack"]];
 }
 
@@ -383,14 +563,25 @@ function renderRules(pack) {
 }
 
 function renderFace(pack) {
-  const body = (pack.face?.body || "").split(/\n/).map((line) => {
-    if (line.startsWith("# ")) return `<h2>${esc(line.slice(2))}</h2>`;
-    if (!line.trim()) return "";
-    return `<p>${esc(line)}</p>`;
-  }).join("");
   return `<div>
     <p class="kicker">${esc(pack.kind)} · the file is the prim</p>
-    ${body}
+    <article class="prose">${renderMd(getFile(pack.files, "index.md") || pack.face?.body || "")}</article>
+  </div>`;
+}
+
+function renderRead(pack, page) {
+  const pages = pagesFor(pack);
+  const current = pages.includes(page) ? page : pages[0] || "index.md";
+  const side = pages.map((n) =>
+    `<a href="#${esc(n)}" data-page="${esc(n)}" class="${n === current ? "on" : ""}">${esc(pageTitle(pack, n))}</a>`
+  ).join("");
+  return `<div class="read">
+    <nav class="side">
+      <p class="kicker">${esc(pack.project?.name || "prim")}</p>
+      ${side}
+      <a href="#pack" class="pack-link" data-tab="pack">Pack</a>
+    </nav>
+    <article class="prose">${renderMd(getFile(pack.files, current) || "")}</article>
   </div>`;
 }
 
@@ -401,18 +592,20 @@ function renderPackTab(pack, filename) {
     <p class="kicker">${esc(filename || pack.project.name)}</p>
     <h3>${esc(pack.project.name)}</h3>
     <p class="mute">${esc(pack.kind)} prim. This is a view. The pack stays the file.</p>
+    ${pagesFor(pack).length > 1 ? `<p><a href="#index.md" data-tab="read">Read</a></p>` : ""}
     ${prov ? `<p class="kicker">${esc(prov)}</p>` : ""}
     <ol class="files">${(pack.names || []).map((n) => `<li>${esc(n)}</li>`).join("")}</ol>
   </div>`;
 }
 
-function pane(pack, tab, filename) {
+function pane(pack, tab, filename, page) {
   if (tab === "mark") return renderMark(pack);
   if (tab === "color") return renderColor(pack);
   if (tab === "type") return renderType(pack);
   if (tab === "voice") return renderVoice(pack);
   if (tab === "rules") return renderRules(pack);
   if (tab === "pack") return renderPackTab(pack, filename);
+  if (tab === "read") return renderRead(pack, page);
   return renderFace(pack);
 }
 
@@ -429,6 +622,9 @@ function mount(el, pack, opts = {}) {
   const th = theme(pack.identity);
   const tabs = tabsFor(pack);
   let tab = opts.tab || tabs[0][0];
+  const pages = pagesFor(pack);
+  const hashPage = String(location.hash || "").replace(/^#/, "");
+  let page = pages.includes(hashPage) ? hashPage : (opts.page || pages[0] || "index.md");
   const chrome = opts.chrome !== false;
 
   const applyTheme = (node) => {
@@ -445,6 +641,13 @@ function mount(el, pack, opts = {}) {
   const host = el.shadowRoot ? el : el;
   applyTheme(host);
 
+  const goPage = (name) => {
+    if (!pages.includes(name)) return;
+    page = name;
+    if (typeof history !== "undefined") history.replaceState(null, "", "#" + name);
+    draw();
+  };
+
   const draw = () => {
     const nav = tabs.map(([id, label]) => `<button type="button" data-tab="${id}" class="${id === tab ? "on" : ""}">${esc(label)}</button>`).join("");
     const inner = `
@@ -452,13 +655,14 @@ function mount(el, pack, opts = {}) {
         <span class="file">${esc(filename)}</span>
         <span class="drop-hint">drop a .prim</span>
         <span class="tool">prim-viewer${el._webmcp ? " · webmcp" : ""}</span>
-      </div>` : ""}
-      <nav>${nav}</nav>
-      <div class="stage">${pane(pack, tab, filename)}</div>
+      </div>
+      <nav class="tabs">${nav}</nav>` : ""}
+      <div class="stage">${pane(pack, tab, filename, page)}</div>
       <div class="toast" hidden>copied</div>
     `;
+    const skin = chrome ? "player chrome" : "player page";
     if (el.shadowRoot) {
-      root.innerHTML = `<style>${CSS}</style><div class="player">${inner}</div>`;
+      root.innerHTML = `<style>${CSS}</style><div class="${skin}">${inner}</div>`;
     } else {
       if (!root.querySelector("style[data-showprim]")) {
         const st = document.createElement("style");
@@ -478,6 +682,12 @@ function mount(el, pack, opts = {}) {
     const box = el.shadowRoot ? root : root.querySelector(".player");
     box.querySelectorAll("[data-tab]").forEach((b) => {
       b.addEventListener("click", () => { tab = b.dataset.tab; draw(); });
+    });
+    box.querySelectorAll("[data-page]").forEach((b) => {
+      b.addEventListener("click", (e) => {
+        e.preventDefault();
+        goPage(b.dataset.page);
+      });
     });
     box.querySelectorAll("[data-hex]").forEach((b) => {
       b.addEventListener("click", async () => {
@@ -509,6 +719,16 @@ function mount(el, pack, opts = {}) {
   };
   el._ctl = ctl;
   draw();
+  if (typeof window !== "undefined") {
+    window.addEventListener("hashchange", () => {
+      const next = String(location.hash || "").replace(/^#/, "");
+      if (pages.includes(next) && next !== page) {
+        page = next;
+        if (tabs.some(([id]) => id === "read")) tab = "read";
+        draw();
+      }
+    });
+  }
   return ctl;
 }
 

@@ -33,6 +33,13 @@ assert.match(player, /from "\.\/webmcp\.js"/);
 assert.match(player, /customElements\.define\("show-prim"/);
 assert.match(player, /bindWebmcp/);
 assert.match(player, /prim-status|webmcp/);
+assert.match(player, /export function packPaths/);
+
+const { packPaths } = await import("./showprim.js");
+assert.deepEqual(
+  packPaths("---\ntitle: Prim\nlog: log.md\nwhat: what.md\n---\n\nSee [Spec](spec.md) and https://x.com."),
+  ["log.md", "what.md", "spec.md"],
+);
 
 const { toolsFor, bindWebmcp, modelContext } = await import("./webmcp.js");
 const fake = {
