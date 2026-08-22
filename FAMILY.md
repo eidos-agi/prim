@@ -47,11 +47,14 @@ Profiles (OKF-shaped unless noted)
 ├── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
 ├── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
 ├── prim.scene    One cinematic beat. scene.json is authority. The mp4 is a view. (emerging, not OKF)
-└── prim.video    Ordered collection of prim.scene packs. Compose, don't merge. (emerging, not OKF)
+├── prim.video    Ordered collection of prim.scene packs. Compose, don't merge. (emerging, not OKF)
+└── prim.album    One record. album.json is tracks and metadata. The player is a view. (emerging, not OKF)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed. Category connector: prim-viewer-webmcp — the player registers WebMCP tools so a model can operate any open prim.
 
 Prim Arcade (`prim-arcade`) is a surface tool on an `arcade` prim. The cart is the file. JSNES embeds in chat.
+
+`album-player` is a surface tool on an `album` prim. The record is the file. Not slides (`prim.deck`).
 
 Base grammar + render
 │
