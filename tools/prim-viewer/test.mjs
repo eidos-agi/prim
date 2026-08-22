@@ -43,13 +43,14 @@ assert.deepEqual(
 
 const { pagesFor, pageTitle, parsePrim } = await import("./showprim.js");
 const docs = parsePrim({
-  "index.md": "---\ntitle: Prim\nnav: Prim\ngroup: Start\nwhy: why.md\n---\n\n# Prim\n\n- [Why Prim](why.md)\n- [What](what.md)\n- [Spec](spec.md)\n",
+  "index.md": "---\ntitle: Prim\nnav: Prim\ngroup: Start\nwhy: why.md\n---\n\n# Prim\n\nSee [prim-viewer](tools.md).\n\n- [Why Prim](why.md)\n- [What](what.md)\n- [The vessel](tools.md)\n- [Spec](spec.md)\n",
   "why.md": "---\ntitle: Why Prim\nnav: Why Prim\ngroup: Start\n---\n\n# Why Prim\n",
   "what.md": "---\ntitle: What a Prim is\nnav: What\ngroup: Start\n---\n\n# What a Prim is\n",
+  "tools.md": "---\ntitle: The vessel\nnav: Vessel\ngroup: Start\n---\n\n# The vessel\n",
   "spec.md": "---\ntitle: Category spec\nnav: Spec\ngroup: Reference\n---\n\n# Category spec\n",
   "log.md": "# Log\n",
 });
-assert.deepEqual(pagesFor(docs), ["index.md", "why.md", "what.md", "spec.md"]);
+assert.deepEqual(pagesFor(docs), ["index.md", "why.md", "what.md", "tools.md", "spec.md"]);
 assert.equal(pageTitle(docs, "spec.md"), "Spec");
 assert.equal(pageTitle(docs, "why.md"), "Why Prim");
 assert.equal(pageTitle(docs, "what.md"), "What");

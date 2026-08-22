@@ -402,7 +402,7 @@ export function pagesFor(pack) {
   const index = String(getFile(pack.files, "index.md") || "");
   const order = [];
   if (names.includes("index.md")) order.push("index.md");
-  for (const m of index.matchAll(/\[[^\]]*\]\(([^)]+\.md)\)/g)) {
+  for (const m of index.matchAll(/^\s*[-*]\s+\[[^\]]*\]\(([^)]+\.md)\)/gm)) {
     const p = m[1].replace(/^\.\//, "").split("#")[0];
     if (names.includes(p) && !order.includes(p)) order.push(p);
   }
