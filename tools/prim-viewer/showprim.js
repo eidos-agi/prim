@@ -48,7 +48,12 @@ export function detectKind(files) {
     return !!(v && (typeof v === "string" ? v.trim() : v.byteLength));
   };
   if (has("docs.json")) return "docs";
-  if (has("identity.json")) return "obif";
+  if (has("identity.json")) {
+    try {
+      JSON.parse(getFile(files, "identity.json") || "");
+      return "obif";
+    } catch { /* HTML or junk is not a brand prim */ }
+  }
   if (has("tasks.jsonl")) return "docket";
   if (has("slides.jsonl")) return "deck";
   if (has("lines.jsonl")) return "invoice";
@@ -183,7 +188,12 @@ export async function loadPrim(src) {
         missed.add(path);
         return "";
       }
+      const type = (res.headers.get("content-type") || "").toLowerCase();
       const text = await res.text();
+      if (type.includes("text/html") || /^\s*<(!doctype|html)\b/i.test(text)) {
+        missed.add(path);
+        return "";
+      }
       files[path] = text;
       return text;
     };
