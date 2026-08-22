@@ -106,6 +106,7 @@ Current profiles (non-exhaustive):
 - **prim.session** — thin transcript + `session-editor` (emerging; not OSF)
 - **prim.scene** — one cinematic beat; `scene.json` is camera/objects/duration (emerging)
 - **prim.video** — ordered collection of `prim.scene` packs (emerging)
+- **prim.album** — one record; `album.json` is tracks and metadata (emerging)
 
 A Prim can be a single-profile pack (e.g., “the corporate prim” / `prim.ocsf`) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
 
