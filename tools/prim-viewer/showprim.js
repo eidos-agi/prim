@@ -37,9 +37,17 @@ function esc(s) {
 function faceMatter(md) {
   const text = String(md || "");
   const m = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+  const head = m ? m[1] : "";
   const body = m ? m[2] : text;
-  const field = (k) => ((text.match(new RegExp("^" + k + ":\\s*(.+)$", "m")) || [])[1] || "").trim();
-  return { title: field("title"), profile: field("profile"), type: field("type"), body: body.trim() };
+  const field = (k) => ((head.match(new RegExp("^" + k + ":\\s*(.+)$", "m")) || [])[1] || "").trim();
+  return {
+    title: field("title"),
+    nav: field("nav"),
+    group: field("group"),
+    profile: field("profile"),
+    type: field("type"),
+    body: body.trim(),
+  };
 }
 
 export function detectKind(files) {
@@ -326,7 +334,13 @@ const CSS = `
   .side a:hover { color: var(--ink, #111); }
   .side a.on { background: transparent; color: var(--ink, #111); }
   .side .kicker { margin: 0 0 1.25rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
-  .side .pack-link { margin-top: 2rem; font-size: 0.8rem; color: #8a8a84; }
+  .side .group { margin: 1.35rem 0 0.2rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
+  .side .kicker + .group { margin-top: 0; }
+  .pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e4e2dc; }
+  .pager a { max-width: 48%; }
+  .pager .fwd { margin-left: auto; text-align: right; }
+  .pager a span { display: block; margin: 0 0 0.2rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
+  article.prose .pager a { text-decoration: none; }
   article.prose { padding: 2.5rem 2.5rem 6rem; max-width: 44rem; }
   article.prose h1, article.prose h2, article.prose h3 { text-wrap: balance; font-family: var(--display, "Instrument Sans", "Segoe UI", sans-serif); font-weight: 500; letter-spacing: -0.03em; }
   article.prose h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; margin: 0 0 1.25rem; }
@@ -383,19 +397,23 @@ const CSS = `
   .err { padding: 24px; color: #825b2b; font: 13px/1.4 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
 `;
 
-function pagesFor(pack) {
-  const names = (pack.names || []).filter((n) => /\.md$/i.test(n));
-  names.sort((a, b) => {
-    if (a === "index.md") return -1;
-    if (b === "index.md") return 1;
-    return a.localeCompare(b);
-  });
-  return names;
+export function pagesFor(pack) {
+  const names = (pack.names || []).filter((n) => /\.md$/i.test(n) && n.toLowerCase() !== "log.md");
+  const index = String(getFile(pack.files, "index.md") || "");
+  const order = [];
+  if (names.includes("index.md")) order.push("index.md");
+  for (const m of index.matchAll(/\[[^\]]*\]\(([^)]+\.md)\)/g)) {
+    const p = m[1].replace(/^\.\//, "").split("#")[0];
+    if (names.includes(p) && !order.includes(p)) order.push(p);
+  }
+  for (const n of names) if (!order.includes(n)) order.push(n);
+  return order;
 }
 
-function pageTitle(pack, name) {
+export function pageTitle(pack, name) {
   const raw = String(getFile(pack.files, name) || "");
   const face = faceMatter(raw);
+  if (face.nav) return face.nav;
   if (face.title) return face.title;
   const h = (face.body || raw).match(/^#\s+(.+)$/m);
   return (h && h[1]) || name.replace(/\.md$/i, "");
@@ -582,16 +600,32 @@ function renderFace(pack) {
 function renderRead(pack, page) {
   const pages = pagesFor(pack);
   const current = pages.includes(page) ? page : pages[0] || "index.md";
-  const side = pages.map((n) =>
-    `<a href="#${esc(n)}" data-page="${esc(n)}" class="${n === current ? "on" : ""}">${esc(pageTitle(pack, n))}</a>`
+  const groups = [];
+  for (const n of pages) {
+    const g = faceMatter(getFile(pack.files, n) || "").group || "Pages";
+    const last = groups[groups.length - 1];
+    if (!last || last.name !== g) groups.push({ name: g, pages: [n] });
+    else last.pages.push(n);
+  }
+  const side = groups.map((g) =>
+    `<p class="group">${esc(g.name)}</p>` +
+    g.pages.map((n) =>
+      `<a href="#${esc(n)}" data-page="${esc(n)}" class="${n === current ? "on" : ""}">${esc(pageTitle(pack, n))}</a>`
+    ).join("")
   ).join("");
+  const i = pages.indexOf(current);
+  const prev = i > 0 ? pages[i - 1] : "";
+  const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : "";
+  const pager = (prev || next) ? `<nav class="pager">
+    ${prev ? `<a href="#${esc(prev)}" data-page="${esc(prev)}"><span>Previous</span>${esc(pageTitle(pack, prev))}</a>` : "<span></span>"}
+    ${next ? `<a class="fwd" href="#${esc(next)}" data-page="${esc(next)}"><span>Next</span>${esc(pageTitle(pack, next))}</a>` : ""}
+  </nav>` : "";
   return `<div class="read">
     <nav class="side">
       <p class="kicker">${esc(pack.project?.name || "prim")}</p>
       ${side}
-      <a href="#pack" class="pack-link" data-tab="pack">Pack</a>
     </nav>
-    <article class="prose">${renderMd(getFile(pack.files, current) || "")}</article>
+    <article class="prose">${renderMd(getFile(pack.files, current) || "")}${pager}</article>
   </div>`;
 }
 
