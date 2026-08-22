@@ -86,7 +86,8 @@ Once this is understood, the sentence becomes obvious:
 |---------|------|
 | `prim` | Category home |
 | `prim.<profile>` | Domain profile repo |
-| `prim-web` | Public web surface |
+| `prim-web` | Public web host |
+| `prim-mac` | Mac document host — Prim.app |
 
 Current profiles (non-exhaustive):
 
@@ -103,6 +104,8 @@ Current profiles (non-exhaustive):
 - **prim.deck** — slide records + `deck-editor` (emerging)
 - **prim.invoice** — bill pack + `invoice-editor` (emerging)
 - **prim.session** — thin transcript + `session-editor` (emerging; not OSF)
+- **prim.scene** — one cinematic beat; `scene.json` is camera/objects/duration (emerging)
+- **prim.video** — ordered collection of `prim.scene` packs (emerging)
 
 A Prim can be a single-profile pack (e.g., “the corporate prim” / `prim.ocsf`) or a composition that references multiple profiles. Profile SPECs remain authoritative for their domains. Prim does not override them.
 
@@ -226,7 +229,7 @@ When that happens, the category has landed.
 
 - **Prim** = category and product identity
 - **Eidos AGI** = the organization developing the open OKF-family formats and tools that make Prims reliable
-- Repo convention: `prim` + `prim.<profile>` + `prim-web`
+- Repo convention: `prim` + `prim.<profile>` + `prim-web` + `prim-mac`
 - Current status: early (v0.4.0-draft — Prim is not OKF)
 - Home: https://github.com/eidos-agi/prim
 

@@ -10,7 +10,8 @@ The live list of **types** and **tools** is [`registry/registry.json`](./registr
 |---------|------|
 | `prim` | Category home (this repo) |
 | `prim.<profile>` | Domain profile (spec, validator, examples) |
-| `prim-web` | Public web surface / generated views |
+| `prim-web` | Public web host (`as: host`, cites `*`) |
+| `prim-mac` | Mac document host — Prim.app. The way a `.prim` opens on a Mac |
 
 Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`.
 
@@ -22,8 +23,11 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`.
 prim              Category / product identity
                   https://github.com/eidos-agi/prim
 
-prim-web          Public surface (views on demand)
+prim-web          Public web host (`as: host`, cites `*`)
                   https://github.com/eidos-agi/prim-web
+
+prim-mac          Mac document host — Prim.app. The way a .prim opens on a Mac.
+                  Surface / talk / as host / cites *. The pack stays the file.
 
 Profiles (OKF-shaped unless noted)
 │
@@ -41,7 +45,9 @@ Profiles (OKF-shaped unless noted)
 ├── prim.deck     Slide records + `deck-editor` (emerging, not OKF)
 ├── prim.invoice  Bill pack + `invoice-editor` (emerging, not OKF)
 ├── prim.session  Thin transcript + `session-editor` (emerging; not OSF)
-└── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
+├── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
+├── prim.scene    One cinematic beat. scene.json is authority. The mp4 is a view. (emerging, not OKF)
+└── prim.video    Ordered collection of prim.scene packs. Compose, don't merge. (emerging, not OKF)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed. Category connector: prim-viewer-webmcp — the player registers WebMCP tools so a model can operate any open prim.
 
@@ -65,7 +71,8 @@ Repo names and everyday speech prefer the `prim` / `prim.<profile>` form.
 | **prim** | Category name, positioning, shared properties, language, packaging |
 | **OKF** (via okflify and profile bases) | One pack grammar: face, provenance, trust. Optional. |
 | **prim.\*** profiles | Domain store and rules. May be OKF-shaped or not. |
-| **prim-web** / renderers | Generate views on demand; never become the source of truth |
+| **prim-web** | Public web host. Views on demand. Never the source of truth |
+| **prim-mac** | Mac document host (Prim.app). Double-click, Open, Save. Hosts citing tools; not a pack type |
 | **Validators** | Enforce profile rules; fail-closed where specified. Register on the category SDK. |
 | **Prim UIs** | View plugins keyed `profile/subtype`. How a Prim *opens*. Never the file. |
 | **Prim Tools** | Operators on a Prim. Two kinds: **surface** (human counterpart) and **connector** (system counterpart). Cite a Prim. Not a pack type. The category player is **`prim-viewer`** (`<show-prim filename="yadda.prim">`). The category connector on that player is **`prim-viewer-webmcp`**. |

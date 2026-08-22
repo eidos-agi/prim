@@ -58,7 +58,8 @@ See [SPEC.md §5](./SPEC.md) for the full packaging rules.
 |---------|------|
 | **`prim`** | This repo — category home |
 | **`prim.<profile>`** | Domain profile (spec + validator + examples) |
-| **`prim-web`** | Public web surface |
+| **`prim-web`** | Public web host (`as: host`) |
+| **`prim-mac`** | Mac document host — Prim.app. The way a `.prim` opens on a Mac |
 | **Prim Tool** | Operator on a Prim — **surface** (human) or **connector** (system). Not a repo pattern. |
 
 Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.surface` or `prim.connector`.
@@ -68,7 +69,8 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | Repo | Domain |
 |------|--------|
 | [prim](https://github.com/eidos-agi/prim) | Category identity (this repo) |
-| [prim-web](https://github.com/eidos-agi/prim-web) | Public surface / views |
+| [prim-web](https://github.com/eidos-agi/prim-web) | Public web host / views |
+| [prim-mac](https://github.com/eidos-agi/prim-mac) | Mac document host — Prim.app |
 | [prim.emf](https://github.com/eidos-agi/prim.emf) | Human intent + durable memory |
 | [prim.orf](https://github.com/eidos-agi/prim.orf) | Research / investigation |
 | [prim.opf](https://github.com/eidos-agi/prim.opf) | Product graph |
@@ -82,6 +84,8 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | prim.deck | Slide records + `deck-editor` (emerging) |
 | prim.invoice | Bill pack + `invoice-editor` (emerging) |
 | prim.session | Thin transcript + `session-editor` (emerging; not OSF) |
+| [prim.scene](https://github.com/eidos-agi/prim.scene) | One cinematic beat. `scene.json` is authority (emerging) |
+| [prim.video](https://github.com/eidos-agi/prim.video) | Ordered collection of `prim.scene` packs (emerging) |
 
 OKF provides the grammar ([okflify](https://github.com/eidos-agi/okflify)).  
 **Prim** is what people call the thing.

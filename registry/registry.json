@@ -112,6 +112,20 @@
       "description": "The category primitive log as a file. Append-only run / debug events. Tools write here; they do not copy the target.",
       "okf": false,
       "status": "emerging"
+    },
+    {
+      "name": "scene",
+      "repo": "eidos-agi/prim.scene",
+      "description": "One cinematic beat. scene.json is camera/objects/duration. The mp4 is a view.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "video",
+      "repo": "eidos-agi/prim.video",
+      "description": "An ordered collection of prim.scene packs. video.json is order. Compose, don't merge.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
@@ -276,6 +290,23 @@
       "cites": "*",
       "as": "webmcp",
       "repo": "eidos-agi/prim"
+    },
+    {
+      "name": "prim-mac",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "*",
+      "as": "host",
+      "bin": "Prim",
+      "repo": "eidos-agi/prim-mac"
+    },
+    {
+      "name": "prim-web",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "*",
+      "as": "host",
+      "repo": "eidos-agi/prim-web"
     }
   ]
 }
