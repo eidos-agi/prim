@@ -40,6 +40,7 @@ assert.deepEqual(
   packPaths("---\ntitle: Prim\nlog: log.md\nwhat: what.md\n---\n\nSee [Spec](spec.md) and https://x.com."),
   ["log.md", "what.md", "spec.md"],
 );
+assert.ok(packPaths("# Press\n\n![A scribe](story/then-scribe.jpg)\n").includes("story/then-scribe.jpg"));
 
 const { pagesFor, pageTitle, parsePrim } = await import("./showprim.js");
 const docs = parsePrim({

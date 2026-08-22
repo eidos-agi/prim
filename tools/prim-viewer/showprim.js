@@ -155,7 +155,7 @@ export async function unzipPrim(buf) {
   return flatten(files);
 }
 
-const PACK_FILE = /^(?:\.\/)?([A-Za-z0-9._/-]+\.(?:md|json|jsonl|ya?ml|txt|svg|css))$/i;
+const PACK_FILE = /^(?:\.\/)?([A-Za-z0-9._/-]+\.(?:md|json|jsonl|ya?ml|txt|svg|css|png|jpe?g|gif|webp))$/i;
 
 export function packPaths(text) {
   const out = [];
@@ -197,6 +197,16 @@ export async function loadPrim(src) {
         return "";
       }
       const type = (res.headers.get("content-type") || "").toLowerCase();
+      if (BIN.test(path) || type.startsWith("image/")) {
+        const buf = new Uint8Array(await res.arrayBuffer());
+        const head = new TextDecoder().decode(buf.slice(0, 72));
+        if (type.includes("text/html") || /^\s*</.test(head)) {
+          missed.add(path);
+          return "";
+        }
+        files[path] = buf;
+        return buf;
+      }
       const text = await res.text();
       if (type.includes("text/html") || /^\s*<(!doctype|html)\b/i.test(text)) {
         missed.add(path);
@@ -213,7 +223,7 @@ export async function loadPrim(src) {
     while (queue.length) {
       const path = queue.shift();
       const text = await get(path);
-      if (text) queue.push(...packPaths(text).filter((p) => files[p] == null && !missed.has(p)));
+      if (typeof text === "string" && text) queue.push(...packPaths(text).filter((p) => files[p] == null && !missed.has(p)));
     }
     return flatten(files);
   }
@@ -359,7 +369,13 @@ const CSS = `
   article.prose th, article.prose td { border-bottom: 1px solid #e4e2dc; padding: 0.55rem 0.65rem 0.55rem 0; text-align: left; }
   article.prose th { font-weight: 500; }
   article.prose a { color: inherit; text-decoration: underline; text-decoration-color: #cfcbc3; text-underline-offset: 3px; }
-  article.prose a:hover { text-decoration-color: #111; }
+  article.prose img { max-width: 100%; height: auto; display: block; }
+  .story-frames { display: grid; gap: 0.65rem; margin: 1.35rem 0 1.75rem; }
+  .story-frames.pair, .story-frames.shots { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 640px) { .story-frames.pair, .story-frames.shots { grid-template-columns: 1fr; } }
+  .story-frames figure { margin: 0; }
+  .story-frames img { width: 100%; border-radius: 12px; border: 1px solid #e4e2dc; }
+  .story-frames figcaption { margin-top: 0.4rem; color: #6a6a66; font-size: 0.85rem; line-height: 1.35; }
   .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 14px; border-bottom: 1px solid #e4e2dc; background: #fffcf8; }
   .bar .file { font: 12px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
   .bar .tool { margin-left: auto; color: #6a6a66; font: 11px/1.2 var(--mono, "IBM Plex Mono", ui-monospace, monospace); letter-spacing: 0.08em; text-transform: uppercase; }
@@ -479,6 +495,14 @@ function mdInline(s) {
     });
 }
 
+function packImg(pack, href) {
+  const path = String(href || "").replace(/^\.\//, "").split("#")[0].split("?")[0];
+  if (!path || !pack) return path;
+  const data = getFile(pack.files, path);
+  if (data) return blobFor(path, data);
+  return path;
+}
+
 function takeList(lines, i, indent) {
   const items = [];
   while (i < lines.length) {
@@ -502,7 +526,7 @@ function takeList(lines, i, indent) {
   return { html: `<ul>${items.join("")}</ul>`, i };
 }
 
-function renderMd(md) {
+function renderMd(md, pack) {
   const { body } = faceMatter(md);
   const lines = String(body || md || "").replace(/\r\n/g, "\n").split("\n");
   let i = 0;
@@ -537,6 +561,20 @@ function renderMd(md) {
       i += 1;
       continue;
     }
+    if (/^!\[[^\]]*\]\([^)]+\)\s*$/.test(line.trim())) {
+      const figs = [];
+      while (i < lines.length && /^!\[[^\]]*\]\([^)]+\)\s*$/.test(lines[i].trim())) {
+        const im = /^!\[([^\]]*)\]\(([^)]+)\)/.exec(lines[i].trim());
+        i += 1;
+        if (!im) continue;
+        const src = packImg(pack, im[2]);
+        const cap = im[1] ? `<figcaption>${esc(im[1])}</figcaption>` : "";
+        figs.push(`<figure><img alt="${esc(im[1])}" src="${esc(src)}">${cap}</figure>`);
+      }
+      const cls = figs.length === 2 ? "pair" : figs.length > 2 ? "shots" : "single";
+      out.push(`<div class="story-frames ${cls}">${figs.join("")}</div>`);
+      continue;
+    }
     if (/^\s*[-*]\s/.test(line)) {
       const indent = (/^(\s*)/.exec(line) || ["", ""])[1].length;
       const nested = takeList(lines, i, indent);
@@ -563,7 +601,7 @@ function renderMd(md) {
       continue;
     }
     const para = [];
-    while (i < lines.length && lines[i].trim() && !/^#{1,3}\s/.test(lines[i]) && !lines[i].startsWith("```") && !lines[i].startsWith("|") && !/^\s*[-*]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith(">")) {
+    while (i < lines.length && lines[i].trim() && !/^#{1,3}\s/.test(lines[i]) && !lines[i].startsWith("```") && !lines[i].startsWith("|") && !/^\s*[-*]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith(">") && !/^!\[/.test(lines[i].trim())) {
       para.push(lines[i]);
       i += 1;
     }
@@ -600,7 +638,7 @@ export function tabsFor(pack) {
 function renderHistory(pack) {
   return `<div>
     <p class="kicker">log.md · the prim keeps this</p>
-    <article class="prose">${renderMd(getFile(pack.files, "log.md") || "")}</article>
+    <article class="prose">${renderMd(getFile(pack.files, "log.md") || "", pack)}</article>
   </div>`;
 }
 
@@ -677,7 +715,7 @@ function renderRules(pack) {
 function renderFace(pack) {
   return `<div>
     <p class="kicker">${esc(pack.kind)} · the file is the prim</p>
-    <article class="prose">${renderMd(getFile(pack.files, "index.md") || pack.face?.body || "")}</article>
+    <article class="prose">${renderMd(getFile(pack.files, "index.md") || pack.face?.body || "", pack)}</article>
   </div>`;
 }
 
@@ -705,7 +743,7 @@ function renderRead(pack, page) {
       <p class="kicker">${esc(pack.project?.name || "prim")}</p>
       ${renderNav(navTree(pack), current, pack)}
     </nav>
-    <article class="prose">${renderMd(getFile(pack.files, current) || "")}${pager}</article>
+    <article class="prose">${renderMd(getFile(pack.files, current) || "", pack)}${pager}</article>
   </div>`;
 }
 
