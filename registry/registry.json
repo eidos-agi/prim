@@ -126,6 +126,13 @@
       "description": "An ordered collection of prim.scene packs. video.json is order. Compose, don't merge.",
       "okf": false,
       "status": "emerging"
+    },
+    {
+      "name": "album",
+      "repo": "eidos-agi/prim.album",
+      "description": "One record. album.json is tracks and metadata. The player is a view.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
@@ -257,6 +264,14 @@
       "cites": "arcade",
       "as": "arcade",
       "repo": "eidos-agi/prim.arcade"
+    },
+    {
+      "name": "album-player",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "album",
+      "as": "player",
+      "repo": "eidos-agi/prim.album"
     },
     {
       "name": "docket-webmcp",
