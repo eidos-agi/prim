@@ -334,8 +334,9 @@ const CSS = `
   .side a:hover { color: var(--ink, #111); }
   .side a.on { background: transparent; color: var(--ink, #111); }
   .side .kicker { margin: 0 0 1.25rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
+  .side .nest { padding-left: 0.75rem; }
   .side .group { margin: 1.35rem 0 0.2rem; color: #8a8a84; font: 500 0.7rem/1.2 var(--ui); letter-spacing: 0.16em; text-transform: uppercase; }
-  .side .kicker + .group { margin-top: 0; }
+  .side .kicker + .group, .side .kicker + a { margin-top: 0; }
   .pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #e4e2dc; }
   .pager a { max-width: 48%; }
   .pager .fwd { margin-left: auto; text-align: right; }
@@ -349,6 +350,7 @@ const CSS = `
   article.prose p, article.prose li { font-size: 1.05rem; line-height: 1.55; color: #111; }
   article.prose p { text-wrap: pretty; margin: 0 0 0.9rem; }
   article.prose ul, article.prose ol { padding-left: 1.2rem; margin: 0 0 1rem; }
+  article.prose ul ul { margin: 0.3rem 0 0.5rem; }
   article.prose code { font: 0.88em/1.4 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
   article.prose pre { overflow: auto; padding: 1rem 1.1rem; border: 1px solid #e4e2dc; border-radius: 12px; background: #fffcf8; font: 0.8rem/1.45 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
   article.prose blockquote { margin: 1.25rem 0 1.5rem; padding: 0 0 0 1rem; border-left: 1px solid var(--ink, #111); font-size: 1.25rem; font-weight: 500; letter-spacing: -0.03em; }
@@ -397,17 +399,62 @@ const CSS = `
   .err { padding: 24px; color: #825b2b; font: 13px/1.4 var(--mono, "IBM Plex Mono", ui-monospace, monospace); }
 `;
 
+function listTree(body, names) {
+  const roots = [];
+  const stack = [{ depth: -1, children: roots }];
+  for (const line of String(body || "").split("\n")) {
+    const m = /^( *)[-*]\s+(.*)$/.exec(line);
+    if (!m) continue;
+    const depth = Math.min(6, Math.floor(m[1].length / 2));
+    const rest = m[2].trim();
+    const link = /^\[([^\]]+)\]\(([^)]+\.md)(?:#[^)]*)?\)/.exec(rest);
+    const page = link ? link[2].replace(/^\.\//, "").split("#")[0] : "";
+    const node = {
+      title: (link ? link[1] : rest).replace(/[*`]/g, ""),
+      page: page && names.has(page) ? page : "",
+      children: [],
+    };
+    while (stack.length && stack[stack.length - 1].depth >= depth) stack.pop();
+    stack[stack.length - 1].children.push(node);
+    stack.push({ depth, children: node.children });
+  }
+  return roots;
+}
+
+function walkPages(nodes, out) {
+  for (const n of nodes || []) {
+    if (n.page) out.push(n.page);
+    if (n.children?.length) walkPages(n.children, out);
+  }
+  return out;
+}
+
+export function navTree(pack) {
+  const names = new Set((pack.names || []).filter((n) => /\.md$/i.test(n) && n.toLowerCase() !== "log.md"));
+  const index = String(getFile(pack.files, "index.md") || "");
+  const roots = listTree(faceMatter(index).body || index, names);
+  if (!roots.length) {
+    const order = [];
+    if (names.has("index.md")) order.push("index.md");
+    for (const m of index.matchAll(/^\s*[-*]\s+\[[^\]]*\]\(([^)]+\.md)\)/gm)) {
+      const p = m[1].replace(/^\.\//, "").split("#")[0];
+      if (names.has(p) && !order.includes(p)) order.push(p);
+    }
+    for (const n of names) if (!order.includes(n)) order.push(n);
+    return order.map((page) => ({ title: pageTitle(pack, page), page, children: [] }));
+  }
+  const seen = walkPages(roots, []);
+  if (names.has("index.md") && !seen.includes("index.md")) {
+    return [{ title: pageTitle(pack, "index.md"), page: "index.md", children: [] }, ...roots];
+  }
+  return roots;
+}
+
 export function pagesFor(pack) {
   const names = (pack.names || []).filter((n) => /\.md$/i.test(n) && n.toLowerCase() !== "log.md");
-  const index = String(getFile(pack.files, "index.md") || "");
-  const order = [];
-  if (names.includes("index.md")) order.push("index.md");
-  for (const m of index.matchAll(/^\s*[-*]\s+\[[^\]]*\]\(([^)]+\.md)\)/gm)) {
-    const p = m[1].replace(/^\.\//, "").split("#")[0];
-    if (names.includes(p) && !order.includes(p)) order.push(p);
-  }
-  for (const n of names) if (!order.includes(n)) order.push(n);
-  return order;
+  const fromTree = walkPages(navTree(pack), []);
+  const rest = names.filter((n) => !fromTree.includes(n));
+  return fromTree.length ? [...fromTree, ...rest] : names;
 }
 
 export function pageTitle(pack, name) {
@@ -430,6 +477,29 @@ function mdInline(s) {
       }
       return `<a href="${esc(href)}">${esc(label)}</a>`;
     });
+}
+
+function takeList(lines, i, indent) {
+  const items = [];
+  while (i < lines.length) {
+    const m = /^(\s*)[-*]\s+(.*)$/.exec(lines[i]);
+    if (!m) break;
+    const d = m[1].length;
+    if (d < indent) break;
+    if (d > indent) break;
+    i += 1;
+    let inner = "";
+    if (i < lines.length) {
+      const nxt = /^(\s*)[-*]\s/.exec(lines[i]);
+      if (nxt && nxt[1].length > d) {
+        const nested = takeList(lines, i, nxt[1].length);
+        inner = nested.html;
+        i = nested.i;
+      }
+    }
+    items.push(`<li>${mdInline(m[2])}${inner}</li>`);
+  }
+  return { html: `<ul>${items.join("")}</ul>`, i };
 }
 
 function renderMd(md) {
@@ -467,13 +537,11 @@ function renderMd(md) {
       i += 1;
       continue;
     }
-    if (/^[-*]\s/.test(line)) {
-      const items = [];
-      while (i < lines.length && /^[-*]\s/.test(lines[i])) {
-        items.push(`<li>${mdInline(lines[i].replace(/^[-*]\s/, ""))}</li>`);
-        i += 1;
-      }
-      out.push(`<ul>${items.join("")}</ul>`);
+    if (/^\s*[-*]\s/.test(line)) {
+      const indent = (/^(\s*)/.exec(line) || ["", ""])[1].length;
+      const nested = takeList(lines, i, indent);
+      out.push(nested.html);
+      i = nested.i;
       continue;
     }
     if (/^\d+\.\s/.test(line)) {
@@ -495,7 +563,7 @@ function renderMd(md) {
       continue;
     }
     const para = [];
-    while (i < lines.length && lines[i].trim() && !/^#{1,3}\s/.test(lines[i]) && !lines[i].startsWith("```") && !lines[i].startsWith("|") && !/^[-*]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith(">")) {
+    while (i < lines.length && lines[i].trim() && !/^#{1,3}\s/.test(lines[i]) && !lines[i].startsWith("```") && !lines[i].startsWith("|") && !/^\s*[-*]\s/.test(lines[i]) && !/^\d+\.\s/.test(lines[i]) && !lines[i].startsWith(">")) {
       para.push(lines[i]);
       i += 1;
     }
@@ -597,22 +665,18 @@ function renderFace(pack) {
   </div>`;
 }
 
+function renderNav(nodes, current, pack) {
+  return (nodes || []).map((n) => {
+    const kids = n.children?.length ? `<div class="nest">${renderNav(n.children, current, pack)}</div>` : "";
+    if (!n.page) return `<p class="group">${esc(n.title)}</p>${kids}`;
+    const on = n.page === current ? "on" : "";
+    return `<a href="#${esc(n.page)}" data-page="${esc(n.page)}" class="${on}">${esc(n.title || pageTitle(pack, n.page))}</a>${kids}`;
+  }).join("");
+}
+
 function renderRead(pack, page) {
   const pages = pagesFor(pack);
   const current = pages.includes(page) ? page : pages[0] || "index.md";
-  const groups = [];
-  for (const n of pages) {
-    const g = faceMatter(getFile(pack.files, n) || "").group || "Pages";
-    const last = groups[groups.length - 1];
-    if (!last || last.name !== g) groups.push({ name: g, pages: [n] });
-    else last.pages.push(n);
-  }
-  const side = groups.map((g) =>
-    `<p class="group">${esc(g.name)}</p>` +
-    g.pages.map((n) =>
-      `<a href="#${esc(n)}" data-page="${esc(n)}" class="${n === current ? "on" : ""}">${esc(pageTitle(pack, n))}</a>`
-    ).join("")
-  ).join("");
   const i = pages.indexOf(current);
   const prev = i > 0 ? pages[i - 1] : "";
   const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : "";
@@ -623,7 +687,7 @@ function renderRead(pack, page) {
   return `<div class="read">
     <nav class="side">
       <p class="kicker">${esc(pack.project?.name || "prim")}</p>
-      ${side}
+      ${renderNav(navTree(pack), current, pack)}
     </nav>
     <article class="prose">${renderMd(getFile(pack.files, current) || "")}${pager}</article>
   </div>`;

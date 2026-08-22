@@ -55,6 +55,20 @@ assert.equal(pageTitle(docs, "spec.md"), "Spec");
 assert.equal(pageTitle(docs, "why.md"), "Why Prim");
 assert.equal(pageTitle(docs, "what.md"), "What");
 
+const { navTree } = await import("./showprim.js");
+const nested = parsePrim({
+  "index.md": "---\ntitle: Prim\nnav: Prim\nwhy: why.md\npress: press.md\n---\n\n# Prim\n\n- The argument\n  - [Why Prim](why.md)\n  - [The press](press.md)\n- The contract\n  - [Spec](spec.md)\n",
+  "why.md": "---\nnav: Why Prim\n---\n\n# Why Prim\n",
+  "press.md": "---\nnav: The press\n---\n\n# The press\n",
+  "spec.md": "---\nnav: Spec\n---\n\n# Spec\n",
+});
+assert.deepEqual(pagesFor(nested), ["index.md", "why.md", "press.md", "spec.md"]);
+assert.deepEqual(navTree(nested).map((n) => [n.title, n.page, (n.children || []).map((c) => c.page)]), [
+  ["Prim", "index.md", []],
+  ["The argument", "", ["why.md", "press.md"]],
+  ["The contract", "", ["spec.md"]],
+]);
+
 const { toolsFor, bindWebmcp, modelContext } = await import("./webmcp.js");
 const fake = {
   _tab: "mark",

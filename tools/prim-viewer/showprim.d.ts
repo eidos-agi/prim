@@ -30,7 +30,13 @@ export function detectKind(files: PrimFiles): string;
 export function parsePrim(files: PrimFiles): PrimPack;
 export function parseObif(files: PrimFiles): PrimPack;
 export function unzipPrim(buf: ArrayBuffer | Uint8Array): Promise<PrimFiles>;
+export type NavNode = {
+  title: string;
+  page: string;
+  children: NavNode[];
+};
 export function packPaths(text: string): string[];
+export function navTree(pack: PrimPack): NavNode[];
 export function pagesFor(pack: PrimPack): string[];
 export function pageTitle(pack: PrimPack, name: string): string;
 export function loadPrim(src: string): Promise<PrimFiles>;
