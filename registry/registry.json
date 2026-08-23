@@ -234,14 +234,6 @@
       "repo": "eidos-agi/prim.ocsf"
     },
     {
-      "name": "brand-editor",
-      "kind": "surface",
-      "direction": "talk",
-      "cites": "brand",
-      "as": "editor",
-      "repo": "eidos-agi/prim.brand"
-    },
-    {
       "name": "osf-editor",
       "kind": "surface",
       "direction": "talk",

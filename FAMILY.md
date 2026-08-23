@@ -38,7 +38,7 @@ Profiles (OKF-shaped unless noted)
 ├── prim.opff     Personal / household finance packs + `opff-editor` (surface / talk, as ledger)
 ├── prim.omf      Meeting occurrences + `omf-editor` (surface / talk)
 ├── prim.ocsf     Corporate structure, ownership, capital, governance + `ocsf-editor`
-├── prim.brand    Brand kit (identity, tokens, logos, fonts, running blocks) + `brand-editor`. Not OKF. Retired: prim.obif.
+├── prim.brand    Brand kit (identity, tokens, logos, fonts, running blocks). Not OKF. Retired: prim.obif. `prim-viewer` cites it; no separate editor yet.
 ├── prim.osf      Open Session Format (movable session packs) + `osf-editor`
 ├── prim.obf      Open Book Format + `obf-editor`
 ├── prim.docket   Execution prim + first Prim Tool (`docket-editor`, surface / talk)
