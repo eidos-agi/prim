@@ -141,6 +141,34 @@
       "description": "One record. album.json is tracks and metadata. The player is a view.",
       "okf": false,
       "status": "emerging"
+    },
+    {
+      "name": "workbook",
+      "repo": "primfoundation/prim.workbook",
+      "description": "Ordered composition of worksheets citing measure/metric. Alex (expected) + SQL (actuals). Proof + provenance. Excel\u2019s shape; the pack is authority.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "worksheet",
+      "repo": "primfoundation/prim.workbook",
+      "description": "One sheet face inside a workbook. Rows cite measure/metric or are structure-only. Compose; don\u2019t merge.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "measure",
+      "repo": "primfoundation/prim.workbook",
+      "description": "Durable metric identity (definition, units, grain). Values live on prim.metric receipts, not the sheet.",
+      "okf": false,
+      "status": "emerging"
+    },
+    {
+      "name": "metric",
+      "repo": "primfoundation/prim.workbook",
+      "description": "Period series + proof for a measure. Receipt / connector backed; never sheet literals as authority.",
+      "okf": false,
+      "status": "emerging"
     }
   ],
   "tools": [
@@ -322,6 +350,14 @@
       "cites": "*",
       "as": "host",
       "repo": "eidos-agi/prim-web"
+    },
+    {
+      "name": "workbook-editor",
+      "kind": "surface",
+      "direction": "talk",
+      "cites": "workbook",
+      "as": "editor",
+      "repo": "primfoundation/prim.workbook"
     }
   ],
   "applets": [
@@ -331,7 +367,9 @@
       "summary": "Recordings. Each one gets suggested people and tags.",
       "repo": "eidos-agi/pavo",
       "status": "active",
-      "prims": ["opf"],
+      "prims": [
+        "opf"
+      ],
       "tools": []
     }
   ]

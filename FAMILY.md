@@ -48,7 +48,11 @@ Profiles (OKF-shaped unless noted)
 ├── prim.log      Append-only debug / run log + `log-editor` / `prim-sim` (emerging; the log primitive as a file)
 ├── prim.scene    One cinematic beat. scene.json is authority. The mp4 is a view. (emerging, not OKF)
 ├── prim.video    Ordered collection of prim.scene packs. Compose, don't merge. (emerging, not OKF)
-└── prim.album    One record. album.json is tracks and metadata. The player is a view. (emerging, not OKF)
+├── prim.album    One record. album.json is tracks and metadata. The player is a view. (emerging, not OKF)
+├── prim.workbook Workbook — ordered worksheets (Alex expected + SQL actuals). Cites measure/metric. Proof/provenance. `workbook-editor` (emerging, not OKF)
+├── prim.worksheet One sheet face; rows cite measure/metric or structure-only (emerging; often embedded)
+├── prim.measure  Durable identity / definition for a KPI (emerging; may embed in workbook)
+└── prim.metric   Period series + proof receipts for a measure (emerging; may embed in workbook)
 
 First connector: docket-webmcp (WebMCP). Validates a docket; does not feed contents to a model unless exposed. Category connector: prim-viewer-webmcp — the player registers WebMCP tools so a model can operate any open prim.
 
