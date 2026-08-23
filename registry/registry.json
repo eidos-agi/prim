@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "types": [
     {
       "name": "emf",
@@ -322,6 +322,17 @@
       "cites": "*",
       "as": "host",
       "repo": "eidos-agi/prim-web"
+    }
+  ],
+  "applets": [
+    {
+      "id": "pavo",
+      "name": "Pavo",
+      "summary": "Recordings. Each one gets suggested people and tags.",
+      "repo": "eidos-agi/pavo",
+      "status": "active",
+      "prims": ["opf"],
+      "tools": []
     }
   ]
 }

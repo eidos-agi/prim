@@ -284,18 +284,22 @@ The TypeScript SDK names `ToolKind`, `ToolDirection`, and `createTool` so this v
 
 ## 11. Registry
 
-The category keeps one registry of **types** and **tools**. It lives at [`registry/registry.json`](./registry/registry.json). FAMILY.md is a sketch. The registry is the list.
+The category keeps one registry of **types**, **tools**, and **applets**. It lives at [`registry/registry.json`](./registry/registry.json). FAMILY.md is a sketch. The registry is the list.
 
 A **type** is a kind of Prim (`docket`, `orf`, …). It names a store. It is not a tool.
 
 A **tool** is a Prim Tool. It must be `surface` or `connector`, name one direction, and **cite a registered type**. It is not a type and not a pack. A category viewer may cite `*` (any registered type). It still names one kind and one direction.
 
+An **applet** is a composition. It cites one or more registered types (`prims`) and may cite registered tools. It is not a tool kind and not a pack type. Do not mint `prim.applet`. Do not set `tools[].kind` to `applet`.
+
 ```bash
 prim registry
 prim registry types
 prim registry tools
+prim registry applets
 prim registry type docket
 prim registry tool docket-editor
+prim registry applet pavo
 ```
 
 Do not mint `prim.surface` or `prim.connector` as types. Those are kinds of tools.
@@ -304,7 +308,7 @@ Do not mint `prim.surface` or `prim.connector` as types. Those are kinds of tool
 
 ## 12. Status
 
-**v0.4.0-draft** (Prim is not OKF; registry of types and tools).
+**v0.4.0-draft** (Prim is not OKF; registry of types, tools, and applets).
 
 This category SPEC will evolve as the family of profiles hardens and as real Prim usage surfaces additional shared requirements.
 

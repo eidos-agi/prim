@@ -2,7 +2,7 @@
 
 Prim is the category: a file that stores information, and tools that interact with it. Some profiles use OKF as their grammar. They do not have to. Prim can evolve without being OKF.
 
-The live list of **types** and **tools** is [`registry/registry.json`](./registry/registry.json). This map is a sketch. `prim registry` prints the catalog.
+The live list of **types**, **tools**, and **applets** is [`registry/registry.json`](./registry/registry.json). This map is a sketch. `prim registry` prints the catalog. Applets are compositions (they cite types; they may cite tools). They are not a tool kind.
 
 **Repository naming convention**
 

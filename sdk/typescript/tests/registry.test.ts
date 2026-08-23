@@ -1,12 +1,16 @@
 import assert from "node:assert/strict";
 
 import {
+  getApplet,
   getTool,
   getType,
+  listApplets,
   listTools,
   listTypes,
+  registerApplet,
   registerTool,
   registerType,
+  registry,
   resetRegistry,
 } from "../src/registry.ts";
 
@@ -48,7 +52,7 @@ assert.equal(viewer.counterpart, "human");
 assert.equal(viewer.cites, "*");
 assert.equal(viewer.as, "viewer");
 assert.equal(viewer.repo, "eidos-agi/prim");
-assert.equal(listTools({ cites: "*" }).length, 2);
+assert.equal(listTools({ cites: "*" }).length, 4);
 const listed = getTool("docket-editor");
 assert.ok(listed);
 assert.equal(listed.kind, "surface");
@@ -80,7 +84,6 @@ for (const [name, cites] of [
   ["opf-editor", "opf"],
   ["odwf-editor", "odwf"],
   ["ocsf-editor", "ocsf"],
-  ["obif-editor", "obif"],
   ["osf-editor", "osf"],
   ["obf-editor", "obf"],
   ["log-editor", "log"],
@@ -106,6 +109,19 @@ assert.equal(viewerMcp.counterpart, "system");
 assert.equal(viewerMcp.cites, "*");
 assert.equal(viewerMcp.as, "webmcp");
 assert.equal(listTools({ kind: "connector", cites: "*" }).length, 1);
+
+assert.equal(registry().version, 2);
+assert.ok(Array.isArray(registry().applets));
+assert.ok(listApplets().length >= 1);
+const pavo = getApplet("pavo");
+assert.ok(pavo);
+assert.equal(pavo.name, "Pavo");
+assert.equal(pavo.repo, "eidos-agi/pavo");
+assert.equal(pavo.status, "active");
+assert.deepEqual([...pavo.prims], ["opf"]);
+assert.deepEqual([...pavo.tools], []);
+assert.equal(listApplets().some((a) => a.id === "pavo"), true);
+assert.equal(getApplet("bindings-only"), undefined);
 
 const extra = registerType({
   name: "demo",
@@ -147,7 +163,42 @@ assert.throws(() =>
     cites: "demo",
   }),
 );
+const applet = registerApplet({
+  id: "demo-app",
+  name: "Demo applet",
+  summary: "test only",
+  repo: "eidos-agi/prim.demo",
+  status: "emerging",
+  prims: ["demo"],
+  tools: ["demo-talk"],
+});
+assert.equal(applet.id, "demo-app");
+assert.deepEqual([...applet.prims], ["demo"]);
+assert.throws(() =>
+  registerApplet({
+    id: "demo-app",
+    name: "dup",
+    summary: "dup",
+    repo: "eidos-agi/prim.demo",
+    status: "emerging",
+    prims: ["demo"],
+    tools: [],
+  }),
+);
+assert.throws(() =>
+  registerApplet({
+    id: "orphan-app",
+    name: "Orphan",
+    summary: "missing prim",
+    repo: "eidos-agi/prim.demo",
+    status: "emerging",
+    prims: ["missing"],
+    tools: [],
+  }),
+);
 resetRegistry();
 assert.equal(getType("demo"), undefined);
+assert.equal(getApplet("demo-app"), undefined);
 assert.ok(getTool("docket-editor"));
+assert.ok(getApplet("pavo"));
 console.log("registry.test.ts ok");

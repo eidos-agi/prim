@@ -1,4 +1,4 @@
-/** Category registry: Prim types and Prim Tools. Not a tenth primitive. */
+/** Category registry: Prim types, Prim Tools, and applets. Not a tenth primitive. */
 
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -28,16 +28,28 @@ export type RegisteredTool = PrimTool & {
   repo?: string;
 };
 
+export type PrimApplet = {
+  id: string;
+  name: string;
+  summary: string;
+  repo: string;
+  status: TypeStatus;
+  prims: readonly string[];
+  tools: readonly string[];
+};
+
 export type Registry = {
   version: number;
   types: PrimType[];
   tools: RegisteredTool[];
+  applets: PrimApplet[];
 };
 
 type RawRegistry = {
   version: number;
   types: PrimType[];
   tools: PrimTool[];
+  applets?: PrimApplet[];
 };
 
 function committedPath(): string {
@@ -53,10 +65,13 @@ function hydrate(raw: RawRegistry): Registry {
   const types = raw.types.map((t) => freezeType(t));
   const names = new Set(types.map((t) => t.name));
   const tools = raw.tools.map((tool) => hydrateTool(tool, names));
+  const toolNames = new Set(tools.map((t) => t.name));
+  const applets = (raw.applets ?? []).map((applet) => freezeApplet(applet, names, toolNames));
   return Object.freeze({
     version: raw.version,
     types: Object.freeze(types),
     tools: Object.freeze(tools),
+    applets: Object.freeze(applets),
   });
 }
 
@@ -77,6 +92,37 @@ function hydrateTool(
   return Object.freeze({
     ...created,
     counterpart: counterpartOf(created.kind),
+  });
+}
+
+function freezeApplet(
+  applet: PrimApplet,
+  typeNames: Set<string>,
+  toolNames: Set<string>,
+): PrimApplet {
+  if (!String(applet.id || "").trim()) throw new Error("an applet needs an id");
+  if (!String(applet.name || "").trim()) throw new Error(`applet ${applet.id} needs a name`);
+  if (!String(applet.repo || "").trim()) throw new Error(`applet ${applet.id} needs a repo`);
+  const prims = [...(applet.prims ?? [])];
+  const tools = [...(applet.tools ?? [])];
+  for (const prim of prims) {
+    if (!typeNames.has(prim)) {
+      throw new Error(`applet ${applet.id} cites unknown type: ${prim}`);
+    }
+  }
+  for (const tool of tools) {
+    if (!toolNames.has(tool)) {
+      throw new Error(`applet ${applet.id} cites unknown tool: ${tool}`);
+    }
+  }
+  return Object.freeze({
+    id: applet.id,
+    name: applet.name,
+    summary: applet.summary ?? "",
+    repo: applet.repo,
+    status: applet.status,
+    prims: Object.freeze(prims),
+    tools: Object.freeze(tools),
   });
 }
 
@@ -108,12 +154,20 @@ export function listTools(filter?: {
   });
 }
 
+export function listApplets(): readonly PrimApplet[] {
+  return current.applets;
+}
+
 export function getType(name: string): PrimType | undefined {
   return current.types.find((t) => t.name === name);
 }
 
 export function getTool(name: string): RegisteredTool | undefined {
   return current.tools.find((t) => t.name === name);
+}
+
+export function getApplet(id: string): PrimApplet | undefined {
+  return current.applets.find((a) => a.id === id);
 }
 
 export function registerType(type: PrimType): PrimType {
@@ -137,6 +191,20 @@ export function registerTool(tool: PrimTool): RegisteredTool {
   current = Object.freeze({
     ...current,
     tools: Object.freeze([...current.tools, next]),
+  });
+  return next;
+}
+
+export function registerApplet(applet: PrimApplet): PrimApplet {
+  if (getApplet(applet.id)) {
+    throw new Error(`applet already registered: ${applet.id}`);
+  }
+  const names = new Set(current.types.map((t) => t.name));
+  const toolNames = new Set(current.tools.map((t) => t.name));
+  const next = freezeApplet(applet, names, toolNames);
+  current = Object.freeze({
+    ...current,
+    applets: Object.freeze([...current.applets, next]),
   });
   return next;
 }

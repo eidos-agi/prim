@@ -2,7 +2,7 @@
 /** Category CLI. Profile validators register on the SDK; this is not a book tool. */
 
 import { PrimError, openPrim } from "./pack.ts";
-import { getTool, getType, listTools, listTypes } from "./registry.ts";
+import { getApplet, getTool, getType, listApplets, listTools, listTypes } from "./registry.ts";
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -64,7 +64,7 @@ try {
 
 function usage(): void {
   console.error("usage: prim <open|validate|tools> <path>");
-  console.error("       prim registry [types|tools [citing <type>]|type <name>|tool <name>]");
+  console.error("       prim registry [types|tools [citing <type>]|applets|type <name>|tool <name>|applet <id>]");
 }
 
 function registryCmd(rest: string[]): void {
@@ -83,9 +83,15 @@ function registryCmd(rest: string[]): void {
         `${tool.name}\t${tool.kind}/${tool.direction}\tcites ${tool.cites}${tool.as ? `\tas ${tool.as}` : ""}\n`,
       );
     }
-    if (sub === "all") return;
   }
-  if (sub === "types" || sub === "tools") return;
+  if (sub === "applets" || sub === "all") {
+    if (sub === "all") process.stdout.write("applets:\n");
+    for (const applet of listApplets()) {
+      const prims = applet.prims.length ? applet.prims.join(",") : "-";
+      process.stdout.write(`${applet.id}\t${applet.name}\t${applet.repo}\t${applet.status}\tprims ${prims}\n`);
+    }
+  }
+  if (sub === "types" || sub === "tools" || sub === "applets" || sub === "all") return;
   if (sub === "type") {
     const name = rest[1];
     const t = name ? getType(name) : undefined;
@@ -104,6 +110,16 @@ function registryCmd(rest: string[]): void {
       process.exit(1);
     }
     process.stdout.write(`${JSON.stringify(tool, null, 2)}\n`);
+    return;
+  }
+  if (sub === "applet") {
+    const id = rest[1];
+    const applet = id ? getApplet(id) : undefined;
+    if (!applet) {
+      console.error(id ? `unknown applet: ${id}` : "usage: prim registry applet <id>");
+      process.exit(1);
+    }
+    process.stdout.write(`${JSON.stringify(applet, null, 2)}\n`);
     return;
   }
   usage();
