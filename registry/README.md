@@ -33,6 +33,6 @@ First connector: `docket-webmcp` (connector / talk, as webmcp, cites `docket`). 
 
 `log` is the category primitive as a store. `log-editor` opens the file. `prim-sim` is the Mac surface that simulates other tools and writes that log prim.
 
-`emf-editor`, `orf-editor`, `opf-editor`, `odwf-editor`, `ocsf-editor`, `obif-editor`, `osf-editor`, and `obf-editor` are hosted on prim-web. OSF is not the thin `session` file. OBF pages live in `book.json`.
+`emf-editor`, `orf-editor`, `opf-editor`, `odwf-editor`, `ocsf-editor`, `brand-editor`, `osf-editor`, and `obf-editor` are hosted on prim-web. OSF is not the thin `session` file. OBF pages live in `book.json`.
 
 A type is not a tool. A tool is not a `prim.surface` pack.

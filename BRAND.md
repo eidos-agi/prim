@@ -19,7 +19,7 @@ Pronunciation: /prɪm/ (same as the English adjective).
 | Pattern | Use |
 |---------|-----|
 | `prim` | Category home |
-| `prim.<profile>` | Domain profiles (`prim.ocsf`, `prim.obif`, `prim.osf`, …) |
+| `prim.<profile>` | Domain profiles (`prim.ocsf`, `prim.brand`, `prim.osf`, …) |
 | `prim-web` | Public web surface |
 
 ---
@@ -78,7 +78,7 @@ Avoid: hype, “revolutionary”, consumer-app cheerfulness, vague “AI platfor
 - “Generate a view from the prim.”
 - “A surface tool on this prim.” / “A connector that cites this prim.”
 - “Latest prim”
-- “Corporate prim”, “brand prim”, `prim.ocsf`, `prim.obif` (when domain helps)
+- “Corporate prim”, “brand prim”, `prim.ocsf`, `prim.brand` (when domain helps)
 
 ### Avoid as primary language
 

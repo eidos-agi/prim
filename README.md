@@ -62,7 +62,7 @@ See [SPEC.md §5](./SPEC.md) for the full packaging rules.
 | **`prim-mac`** | Mac document host — Prim.app. The way a `.prim` opens on a Mac |
 | **Prim Tool** | Operator on a Prim — **surface** (human) or **connector** (system). Not a repo pattern. |
 
-Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.surface` or `prim.connector`.
+Examples: `prim.ocsf`, `prim.brand`, `prim.osf`, `prim.orf`. There is no `prim.surface` or `prim.connector`.
 
 ## The Prim family
 
@@ -78,7 +78,7 @@ Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`. There is no `prim.su
 | [prim.opff](https://github.com/eidos-agi/prim.opff) | Personal finance + `opff-editor` (surface / talk, as ledger) |
 | [prim.omf](https://github.com/eidos-agi/prim.omf) | Meeting occurrences |
 | [prim.ocsf](https://github.com/eidos-agi/prim.ocsf) | Corporate structure & capital |
-| [prim.obif](https://github.com/eidos-agi/prim.obif) | Brand & identity |
+| [prim.brand](https://github.com/eidos-agi/prim.brand) | Brand kit |
 | [prim.osf](https://github.com/eidos-agi/prim.osf) | Open Session Format |
 | [prim.docket](https://github.com/eidos-agi/prim.docket) | Execution prim + first Prim Tool (`docket-editor`, surface / talk) |
 | prim.deck | Slide records + `deck-editor` (emerging) |
@@ -99,7 +99,7 @@ See [FAMILY.md](./FAMILY.md) for composition rules and how to talk about profile
 - “Is that the latest prim?”
 - “Don’t send the spreadsheet — just send the prim.”
 - “The prim is the source of truth. The deck is just a view.”
-- “Brand prim” / `prim.obif` when you need the profile.
+- “Brand prim” / `prim.brand` when you need the profile.
 - “There are prims and prim tools.”
 - “A surface tool on this prim.” / “A connector that cites this prim.” — not a new pack type.
 

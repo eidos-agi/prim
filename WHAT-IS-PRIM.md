@@ -98,7 +98,7 @@ Current profiles (non-exhaustive):
 - **prim.opff** — personal finance packs; Prim Tool is `opff-editor` (surface / talk, as ledger)
 - **prim.omf** — meeting occurrences
 - **prim.ocsf** — corporate structure, ownership, capital, governance
-- **prim.obif** — brand & identity
+- **prim.brand** — brand & identity
 - **prim.osf** — open session format (movable session packs)
 - **prim.docket** — execution prim; first Prim Tool is `docket-editor` (surface / talk)
 - **prim.deck** — slide records + `deck-editor` (emerging)
@@ -152,7 +152,7 @@ Prims reverse that relationship: structure first, views later.
 - “Generate a view from the prim.”
 - “There are prims and prim tools.”
 - “A surface tool on this prim.” / “A connector that cites this prim.”
-- “Corporate prim,” “brand prim,” `prim.ocsf`, `prim.obif` (when the domain helps)
+- “Corporate prim,” “brand prim,” `prim.ocsf`, `prim.brand` (when the domain helps)
 
 **Avoid as primary language**
 

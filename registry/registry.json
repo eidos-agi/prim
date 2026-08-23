@@ -53,16 +53,17 @@
     {
       "name": "obif",
       "repo": "eidos-agi/prim.obif",
-      "description": "Brand identity",
+      "description": "RETIRED. Successor: brand (eidos-agi/prim.brand).",
       "okf": true,
-      "status": "active"
+      "status": "retired",
+      "successor": "brand"
     },
     {
       "name": "brand",
       "repo": "eidos-agi/prim.brand",
-      "description": "Brand kit: identity, tokens, logos, fonts, running blocks. Send the pack.",
-      "okf": true,
-      "status": "emerging"
+      "description": "Brand kit. Identity, tokens, logos, fonts, running blocks. Send the pack.",
+      "okf": false,
+      "status": "active"
     },
     {
       "name": "osf",
@@ -233,12 +234,12 @@
       "repo": "eidos-agi/prim.ocsf"
     },
     {
-      "name": "obif-editor",
+      "name": "brand-editor",
       "kind": "surface",
       "direction": "talk",
-      "cites": "obif",
+      "cites": "brand",
       "as": "editor",
-      "repo": "eidos-agi/prim.obif"
+      "repo": "eidos-agi/prim.brand"
     },
     {
       "name": "osf-editor",

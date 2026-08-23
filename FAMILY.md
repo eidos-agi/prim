@@ -13,7 +13,7 @@ The live list of **types** and **tools** is [`registry/registry.json`](./registr
 | `prim-web` | Public web host (`as: host`, cites `*`) |
 | `prim-mac` | Mac document host — Prim.app. The way a `.prim` opens on a Mac |
 
-Examples: `prim.ocsf`, `prim.obif`, `prim.osf`, `prim.orf`.
+Examples: `prim.ocsf`, `prim.brand`, `prim.osf`, `prim.orf`.
 
 ---
 
@@ -38,7 +38,7 @@ Profiles (OKF-shaped unless noted)
 ├── prim.opff     Personal / household finance packs + `opff-editor` (surface / talk, as ledger)
 ├── prim.omf      Meeting occurrences + `omf-editor` (surface / talk)
 ├── prim.ocsf     Corporate structure, ownership, capital, governance + `ocsf-editor`
-├── prim.obif     Brand identity (logo, color, type, voice, assets) + `obif-editor`
+├── prim.brand    Brand kit (identity, tokens, logos, fonts, running blocks) + `brand-editor`. Not OKF. Retired: prim.obif.
 ├── prim.osf      Open Session Format (movable session packs) + `osf-editor`
 ├── prim.obf      Open Book Format + `obf-editor`
 ├── prim.docket   Execution prim + first Prim Tool (`docket-editor`, surface / talk)
@@ -101,8 +101,8 @@ Prim Tools are category language, not a family of repos. Do not mint `prim.surfa
 | Context | Preferred language |
 |---------|-------------------|
 | Everyday / human | “the prim”, “send me the prim”, “latest prim” |
-| Profile precision | “the brand prim”, “the corporate prim”, “prim.obif”, “prim.ocsf” |
-| Technical / agent | `profile: obif`, `profile: ocsf`, pack path / repo name |
+| Profile precision | “the brand prim”, “the corporate prim”, “prim.brand”, “prim.ocsf” |
+| Technical / agent | `profile: brand`, `profile: ocsf`, pack path / repo name |
 
 The goal is that **prim** is the default noun. Profile codes and `prim.*` repo names appear when precision is needed.
 
