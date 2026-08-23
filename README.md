@@ -114,7 +114,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 | [INTENTION.md](./INTENTION.md) | North-star design commitments |
 | [SPEC.md](./SPEC.md) | Category specification (what makes a Prim; Prim Tools in §10) |
 | [FAMILY.md](./FAMILY.md) | Map of `prim.*` profiles |
-| [registry/registry.json](./registry/registry.json) | **Registry** — Prim types and Prim Tools |
+| [registry/registry.json](./registry/registry.json) | **Registry** — Prim types, Prim Tools, and applets |
 | [tools/prim-viewer/](./tools/prim-viewer/) | Category player — `<show-prim filename="yadda.prim">`. React: `@eidos-agi/prim-viewer/react`. Next: `@eidos-agi/prim-viewer/next`. WebMCP: `prim-viewer-webmcp`. |
 | [BRAND.md](./BRAND.md) | Identity, language, and positioning |
 | [sdk/typescript/](./sdk/typescript) | Category SDK (open, face, validate, write) |
@@ -122,7 +122,7 @@ Full communication guide: [WHAT-IS-PRIM.md](./WHAT-IS-PRIM.md).
 
 ## Status
 
-Early. Types and tools are listed in [`registry/registry.json`](./registry/registry.json). `prim registry` prints them. Domain profiles live in `prim.<name>` repositories. They do not have to be OKF.
+Early. Types, tools, and applets are listed in [`registry/registry.json`](./registry/registry.json). `prim registry` prints them. Domain profiles live in `prim.<name>` repositories. They do not have to be OKF. Applets are compositions, not a third tool kind.
 
 ## License
 
