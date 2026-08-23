@@ -25,7 +25,7 @@
     {
       "name": "odwf",
       "repo": "eidos-agi/prim.odwf",
-      "description": "Spreadsheet → bronze proof",
+      "description": "Spreadsheet \u2192 bronze proof",
       "okf": true,
       "status": "active"
     },
@@ -58,6 +58,13 @@
       "status": "active"
     },
     {
+      "name": "brand",
+      "repo": "eidos-agi/prim.brand",
+      "description": "Brand kit: identity, tokens, logos, fonts, running blocks. Send the pack.",
+      "okf": true,
+      "status": "emerging"
+    },
+    {
       "name": "osf",
       "repo": "eidos-agi/prim.osf",
       "description": "Open Session Format",
@@ -67,7 +74,7 @@
     {
       "name": "obf",
       "repo": "eidos-agi/prim.obf",
-      "description": "Open Book Format — ordered pages. book.json is authority.",
+      "description": "Open Book Format \u2014 ordered pages. book.json is authority.",
       "okf": true,
       "status": "emerging"
     },
