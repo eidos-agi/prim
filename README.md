@@ -68,9 +68,9 @@ Examples: `prim.ocsf`, `prim.brand`, `prim.osf`, `prim.orf`. There is no `prim.s
 
 | Repo | Domain |
 |------|--------|
-| [prim](https://github.com/eidos-agi/prim) | Category identity (this repo) |
-| [prim-web](https://github.com/eidos-agi/prim-web) | Public web host / views |
-| [prim-mac](https://github.com/eidos-agi/prim-mac) | Mac document host — Prim.app |
+| [prim](https://github.com/primfoundation/prim) | Category identity (this repo) |
+| prim-web | Public web host / views (not yet public) |
+| prim-mac | Mac document host — Prim.app (not yet public) |
 | [prim.emf](https://github.com/eidos-agi/prim.emf) | Human intent + durable memory |
 | [prim.orf](https://github.com/eidos-agi/prim.orf) | Research / investigation |
 | [prim.opf](https://github.com/eidos-agi/prim.opf) | Product graph |
