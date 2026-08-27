@@ -358,6 +358,15 @@
       "cites": "workbook",
       "as": "editor",
       "repo": "primfoundation/prim.workbook"
+    },
+    {
+      "name": "zeroshot",
+      "kind": "connector",
+      "direction": "operate",
+      "cites": "*",
+      "as": "executor-verifier",
+      "bin": "zeroshot",
+      "repo": "the-open-engine/zeroshot"
     }
   ],
   "applets": [
