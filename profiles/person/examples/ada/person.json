@@ -1,0 +1,10 @@
+{
+  "id": "ada-lovelace",
+  "name": "Ada Lovelace",
+  "relate": "example",
+  "emails": [
+    "ada@example.com"
+  ],
+  "phones": [],
+  "note": "Example prim.person pack. Not a real contact."
+}
